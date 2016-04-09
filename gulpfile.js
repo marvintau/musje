@@ -8,7 +8,7 @@ var jisonCli = require('gulp-jison-cli');
 var concat = require('gulp-concat');
 var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync').create();
-var jsdoc = require('gulp-jsdoc');
+var jsdoc = require('gulp-jsdoc3');
 var clean = require('gulp-clean');
 
 
@@ -24,10 +24,6 @@ gulp.task('concat', function () {
   return gulp.src([
       './src/utilities.js',
 
-      // './src/model/makeClasses.js',
-      // './src/model/makeClasses-arrayConstructors.js',
-      // './src/model/makeJSONSchema.js',  // only for development
-      // './src/model/model.js',
       './src/model/Score.js',
       './src/model/ScoreHead.js',
       './src/model/PartwiseParts.js',
@@ -89,6 +85,9 @@ gulp.task('build-musje', function () {
   runSequence('jison', 'concat');
 });
 
+
+// Demo ===================================================
+
 gulp.task('demo', ['build-musje'], function() {
   browserSync.init({
     server: {
@@ -115,15 +114,22 @@ gulp.task('demo', ['build-musje'], function() {
     .on('change', browserSync.reload);
 });
 
+// Documentation ==========================================
+
 gulp.task('build-doc', function () {
   return gulp.src([
-    './README.md',
-    './src/**/*.js', '!./src/parser/*-parser.js'
-  ])
-    .pipe(jsdoc.parser({
-      plugins: ['plugins/markdown']
-    }))
-    .pipe(jsdoc.generator('./doc'));
+      './README.md',
+      './src/**/*.js', '!./src/parser/*-parser.js'
+    ], { read: false })
+    .pipe(jsdoc({
+      opts: {
+        destination: './doc/'
+      },
+      plugins: [
+        'plugins/markdown',
+        'plugins/summarize'
+      ]
+    }));
 });
 
 gulp.task('watch-doc', ['build-doc'], function() {

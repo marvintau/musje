@@ -6,6 +6,7 @@
 node_modules/
 /gulpfile.js
 /demo/
+/doc/
 /ignore/
 /src/
 gulpfile.js

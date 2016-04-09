@@ -5,9 +5,14 @@
  */
 var musje = {};
 
-if (typeof exports !== 'undefined') {
-  exports = musje;
+if (typeof module === 'object' && module.exports) {
+  module.exports = musje;
 }
+
+// Workaround for application without these dependencies.
+var Snap = Snap || {};
+var MIDI = MIDI || {};
+
 
 (function (musje) {
   'use strict';
