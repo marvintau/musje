@@ -1,5 +1,13 @@
 # Musje Change Log
 
+## 0.3.1 (2016-04-09)
+
+### Bug fixes
+
+- Fix issue #10 : Consecutive slurs can be parsed now.
+- This module can work in nodejs environment.
+
+
 ## 0.3.0 (2015-09-06)
 
 - Model has been complete rewritten.
