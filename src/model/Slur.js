@@ -64,7 +64,7 @@
     },
 
     /**
-     * @todo
+     * @todo Nested tie in slur.
      * @type {boolean}
      * @readonly
      */
@@ -75,7 +75,7 @@
     },
 
     /**
-     * @todo
+     * @todo Nested tie in slur.
      * @type {boolean}
      * @readonly
      */
