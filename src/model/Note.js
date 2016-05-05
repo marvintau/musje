@@ -1,118 +1,124 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../util');
+var MusicDataMixin = require('./MusicDataMixin');
+var Pitch = require('./Pitch');
+var Duration = require('./Duration');
+var Tie = require('./Tie');
+var Slur = require('./Slur');
+
+/**
+ * @class
+ * @param {Object} note
+ * @mixes musje.MusicData
+ * @mixes musje.LayoutMusicData
+ */
+function Note(note) {
+  util.extend(this, note);
 
   /**
-   * @class
-   * @param {Object} note
-   * @mixes musje.MusicData
-   * @mixes musje.LayoutMusicData
+   * Reference to the parent parent.
+   * @memberof musje.Pitch#
+   * @alias parent
+   * @type {musje.MusicData}
+   * @readonly
    */
-  musje.Note = function (note) {
-    musje.extend(this, note);
+  this.pitch.parent = this;
+}
 
-    /**
-     * Reference to the parent parent.
-     * @memberof musje.Pitch#
-     * @alias parent
-     * @type {musje.MusicData}
-     * @readonly
-     */
-    this.pitch.parent = this;
-  };
+util.defineProperties(Note.prototype,
+/** @lends musje.Note.prototype */
+{
+  /**
+   * Type of note.
+   * @type {string}
+   * @constant
+   * @default
+   */
+  $type: 'Note',
 
-  musje.defineProperties(musje.Note.prototype,
-  /** @lends musje.Note.prototype */
-  {
-    /**
-     * Type of note.
-     * @type {string}
-     * @constant
-     * @default
-     */
-    $type: 'Note',
-
-    /**
-     * Pitch of the note.
-     * @type {musje.Pitch}
-     */
-    pitch: {
-      get: function () {
-        return this._pitch || (this._pitch = new musje.Pitch());
-      },
-      set: function (pitch) {
-        this._pitch = new musje.Pitch(pitch);
-      }
+  /**
+   * Pitch of the note.
+   * @type {musje.Pitch}
+   */
+  pitch: {
+    get: function () {
+      return this._pitch || (this._pitch = new Pitch());
     },
+    set: function (pitch) {
+      this._pitch = new Pitch(pitch);
+    }
+  },
 
-    /**
-     * Duration of the note.
-     * @type {musje.Duration}
-     */
-    duration: {
-      get: function () {
-        return this._duration || (this._duration = new musje.Duration());
-      },
-      set: function (duration) {
-        this._duration = new musje.Duration(duration);
-      }
+  /**
+   * Duration of the note.
+   * @type {musje.Duration}
+   */
+  duration: {
+    get: function () {
+      return this._duration || (this._duration = new Duration());
     },
+    set: function (duration) {
+      this._duration = new Duration(duration);
+    }
+  },
 
-    beams: {
-      get: function () {
-        return this._beams || (this._beams = []);
-      },
-      set: function (beams) {
-        this._beams = beams;
-      }
+  beams: {
+    get: function () {
+      return this._beams || (this._beams = []);
     },
+    set: function (beams) {
+      this._beams = beams;
+    }
+  },
 
-    /**
-     * Tie
-     * @type {musje.Tie}
-     */
-    tie: {
-      get: function () {
-        return this._tie || (this._tie = new musje.Tie(this));
-      },
-      set: function (tie) {
-
-        /**
-         * Value of the tie.
-         * @memberof musje.Tie#
-         * @alias value
-         * @type {boolean}
-         */
-        this.tie.value = tie;
-      }
+  /**
+   * Tie
+   * @type {musje.Tie}
+   */
+  tie: {
+    get: function () {
+      return this._tie || (this._tie = new Tie(this));
     },
+    set: function (tie) {
 
-    /**
-     * Slur
-     * @type {musje.Slur}
-     */
-    slur: {
-      get: function () {
-        return this._slur || (this._slur = new musje.Slur(this));
-      },
-      set: function (slur) {
-        musje.extend(this.slur, slur);
-      }
+      /**
+       * Value of the tie.
+       * @memberof musje.Tie#
+       * @alias value
+       * @type {boolean}
+       */
+      this.tie.value = tie;
+    }
+  },
+
+  /**
+   * Slur
+   * @type {musje.Slur}
+   */
+  slur: {
+    get: function () {
+      return this._slur || (this._slur = new Slur(this));
     },
+    set: function (slur) {
+      util.extend(this.slur, slur);
+    }
+  },
 
-    /** @method */
-    toString: function () {
-      return this.slur.begin + this.pitch + this.duration +
-             this.slur.end + this.tie.value;
-    },
+  /** @method */
+  toString: function () {
+    return this.slur.begin + this.pitch + this.duration +
+           this.slur.end + this.tie.value;
+  },
 
-    toJSON: musje.makeToJSON({
-      pitch: undefined,
-      duration: undefined,
-      tie: undefined,
-      slur: undefined
-    }, 'note')
-  });
+  toJSON: util.makeToJSON({
+    pitch: undefined,
+    duration: undefined,
+    tie: undefined,
+    slur: undefined
+  }, 'note')
+});
 
-}(musje));
+util.defineProperties(Note.prototype, MusicDataMixin);
+
+module.exports = Note;

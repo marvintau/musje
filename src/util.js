@@ -1,7 +1,7 @@
 'use strict';
 
 var defineProperty = Object.defineProperty;
-var utils = {};
+var util = {};
 
 function isObject(obj) {
   var type = typeof obj;
@@ -10,12 +10,12 @@ function isObject(obj) {
 
 /**
  * Utility method, for each object key.
- * @function utils.objEach
+ * @function util.objEach
  * @param {Object} obj - The object to be iterated.
  * @param {musje~objEachCallback} callback - The callback for each iteration.
  */
 var objEach =
-utils.objEach = function (obj, callback) {
+util.objEach = function (obj, callback) {
   if (isObject(obj)) {
     Object.keys(obj).forEach(function (key) {
       callback(obj[key], key);
@@ -37,7 +37,7 @@ utils.objEach = function (obj, callback) {
  * @param {Object} ext - the extension object.
  * @return {Object} The target object.
  */
-utils.extend = function(obj, ext) {
+util.extend = function(obj, ext) {
   objEach(ext, function (val, key) { obj[key] = val; });
   return obj;
 };
@@ -50,7 +50,7 @@ utils.extend = function(obj, ext) {
  * @param {number} b - another number.
  * @return {boolean} Wether `a` and `b` is close.
  */
-utils.near = function (a, b) {
+util.near = function (a, b) {
   return Math.abs(a - b) < 0.00001;
 };
 
@@ -72,7 +72,7 @@ utils.near = function (a, b) {
  * }
  * ```
  */
-utils.defineProperties = function (obj, props) {
+util.defineProperties = function (obj, props) {
   objEach(props, function (value, prop) {
     var
       type = typeof value,
@@ -99,9 +99,9 @@ utils.defineProperties = function (obj, props) {
   });
 };
 
-utils.toJSONWithDefault = true;
+util.toJSONWithDefault = true;
 
-utils.makeToJSON = function (values, elName) {
+util.makeToJSON = function (values, elName) {
   return function () {
     if (this.isEmpty) { return; }
 
@@ -110,7 +110,7 @@ utils.makeToJSON = function (values, elName) {
       result = {};
 
     objEach(values, function (defaultValue, prop) {
-      if (utils.toJSONWithDefault || that[prop] !== defaultValue) {
+      if (util.toJSONWithDefault || that[prop] !== defaultValue) {
         result[prop] = that[prop];
       }
     });
@@ -122,4 +122,4 @@ utils.makeToJSON = function (values, elName) {
   };
 };
 
-module.exports = utils;
+module.exports = util;

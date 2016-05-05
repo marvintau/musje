@@ -1,39 +1,66 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../../util');
+var layoutOptions = require('./layoutOptions');
+var Defs = require('../defs/Defs');
+var SvgLayout = require('./SvgLayout');
+var BodyLayout = require('./BodyLayout');
+var HeaderLayout = require('./HeaderLayout');
+var ContentLayout = require('./ContentLayout');
 
-  /**
-   * @class
-   * @alias musje.Layout
-   * @param svg {string}
-   * @param options {Object} Layout options
-   */
-  var Layout = musje.Layout = function (svg, options) {
-    this.options = options;
-    this.svg = svg;
+var TimewiseMeasure = require('../../model/TimewiseMeasure');
+var TimewiseMeasureLayoutMixin = require('./TimewiseMeasureLayoutMixin');
+var Cell = require('../../model/Cell');
+var CellLayoutMixin = require('./CellLayoutMixin');
+var MusicDataLayoutMixin = require('./MusicDataLayoutMixin');
+[
+  require('../../model/Time'),
+  require('../../model/Bar'),
+  require('../../model/Note'),
+  require('../../model/Rest'),
+  require('../../model/Chord'),
+  require('../../model/Voice')
+].forEach(function (Class) {
+  util.defineProperties(Class.prototype, MusicDataLayoutMixin);
+});
+util.defineProperties(TimewiseMeasure.prototype, TimewiseMeasureLayoutMixin);
+util.defineProperties(Cell.prototype, CellLayoutMixin);
 
-    this.svg = new Layout.Svg(this);
-    this.body = new Layout.Body(this);
-    this.header = new Layout.Header(this);
-    this.content = new Layout.Content(this);
+/**
+ * @class
+ * @param svg {string}
+ * @param options {Object} Layout options
+ */
+function Layout(svg, options) {
+  this.options = options;
+  this.svg = svg;
 
-    this.defs = new musje.Defs(this);
-  };
+  this.svg = new SvgLayout(this);
+  this.body = new BodyLayout(this);
+  this.header = new HeaderLayout(this);
+  this.content = new ContentLayout(this);
 
+  this.defs = new Defs(this);
+}
+
+Layout.options = layoutOptions;
+
+util.defineProperties(Layout.prototype,
+/** @lends Layout# */
+{
   /**
    * @param  {musje.Score} score
    */
-  Layout.prototype.flow = function (score) {
+  flow: function (score) {
     this._init(score);
     this.content.flow(score.measures);
-  };
+  },
 
   /**
    * @param  {musje.Score} score
    * @protected
    */
-  Layout.prototype._init = function (score) {
+  _init: function (score) {
     var
       layout = this,
       measures = score.measures;
@@ -46,6 +73,7 @@
         cell.flow();
       });
     });
-  };
+  }
+});
 
-}(musje));
+module.exports = Layout;

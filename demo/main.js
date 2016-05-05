@@ -76,7 +76,7 @@
         $scope.error = false;
       } catch (err) {
         $scope.totalMeasures = 'N/A';
-        $scope.error = '' + err;
+        $scope.error = err.message;
       }
       t0 = now();
       $scope.render();

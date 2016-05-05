@@ -1,68 +1,73 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../util');
+var Cell = require('./Cell');
+
+/**
+ * @class
+ * @param part {Object}
+ * @param index {number} - Index of this part in the parts.
+ * @param parts {PartwiseParts}
+ */
+function PartwisePart(index, parts) {
+  this._index = index;
+  this._parts = parts;
+}
+
+util.defineProperties(PartwisePart.prototype,
+/** @lends musje.PartwisePart# */
+{
+  // head: { $ref: '#/objects/PartHead' },
 
   /**
-   * @class
-   * @param part {Object}
-   * @param index {number} - Index of this part in the parts.
-   * @param parts {musje.PartwiseParts}
+   * Reference to the parent parts instance.
+   * @type {PartwiseParts}
+   * @readonly
    */
-  musje.PartwisePart = function (index, parts) {
+  parts: {
+    get: function () {
+      return this._parts;
+    }
+  },
 
-    /**
-     * Index of this part in the parts.
-     * @member {number}
-     * @protected
-     */
-    this._index = index;
-
-    /**
-     * Reference to the parent parts instance.
-     * @member {musje.PartwiseParts}
-     */
-    this.parts = parts;
-  };
-
-  musje.defineProperties(musje.PartwisePart.prototype,
-  /** @lends musje.PartwisePart# */
-  {
-    // head: { $ref: '#/objects/PartHead' },
-
-    /**
-     * Measure in a partwise part is cells.
-     * @type {Array.<musje.Cell>}
-     */
-    measures: {
-      get: function () {
-        return this._measures || (this._measures = []);
-      },
-      set: function (measures) {
-        var
-          p = this._index,
-          score = this.parts.score,
-          mea = this._measures = [];
-
-        measures.forEach(function (cell, m) {
-          mea.push(new musje.Cell(cell, m, p, score));
-        });
-      }
+  /**
+   * Measure in a partwise part is cells.
+   * @type {Array.<musje.Cell>}
+   */
+  measures: {
+    get: function () {
+      return this._measures || (this._measures = []);
     },
+    set: function (measures) {
+      var
+        p = this._index,
+        score = this.parts.score,
+        mea = this._measures = [];
 
-    /**
-     * Convert a partwise part to sting.
-     * @return {string} Musje partwise part source code.
-     */
-    toString: function () {
-      return this.measures.map(function (cell) {
-        return cell;
-      }).join(' ');
-    },
+      measures.forEach(function (cell, m) {
+        mea.push(new Cell(cell, m, p, score));
+      });
+    }
+  },
 
-    toJSON: musje.makeToJSON({
-      measures: undefined
-    })
-  });
+  /**
+   * Convert a partwise part to sting.
+   * @return {string} Musje partwise part source code.
+   */
+  toString: function () {
+    return this.measures.map(function (cell) {
+      return cell;
+    }).join(' ');
+  },
 
-}(musje));
+  /**
+   * Custom toJSON method.
+   * @method
+   * @return {Object}
+   */
+  toJSON: util.makeToJSON({
+    measures: undefined
+  })
+});
+
+module.exports = PartwisePart;

@@ -1,56 +1,63 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../util');
+var PartwisePart = require('./PartwisePart');
 
-  var properties =
-  /** @lends musje.PartwiseParts */
-  {
 
-    addParts: function (parts) {
-      var that = this;
-      parts.forEach(function (part) {
-        that.append(part);
-      });
-    },
+/**
+ * Construct partwise score parts.
+ * @class
+ * @classdesc Partwise score parts.
+ * @param score {Score}
+ * @augments {Array}
+ */
+function PartwiseParts(score) {
+  var parts = [];
+  parts._score = score;
+  util.defineProperties(parts, properties);
+  return parts;
+}
 
-    /**
-     * Append a partwise part.
-     * @param {Object} part - Plain partwise part object.
-     */
-    append: function (part) {
-      var index = this.length;
-      var musjePart = new musje.PartwisePart(index, this);
-      this.push(musjePart);
-      musjePart.measures = part.measures;
-    },
-
-    removeAll: function () {
-      this.length = 0;
+/** @lends PartwiseParts# */
+var properties = {
+  /**
+   * Reference to the parent score.
+   * @readonly
+   */
+  score: {
+    get: function () {
+      return this._score;
     }
-  };
-
+  },
 
   /**
-   * Construct partwise score parts.
-   * @class
-   * @classdesc Partwise score parts.
-   * @param score {musje.Score}
-   * @augments {Array}
+   * Add parts.
+   * @param {Object}
    */
-  musje.PartwiseParts = function (score) {
+  addParts: function (parts) {
+    var that = this;
+    parts.forEach(function (part) {
+      that.append(part);
+    });
+  },
 
-    var parts = [];
+  /**
+   * Append a partwise part.
+   * @param {Object} part - Plain partwise part object.
+   */
+  append: function (part) {
+    var index = this.length;
+    var musjePart = new PartwisePart(index, this);
+    this.push(musjePart);
+    musjePart.measures = part.measures;
+  },
 
-    /**
-     * Reference to the parent score.
-     * @memberof musje.PartwiseParts#
-     * @alias score
-     * @type {musje.Score}
-     */
-    parts.score = score;
-    musje.defineProperties(parts, properties);
-    return parts;
-  };
+  /**
+   * Remove all parts.
+   */
+  removeAll: function () {
+    this.length = 0;
+  }
+};
 
-}(musje));
+module.exports = PartwiseParts;

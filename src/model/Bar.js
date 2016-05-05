@@ -1,59 +1,61 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../util');
+var MusicDataMixin = require('./MusicDataMixin');
 
-  var BAR_TO_STRING = {
-      single: '|', double: '||', end: '|]',
-      'repeat-begin': '|:', 'repeat-end': ':|', 'repeat-both': ':|:'
-    };
+var BAR_TO_STRING = {
+  single: '|', double: '||', end: '|]',
+  'repeat-begin': '|:', 'repeat-end': ':|', 'repeat-both': ':|:'
+};
+
+/**
+ * @class
+ * @param {string} bar - The bar value, which can be either of
+ * - 'single' - `|`
+ * - 'double' - `||`
+ * - 'end' - `|]`
+ * - 'repeat-begin' - `|:`
+ * - 'repeat-end' - `:|`
+ * - 'repeat-both' - `:|:`
+ * @mixes musje.MusicData
+ * @mixes musje.LayoutMusicData
+ */
+function Bar(bar) {
+  this.value = bar;
+}
+
+util.defineProperties(Bar.prototype,
+/** @lends musje.Bar.prototype */
+{
+  /**
+   * Type of bar.
+   * @type {string}
+   * @constant
+   * @default
+   */
+  $type: 'Bar',
 
   /**
-   * @class
-   * @param {string} bar - The bar value, which can be either of
-   * - 'single' - `|`
-   * - 'double' - `||`
-   * - 'end' - `|]`
-   * - 'repeat-begin' - `|:`
-   * - 'repeat-end' - `:|`
-   * - 'repeat-both' - `:|:`
-   * @mixes musje.MusicData
-   * @mixes musje.LayoutMusicData
+   * Value of the bar, which is the same as the bar parameter in the constructor.
+   * @member {string} - The bar value
+   * @alias musje.Bar.prototype.value
+   * @default
    */
-  musje.Bar = function (bar) {
-    this.value = bar;
-  };
+  value: 'single',
 
-  musje.defineProperties(musje.Bar.prototype,
-  /** @lends musje.Bar.prototype */
-  {
-    /**
-     * Type of bar.
-     * @type {string}
-     * @constant
-     * @default
-     */
-    $type: 'Bar',
+  /**
+   * Convert bar to string.
+   * @return {string} Converted string of the barline in musje source code.
+   */
+  toString: function () {
+    return BAR_TO_STRING[this.value];
+  },
 
-    /**
-     * Value of the bar, which is the same as the bar parameter in the constructor.
-     * @member {string} - The bar value
-     * @alias musje.Bar.prototype.value
-     * @default
-     */
-    value: 'single',
+  toJSON: function () {
+    return { bar: this.value };
+  }
+});
 
-    /**
-     * Convert bar to string.
-     * @return {string} Converted string of the barline in musje source code.
-     */
-    toString: function () {
-      return BAR_TO_STRING[this.value];
-    },
+util.defineProperties(Bar.prototype, MusicDataMixin);
 
-    toJSON: function () {
-      return { bar: this.value };
-    }
-  });
-
-}(musje));
+module.exports = Bar;

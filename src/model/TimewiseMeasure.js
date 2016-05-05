@@ -1,66 +1,71 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../util');
+
+/**
+ * @class
+ * @param measure {Object}
+ * @mixes TimewiseMeasureLayoutMixin
+ */
+function TimewiseMeasure(index, measures) {
 
   /**
-   * @class
-   * @param measure {Object}
-   * @mixes musje.LayoutTimewiseMeasure
+   * Index of this measure in the timewise score measures.
+   * @member {number}
+   * @protected
    */
-  musje.TimewiseMeasure = function (index, measures) {
+  // this._index = index;
+  this._measures = measures;
+}
 
-    /**
-     * Index of this measure in the timewise score measures.
-     * @member {number}
-     * @protected
-     */
-    this._index = index;
+util.defineProperties(TimewiseMeasure.prototype,
+/** @lends TimewiseMeasure# */
+{
 
-    /**
-     * Reference to the parent measures instance.
-     * @member {musje.TimewiseMeasures}
-     */
-    this.measures = measures;
-  };
-
-  musje.defineProperties(musje.TimewiseMeasure.prototype,
-  /** @lends musje.TimewiseMeasure# */
-  {
-    /**
-     * Parts in timewise measure.
-     * @type {Array.<musje.Cells>}
-     */
-    parts: {
-      get: function () {
-        return this._parts || (this._parts = []);
-      },
-      set: function (parts) {
-        this._parts = parts;
-      }
-    },
-
-    /**
-     * Left bar of the measure.
-     * @type {musje.Bar}
-     * @readonly
-     */
-    barLeft: {
-      get: function () {
-        return this.parts[0].barLeft;
-      }
-    },
-
-    /**
-     * Right bar of the measure.
-     * @type {musje.Bar}
-     * @readonly
-     */
-    barRight: {
-      get: function () {
-        return this.parts[0].barRight;
-      }
+  /**
+   * Reference to the parent measures instance.
+   * @member {TimewiseMeasures}
+   */
+  measures: {
+    get: function () {
+      return this._measures;
     }
-  });
+  },
 
-}(musje));
+  /**
+   * Parts in timewise measure.
+   * @type {Array.<Cells>}
+   */
+  parts: {
+    get: function () {
+      return this._parts || (this._parts = []);
+    },
+    set: function (parts) {
+      this._parts = parts;
+    }
+  },
+
+  /**
+   * Left bar of the measure.
+   * @type {Bar}
+   * @readonly
+   */
+  barLeft: {
+    get: function () {
+      return this.parts[0].barLeft;
+    }
+  },
+
+  /**
+   * Right bar of the measure.
+   * @type {Bar}
+   * @readonly
+   */
+  barRight: {
+    get: function () {
+      return this.parts[0].barRight;
+    }
+  }
+});
+
+module.exports = TimewiseMeasure;

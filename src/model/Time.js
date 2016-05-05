@@ -1,56 +1,58 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../util');
+var MusicDataMixin = require('./MusicDataMixin');
+
+/**
+ * Time signature.
+ * @class
+ * @param time {Object}
+ * @mixes musje.MusicData
+ * @mixes musje.LayoutMusicData
+ */
+function Time(time) {
+  util.extend(this, time);
+}
+
+util.defineProperties(Time.prototype,
+/** @lends musje.Time# */
+{
+  /**
+   * Type of time.
+   * @type {string}
+   * @constant
+   * @default
+   */
+  $type: 'Time',
 
   /**
-   * Time signature.
-   * @class
-   * @param time {Object}
-   * @mixes musje.MusicData
-   * @mixes musje.LayoutMusicData
+   * How many beats per measure.
+   * @type {number}
+   * @default
    */
-  musje.Time = function (time) {
-    musje.extend(this, time);
-  };
+  beats: 4,
 
-  musje.defineProperties(musje.Time.prototype,
-  /** @lends musje.Time# */
-  {
-    /**
-     * Type of time.
-     * @type {string}
-     * @constant
-     * @default
-     */
-    $type: 'Time',
+  /**
+   * Beat type
+   * @type {number}
+   * @default
+   */
+  beatType: 4,
 
-    /**
-     * How many beats per measure.
-     * @type {number}
-     * @default
-     */
+  /**
+   * Convert to musje source code.
+   * @return {string} Musje source code.
+   */
+  toString: function () {
+    return this.beats + '/' + this.beatType;
+  },
+
+  toJSON: util.makeToJSON({
     beats: 4,
+    beatType: 4
+  }, 'time')
+});
 
-    /**
-     * Beat type
-     * @type {number}
-     * @default
-     */
-    beatType: 4,
+util.defineProperties(Time.prototype, MusicDataMixin);
 
-    /**
-     * Convert to musje source code.
-     * @return {string} Musje source code.
-     */
-    toString: function () {
-      return this.beats + '/' + this.beatType;
-    },
-
-    toJSON: musje.makeToJSON({
-      beats: 4,
-      beatType: 4
-    }, 'time')
-  });
-
-}(musje));
+module.exports = Time;

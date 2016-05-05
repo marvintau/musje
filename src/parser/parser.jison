@@ -2,30 +2,30 @@
 
 %{
 
-  var extend = musje.extend;
+var extend = require('../util').extend;
 
-  function lastItem(arr) { return arr[arr.length - 1]; }
+function lastItem(arr) { return arr[arr.length - 1]; }
 
-  function onlyProperty(obj) {
-    return obj[Object.keys(obj)[0]];
-  }
+function onlyProperty(obj) {
+  return obj[Object.keys(obj)[0]];
+}
 
-  function octave(str) {
-    var len = str.length;
-    return str.charAt(0) === ',' ? -len : len;
-  }
+function octave(str) {
+  var len = str.length;
+  return str.charAt(0) === ',' ? -len : len;
+}
 
-  function removeLastEmptyMeasure(score) {
-    var parts = score.parts;
-    if (!parts) { return; }
+function removeLastEmptyMeasure(score) {
+  var parts = score.parts;
+  if (!parts) { return; }
 
-    parts.forEach(function (part) {
-      var lastMeasure = lastItem(part.measures);
-      if (lastMeasure.data.length === 0) {
-        part.measures.pop();
-      }
-    });
-  }
+  parts.forEach(function (part) {
+    var lastMeasure = lastItem(part.measures);
+    if (lastMeasure.data.length === 0) {
+      part.measures.pop();
+    }
+  });
+}
 
 %}
 

@@ -1,50 +1,56 @@
-/* global musje */
+'use strict';
 
-(function (musje) {
-  'use strict';
+var util = require('../util');
+var TimewiseMeasure = require('./TimewiseMeasure');
 
-  var properties =
-  /** @lends musje.TimewiseMeasures# */
-  {
-    /**
-     * Make timewise score measures from the partwise parts.
-     */
-    fromPartwise: function () {
-      var that = this;
+/**
+ * Construct timewise score measures.
+ * @class
+ * @classdesc Timewise score measures.
+ * @param score {musje.Score}
+ * @augments {Array}
+ */
+function TimewiseMeasures(score) {
+  var measures = [];
+  measures._score = score;
+  util.defineProperties(measures, properties);
+  return measures;
+}
 
-      this.removeAll();
-
-      this.score.walkCells(function (cell, m) {
-        that[m] = that[m] || new musje.TimewiseMeasure(m, that);
-        that[m].parts.push(cell);
-      });
-    },
-
-    removeAll: function () {
-      this.length = 0;
-    }
-  };
+/** @lends TimewiseMeasures# */
+var properties = {
 
   /**
-   * Construct timewise score measures.
-   * @class
-   * @classdesc Timewise score measures.
-   * @param score {musje.Score}
-   * @augments {Array}
+   * Reference to the parent score.
+   * @type {Score}
+   * @readonly
    */
-  musje.TimewiseMeasures = function (score) {
+  score: {
+    get: function () {
+      return this._score;
+    }
+  },
 
-    var measures = [];
+  /**
+   * Make timewise score measures from the partwise parts.
+   */
+  fromPartwise: function () {
+    var that = this;
 
-    /**
-     * Reference to the parent score.
-     * @memberof musje.TimewiseMeasures#
-     * @alias score
-     * @type {musje.Score}
-     */
-    measures.score = score;
-    musje.defineProperties(measures, properties);
-    return measures;
-  };
+    this.removeAll();
 
-}(musje));
+    this.score.walkCells(function (cell, m) {
+      that[m] = that[m] || new TimewiseMeasure(m, that);
+      that[m].parts.push(cell);
+    });
+  },
+
+  /**
+   * Remove all measures.
+   */
+  removeAll: function () {
+    this.length = 0;
+  }
+};
+
+module.exports = TimewiseMeasures;
