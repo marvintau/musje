@@ -7,33 +7,60 @@ var util = require('../util');
  *
  * [wiki]: https://en.wikipedia.org/wiki/Beam_(music)
  *
- * Beam is created by {@link musje.Cell#makeBeams} and
- * attached to {@link musje.Durable} in {@link musje.Durable#beams}[level]
+ * Beam is created by {@link Cell#makeBeams} and
+ * attached to {@link Durable} in {@link Durable#beams}[level]
  * @class
  * @param {string} value - Beam value: `'begin'`, `'continue'` or `'end'`.
  * @param {number} level - Beam level starting from 0 to up.
- * @param {musje.Durable} parent - The parent durable music data.
+ * @param {Durable} parent - The parent durable music data.
  */
 function Beam(value, level, parent) {
-
-  /** @member */
-  this.value = value;
-
-  /** @member */
-  this.level = level;
-
-  /** @member */
-  this.parent = parent;
+  this._value = value;
+  this._level = level;
+  this._parent = parent;
 }
 
-util.defineProperties(Beam.prototype, /** @lends musje.Beam# */
+util.defineProperties(Beam.prototype,
+/** @lends Beam# */
 {
+  /**
+   * Parent
+   * @type {Note|Rest|Chord}
+   * @readonly
+   */
+  parent: {
+    get: function () {
+      return this._parent;
+    }
+  },
 
-/**
- * The end parent music data of the beam group.
- * @type {musje.MusicData}
- */
-endDurable: {
+  /**
+   * Beam value: `'begin'`, `'continue'` or `'end'`.
+   * @type {string}
+   * @readonly
+   */
+  value: {
+    get: function () {
+      return this._value;
+    }
+  },
+
+  /**
+   * Beam level starting from 0 to up.
+   * @type {number}
+   * @readonly
+   */
+  level: {
+    get: function () {
+      return this._level;
+    }
+  },
+
+  /**
+   * The end parent music data of the beam group.
+   * @type {MusicDataMixin}
+   */
+  endDurable: {
     get: function () {
       var nextData = this.parent.next;
 

@@ -37,7 +37,6 @@ function renderCell(cell, lo) {
 /**
  * [Renderer description]
  * @class
- * @alias musje.Renderer
  * @param svg {string}
  * @param lo {Object}
  */
@@ -47,7 +46,7 @@ function Renderer(svg, lo) {
 }
 
 util.defineProperties(Renderer.prototype,
-/** @lends musje.Renderer# */
+/** @lends Renderer# */
 {
   render: function (score) {
     this._score = score;

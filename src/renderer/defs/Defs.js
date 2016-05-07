@@ -24,16 +24,20 @@ util.defineProperties(Duration.prototype, defIdMixins.Duration);
 
 /**
  * @class
- * @alias musje.Defs
- * @param {musje.Layout} layout
+ * @param {Layout} layout
  */
 function Defs(layout) {
   this._layout = layout;
 }
 
 util.defineProperties(Defs.prototype,
-/** @lends musje.Defs# */
+/** @lends Defs# */
 {
+  /**
+   * Get the svg def of the music data.
+   * @param  musicData {MusicDataMixin} music data
+   * @return {Def}
+   */
   get: function (musicData) {
     var id = musicData.defId;
     return this[id] || (this[id] = this._make(id, musicData));

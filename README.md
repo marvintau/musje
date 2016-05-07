@@ -57,46 +57,51 @@ http://jianpu.github.io/musje/doc/
 ## Develop
 
 ### Install
+
 Install node.js first, and install `gulp` globally
 ```
 npm install -g gulp
 ```
+
 Clone this repo, and in the project folder run
 ```
 npm install
 ```
 
+
 ### Build
-Build musje
+
+Build the musje library.
 ```
 gulp build-musje
 ```
 
-Build documentation
+Build the musje documentation.
 ```
 gulp build-doc
 ```
 
-Build musje and documentation
+Build both the musje library and documentation.
 ```
 gulp build
 ```
-or `gulp` will run the build by default.
 
-### Demo
-```
-gulp demo
-```
-
-### Documentation
-Build the documentation
-```
-gulp doc
-```
-
-or watch the documentation build
+Or watch the documentation build during development.
 ```
 gulp watch-doc
+```
+
+
+### Demo
+
+Useful for viewing the resulting jianpu score with live-reload.
+
+```
+gulp
+```
+or
+```
+gulp watch-demo
 ```
 
 

@@ -5,7 +5,7 @@ var util = require('../../util');
 
 /**
  * @class
- * @param layout {musje.Layout}
+ * @param layout {Layout}
  */
 function SvgLayout(layout) {
   this._layout = layout;
@@ -20,7 +20,7 @@ function SvgLayout(layout) {
 }
 
 util.defineProperties(SvgLayout.prototype,
-/** @lends musje.Layout.Svg# */
+/** @lends SvgLayout# */
 {
   /**
    * Width of the svg.

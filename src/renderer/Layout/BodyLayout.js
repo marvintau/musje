@@ -6,7 +6,7 @@ var util = require('../../util');
 /**
  * Body
  * @class
- * @param {musje.Layout} layout
+ * @param {Layout} layout
  */
 function BodyLayout(layout) {
   this._layout = layout;
@@ -21,7 +21,7 @@ function BodyLayout(layout) {
 }
 
 util.defineProperties(BodyLayout.prototype,
-/** @lends musje.Layout.Body.prototype */
+/** @lends BodyLayout# */
 {
   /**
    * Width of the body.

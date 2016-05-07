@@ -27,6 +27,9 @@ function getScale(hasAccidental, octave, underbar) {
  * The `PitchDef` is defined by properties: a s o u
  * accidental step octave underbar
  * @class
+ * @param id {string}     [description]
+ * @param pitch {Pitch}   [description]
+ * @param layout {Layout} [description]
  */
 function PitchDef(id, pitch, underbar, defs) {
   var

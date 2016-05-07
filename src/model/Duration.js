@@ -21,7 +21,7 @@ function Duration(duration) {
 }
 
 util.defineProperties(Duration.prototype,
-/** @lends musje.Duration# */
+/** @lends Duration# */
 {
   /**
    * Type of duration.

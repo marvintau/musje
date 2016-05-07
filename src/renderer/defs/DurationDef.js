@@ -2,8 +2,13 @@
 
 var util = require('../../util');
 
-// @constructor DurationDef
-// SVG Definition for duration.
+/**
+ * SVG definition for duration.
+ * @class
+ * @param {string} id       [description]
+ * @param {Duration} duration [description]
+ * @param {Layout} layout   [description]
+ */
 function DurationDef(id, duration, layout) {
   this._id = id;
   this._layout = layout;

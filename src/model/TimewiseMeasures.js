@@ -7,7 +7,7 @@ var TimewiseMeasure = require('./TimewiseMeasure');
  * Construct timewise score measures.
  * @class
  * @classdesc Timewise score measures.
- * @param score {musje.Score}
+ * @param score {Score}
  * @augments {Array}
  */
 function TimewiseMeasures(score) {

@@ -4,9 +4,8 @@
  * Layout mixin for the music data
  * @mixin
  */
-var MusicDataLayoutMixin =
-/** @lends musje.LayoutMusicData# */
-{
+var MusicDataLayoutMixin = {
+
   /**
    * The x position of the music data in the cell.
    * @type {number}

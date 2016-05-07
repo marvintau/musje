@@ -1117,7 +1117,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @class
-	 * @param {Object} score - plain score object {@link musje.PlainScore}.
+	 * @param {Object} score - plain score object.
+	 * @mixes PlayerMixin
 	 */
 	function Score(score) {
 	  util.extend(this, score);
@@ -1235,7 +1236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(ScoreHead.prototype,
-	/** @lends musje.ScoreHead# */
+	/** @lends ScoreHead# */
 	{
 	  /**
 	   * Title of the score.
@@ -1273,6 +1274,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  lyricist: undefined,
 
+	  /**
+	   * Check if the score head is empty.
+	   * @type {boolean}
+	   * @readonly
+	   */
 	  isEmpty: {
 	    get: function () {
 	      return !this.title && !this.subtitle && !this.subsubtitle &&
@@ -1328,6 +1334,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/** @lends PartwiseParts# */
 	var properties = {
+
 	  /**
 	   * Reference to the parent score.
 	   * @readonly
@@ -1392,7 +1399,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(PartwisePart.prototype,
-	/** @lends musje.PartwisePart# */
+	/** @lends PartwisePart# */
 	{
 	  // head: { $ref: '#/objects/PartHead' },
 
@@ -1409,7 +1416,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Measure in a partwise part is cells.
-	   * @type {Array.<musje.Cell>}
+	   * @type {Array.<Cell>}
 	   */
 	  measures: {
 	    get: function () {
@@ -1439,7 +1446,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Custom toJSON method.
-	   * @method
 	   * @return {Object}
 	   */
 	  toJSON: util.makeToJSON({
@@ -1514,33 +1520,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @param cell {Object}
 	 * @param mIndex {number} - Measure index of this cell.
 	 * @param pIndex {number} - Part index of this cell.
-	 * @mixes musje.LayoutCell
+	 * @mixes CellLayout
 	 */
 	function Cell(cell, mIndex, pIndex, score) {
-
-	  /**
-	   * Measure index of this cell.
-	   * @member {number}
-	   * @protected
-	   */
 	  this._mIndex = mIndex;
-
-	  /**
-	   * Part index of this cell.
-	   * @member {number}
-	   * @protected
-	   */
 	  this._pIndex = pIndex;
-
-	  /**
-	   * Reference to the root score instance.
-	   * @member {musje.Score}
-	   * @readonly
-	   */
-	  this.score = score;
-
+	  this._score = score;
 	  util.extend(this, cell);
-
 	  this.makeBeams(1);
 	}
 
@@ -1548,8 +1534,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	/** @lends musje.Cell# */
 	{
 	  /**
+	   * Reference to the root score instance.
+	   * @type {Score}
+	   * @readonly
+	   */
+	  score: {
+	    get: function () {
+	      return this._score;
+	    }
+	  },
+
+	  /**
 	   * Music data
-	   * @type {Array.<musje.MusicData>}
+	   * @type {Array.<MusicDataMixin>}
 	   */
 	  data: {
 	    get: function () {
@@ -1566,7 +1563,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Reference to the parent measures.
-	   * @type {musje.TimewiseMeasures}
+	   * @type {TimewiseMeasures}
 	   * @readonly
 	   */
 	  measures: {
@@ -1577,7 +1574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Reference to the parent measure.
-	   * @type {musje.TimewiseMeasure}
+	   * @type {TimewiseMeasure}
 	   * @readonly
 	   */
 	  measure: {
@@ -1588,7 +1585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Reference to the parent parts.
-	   * @type {musje.PartwiseParts}
+	   * @type {PartwiseParts}
 	   * @readonly
 	   */
 	  parts: {
@@ -1599,7 +1596,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Reference to the parent part.
-	   * @type {musje.PartwisePart}
+	   * @type {PartwisePart}
 	   * @readonly
 	   */
 	  part: {
@@ -1610,7 +1607,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Previous cell in the part.
-	   * @type {musje.Cell|undefined}
+	   * @type {Cell|undefined}
 	   * @readonly
 	   */
 	  prev: {
@@ -1621,7 +1618,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Next cell in the part.
-	   * @type {musje.Cell|undefined}
+	   * @type {Cell|undefined}
 	   * @readonly
 	   */
 	  next: {
@@ -1632,7 +1629,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * The first music data in the cell.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  firstData: {
@@ -1643,7 +1640,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * The last music data in the cell.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  lastData: {
@@ -1654,7 +1651,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * The left bar of this cell.
-	   * @type {musje.Bar|undefined}
+	   * @type {Bar|undefined}
 	   * @readonly
 	   */
 	  barLeft: {
@@ -1675,7 +1672,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * The right bar of this cell.
-	   * @type {musje.Bar|undefined}
+	   * @type {Bar|undefined}
 	   * @readonly
 	   */
 	  barRight: {
@@ -1698,9 +1695,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    /**
 	     * Reference to the parent cell
-	     * @memberof musje.MusicData#
+	     * @memberof MusicDataMixin
 	     * @alias cell
-	     * @type {musje.Cell}
+	     * @type {Cell}
 	     * @readonly
 	     */
 	    instance.cell = this;
@@ -1757,11 +1754,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	            /**
 	             * Beams of the note.
-	             * - Produced by the {@link musje.Cell#makeBeams} method.
-	             * - The above method is call in {@link musje.Score#prepareCells}.
-	             * @memberof musje.Note#
+	             * - Produced by the {@link Cell#makeBeams} method.
+	             * - The above method is call in {@link Score#prepareCells}.
+	             * @memberof Note#
 	             * @alias beams
-	             * @type {Array.<musje.Beam>}
+	             * @type {Array.<Beam>}
 	             */
 	            data.beams = data.beams || [];
 
@@ -1801,33 +1798,60 @@ return /******/ (function(modules) { // webpackBootstrap
 	 *
 	 * [wiki]: https://en.wikipedia.org/wiki/Beam_(music)
 	 *
-	 * Beam is created by {@link musje.Cell#makeBeams} and
-	 * attached to {@link musje.Durable} in {@link musje.Durable#beams}[level]
+	 * Beam is created by {@link Cell#makeBeams} and
+	 * attached to {@link Durable} in {@link Durable#beams}[level]
 	 * @class
 	 * @param {string} value - Beam value: `'begin'`, `'continue'` or `'end'`.
 	 * @param {number} level - Beam level starting from 0 to up.
-	 * @param {musje.Durable} parent - The parent durable music data.
+	 * @param {Durable} parent - The parent durable music data.
 	 */
 	function Beam(value, level, parent) {
-
-	  /** @member */
-	  this.value = value;
-
-	  /** @member */
-	  this.level = level;
-
-	  /** @member */
-	  this.parent = parent;
+	  this._value = value;
+	  this._level = level;
+	  this._parent = parent;
 	}
 
-	util.defineProperties(Beam.prototype, /** @lends musje.Beam# */
+	util.defineProperties(Beam.prototype,
+	/** @lends Beam# */
 	{
+	  /**
+	   * Parent
+	   * @type {Note|Rest|Chord}
+	   * @readonly
+	   */
+	  parent: {
+	    get: function () {
+	      return this._parent;
+	    }
+	  },
 
-	/**
-	 * The end parent music data of the beam group.
-	 * @type {musje.MusicData}
-	 */
-	endDurable: {
+	  /**
+	   * Beam value: `'begin'`, `'continue'` or `'end'`.
+	   * @type {string}
+	   * @readonly
+	   */
+	  value: {
+	    get: function () {
+	      return this._value;
+	    }
+	  },
+
+	  /**
+	   * Beam level starting from 0 to up.
+	   * @type {number}
+	   * @readonly
+	   */
+	  level: {
+	    get: function () {
+	      return this._level;
+	    }
+	  },
+
+	  /**
+	   * The end parent music data of the beam group.
+	   * @type {MusicDataMixin}
+	   */
+	  endDurable: {
 	    get: function () {
 	      var nextData = this.parent.next;
 
@@ -1855,15 +1879,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Time signature.
 	 * @class
 	 * @param time {Object}
-	 * @mixes musje.MusicData
-	 * @mixes musje.LayoutMusicData
+	 * @mixes MusicDataMixin
+	 * @mixes MusicDataLayoutMixin
 	 */
 	function Time(time) {
 	  util.extend(this, time);
 	}
 
 	util.defineProperties(Time.prototype,
-	/** @lends musje.Time# */
+	/** @lends Time# */
 	{
 	  /**
 	   * Type of time.
@@ -1916,13 +1940,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Music data mixin
 	 * @mixin
 	 */
-	var MusicDataMixin =
-	/** @lends musje.MusicData# */
-	{
+	var MusicDataMixin = {
 
 	  /**
 	   * The ascendant system of the music data.
-	   * @type {musje.Layout.System}
+	   * @type {SystemLayout}
 	   * @readonly
 	   */
 	  system: {
@@ -1933,7 +1955,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Previous music data.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  prev: {
@@ -1944,7 +1966,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Next music data.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  next: {
@@ -1955,7 +1977,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Previous music data in part, across measure.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  prevInPart: {
@@ -1973,7 +1995,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Next music data in part, across measure.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  nextInPart: {
@@ -1991,7 +2013,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Previous music data which has a duration.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  prevDurable: {
@@ -2006,7 +2028,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Next music data which has a duration.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  nextDurable: {
@@ -2021,7 +2043,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Previous music data which has a duration in part, across measure.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  prevDurableInPart: {
@@ -2036,7 +2058,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Next music data which has a duration in part, across measure.
-	   * @type {musje.MusicData|undefined}
+	   * @type {MusicDataMixin|undefined}
 	   * @readonly
 	   */
 	  nextDurableInPart: {
@@ -2077,15 +2099,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * - 'repeat-begin' - `|:`
 	 * - 'repeat-end' - `:|`
 	 * - 'repeat-both' - `:|:`
-	 * @mixes musje.MusicData
-	 * @mixes musje.LayoutMusicData
+	 * @mixes MusicDataMixin
+	 * @mixes MusicDataLayoutMixin
 	 */
 	function Bar(bar) {
 	  this.value = bar;
 	}
 
 	util.defineProperties(Bar.prototype,
-	/** @lends musje.Bar.prototype */
+	/** @lends Bar# */
 	{
 	  /**
 	   * Type of bar.
@@ -2097,8 +2119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Value of the bar, which is the same as the bar parameter in the constructor.
-	   * @member {string} - The bar value
-	   * @alias musje.Bar.prototype.value
+	   * @type {string}
 	   * @default
 	   */
 	  value: 'single',
@@ -2111,6 +2132,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return BAR_TO_STRING[this.value];
 	  },
 
+	  /**
+	   * [toJSON description]
+	   * @return {Object} { bar: value }
+	   */
 	  toJSON: function () {
 	    return { bar: this.value };
 	  }
@@ -2137,20 +2162,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @class
 	 * @param {Object} note
-	 * @mixes musje.MusicData
-	 * @mixes musje.LayoutMusicData
+	 * @mixes MusicDataMixin
+	 * @mixes MusicDataLayoutMixin
 	 */
 	function Note(note) {
 	  util.extend(this, note);
-
-	  /**
-	   * Reference to the parent parent.
-	   * @memberof musje.Pitch#
-	   * @alias parent
-	   * @type {musje.MusicData}
-	   * @readonly
-	   */
-	  this.pitch.parent = this;
 	}
 
 	util.defineProperties(Note.prototype,
@@ -2170,10 +2186,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  pitch: {
 	    get: function () {
-	      return this._pitch || (this._pitch = new Pitch());
+	      return this._pitch || (this._pitch = new Pitch(this));
 	    },
 	    set: function (pitch) {
-	      this._pitch = new Pitch(pitch);
+	      this._pitch = new Pitch(this, pitch);
 	    }
 	  },
 
@@ -2278,15 +2294,28 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @class
+	 * @param parent {Note|Chord}
 	 * @param pitch {Object}
 	 */
-	function Pitch(pitch) {
+	function Pitch(parent, pitch) {
+	  this._parent = parent;
 	  util.extend(this, pitch);
 	}
 
 	util.defineProperties(Pitch.prototype,
-	/** @lends musje.Pitch.prototype */
+	/** @lends Pitch.prototype */
 	{
+	  /**
+	   * Reference to the parent parent.
+	   * @type {Note|Chord}
+	   * @readonly
+	   */
+	  parent: {
+	    get: function () {
+	      return this._parent;
+	    }
+	  },
+
 	  /**
 	   * Step is a value of `1`, `2`, `3`, `4`, `5`, `6`, or `7`.
 	   * @type {number}
@@ -2332,7 +2361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Pitch linked that will affect the alter in this pitch.
-	   * @type {musje.Pitch|undefined}
+	   * @type {Pitch|undefined}
 	   * @readonly
 	   */
 	  alterLink: {
@@ -2416,7 +2445,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(Duration.prototype,
-	/** @lends musje.Duration# */
+	/** @lends Duration# */
 	{
 	  /**
 	   * Type of duration.
@@ -2502,21 +2531,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Tie of the note.
 	 * @class
-	 * @param parent {musje.Note|musje.Chord}
+	 * @param parent {Note|Chord}
 	 */
 	function Tie(parent) {
-
-	  /**
-	   * Parent
-	   * @type {musje.Note|musje.Chord}
-	   * @readonly
-	   */
-	  this.parent = parent;
+	  this._parent = parent;
 	}
 
 	util.defineProperties(Tie.prototype,
 	/** @lends musje.Tie# */
 	{
+	  /**
+	   * Parent note or chord.
+	   * @type {Note|Chord}
+	   * @readonly
+	   */
+	  parent: {
+	    get: function () {
+	      return this._parent;
+	    }
+	  },
+
 	  value: '',
 
 	  /**
@@ -2539,7 +2573,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * The previous durable music data in part, if it is a tie begin.
-	   * @type {musje.Durable|undefined}
+	   * @type {Durable|undefined}
 	   * @readonly
 	   */
 	  prevParent: {
@@ -2551,7 +2585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * The next durable music data in part.
-	   * @type {musje.Durable|undefined}
+	   * @type {Durable|undefined}
 	   * @readonly
 	   */
 	  nextParent: {
@@ -2605,28 +2639,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Slur
 	 * @class
-	 * @param parent {musje.Note|musje.Chord}
+	 * @param parent {Note|Chord}
 	 */
 	function Slur(parent) {
-
-	  /**
-	   * Parent
-	   * @type {musje.Note|musje.Chord}
-	   * @readonly
-	   */
-	  this.parent = parent;
+	  this._parent = parent;
 	}
 
 	util.defineProperties(Slur.prototype,
-	/** @lends musje.Slur# */
+	/** @lends Slur# */
 	{
+	  /**
+	   * Parent music data.
+	   * @type {Note|Chord}
+	   * @readonly
+	   */
+	  parent: {
+	    get: function () {
+	      return this._parent;
+	    }
+	  },
+
 	  begin: '',
 
 	  end: '',
 
 	  /**
 	   * Previous slurred parent.
-	   * @type {musje.Note|musje.Chord}
+	   * @type {Note|Chord}
 	   * @readonly
 	   */
 	  prevParent: {
@@ -2645,7 +2684,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Next Slurred parent.
-	   * @type {musje.Note|musje.Chord}
+	   * @type {Note|Chord}
 	   * @readonly
 	   */
 	  nextParent: {
@@ -2746,15 +2785,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @class
 	 * @param {rest} rest
-	 * @mixes musje.MusicData
-	 * @mixes musje.LayoutMusicData
+	 * @mixes MusicDataMixin
+	 * @mixes MusicDataLayoutMixin
 	 */
 	function Rest(rest) {
 	  util.extend(this, rest);
 	}
 
 	util.defineProperties(Rest.prototype,
-	/** @lends musje.Rest# */
+	/** @lends Rest# */
 	{
 	  /**
 	   * Type of rest.
@@ -2766,7 +2805,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Duration of the rest.
-	   * @type {musje.Duration}
+	   * @type {Duration}
 	   */
 	  duration: {
 	    get: function () {
@@ -2818,15 +2857,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @class
 	 * @param {Object} chord
-	 * @mixes musje.MusicData
-	 * @mixes musje.LayoutMusicData
+	 * @mixes MusicDataMixin
+	 * @mixes MusicDataLayoutMixin
 	 */
 	function Chord(chord) {
 	  util.extend(this, chord);
 	}
 
 	util.defineProperties(Chord.prototype,
-	/** @lends musje.Chord# */
+	/** @lends Chord# */
 	{
 	  /**
 	   * Type of chord.
@@ -2838,7 +2877,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Pitches in the chord.
-	   * @type {Array.<musje.Pitch>}
+	   * @type {Array.<Pitch>}
 	   */
 	  pitches: {
 	    get: function () {
@@ -2853,7 +2892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Duration of the chord.
-	   * @type {musje.Duration}
+	   * @type {Duration}
 	   */
 	  duration: {
 	    get: function () {
@@ -2903,7 +2942,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(Voice.prototype,
-	/** @lends musje.Voice# */
+	/** @lends Voice# */
 	{
 	  /**
 	   * Convert the voice to musje source code string.
@@ -2932,7 +2971,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Construct timewise score measures.
 	 * @class
 	 * @classdesc Timewise score measures.
-	 * @param score {musje.Score}
+	 * @param score {Score}
 	 * @augments {Array}
 	 */
 	function TimewiseMeasures(score) {
@@ -3021,7 +3060,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Parts in timewise measure.
-	   * @type {Array.<Cells>}
+	   * @type {Array.<Cell>}
 	   */
 	  parts: {
 	    get: function () {
@@ -3101,7 +3140,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * [Renderer description]
 	 * @class
-	 * @alias musje.Renderer
 	 * @param svg {string}
 	 * @param lo {Object}
 	 */
@@ -3111,7 +3149,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(Renderer.prototype,
-	/** @lends musje.Renderer# */
+	/** @lends Renderer# */
 	{
 	  render: function (score) {
 	    this._score = score;
@@ -3224,7 +3262,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/** @lends Layout# */
 	{
 	  /**
-	   * @param  {musje.Score} score
+	   * @param  {Score} score
 	   */
 	  flow: function (score) {
 	    this._init(score);
@@ -3232,7 +3270,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  },
 
 	  /**
-	   * @param  {musje.Score} score
+	   * @param  {Score} score
 	   * @protected
 	   */
 	  _init: function (score) {
@@ -3403,16 +3441,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @class
-	 * @alias musje.Defs
-	 * @param {musje.Layout} layout
+	 * @param {Layout} layout
 	 */
 	function Defs(layout) {
 	  this._layout = layout;
 	}
 
 	util.defineProperties(Defs.prototype,
-	/** @lends musje.Defs# */
+	/** @lends Defs# */
 	{
+	  /**
+	   * Get the svg def of the music data.
+	   * @param  musicData {MusicDataMixin} music data
+	   * @return {Def}
+	   */
 	  get: function (musicData) {
 	    var id = musicData.defId;
 	    return this[id] || (this[id] = this._make(id, musicData));
@@ -3495,8 +3537,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Snap = __webpack_require__(23);
 	var svgPaths = __webpack_require__(28);
 
-	// @constructor AccidentalDef
-	// SVG definition for accidental
+	/**
+	 * SVG definition for accidental.
+	 * @param {string} id         [description]
+	 * @param {string} accidental [description]
+	 * @param {Layout} layout     [description]
+	 */
 	function AccidentalDef(id, accidental, layout) {
 	  var
 	    lo = layout.options,
@@ -3562,8 +3608,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	// @constructor BarDef
-	// SVG definition for barline.
+	/**
+	 * SVG definition for barline.
+	 * @class
+	 * @param {string} id     [description]
+	 * @param {Bar} bar    [description]
+	 * @param {Layout} layout [description]
+	 */
 	function BarDef(id, bar, layout) {
 	  var
 	    lo = layout.options,
@@ -3642,8 +3693,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var util = __webpack_require__(2);
 
-	// @constructor DurationDef
-	// SVG Definition for duration.
+	/**
+	 * SVG definition for duration.
+	 * @class
+	 * @param {string} id       [description]
+	 * @param {Duration} duration [description]
+	 * @param {Layout} layout   [description]
+	 */
 	function DurationDef(id, duration, layout) {
 	  this._id = id;
 	  this._layout = layout;
@@ -3773,6 +3829,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * The `PitchDef` is defined by properties: a s o u
 	 * accidental step octave underbar
 	 * @class
+	 * @param id {string}     [description]
+	 * @param pitch {Pitch}   [description]
+	 * @param layout {Layout} [description]
 	 */
 	function PitchDef(id, pitch, underbar, defs) {
 	  var
@@ -3891,8 +3950,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var Snap = __webpack_require__(23);
 
-	// @constructor TimeDef
-	// SVG definition for Time signature.
+	/**
+	 * SVG definition for time signature.
+	 * @class
+	 * @param {string} id     [description]
+	 * @param {Time} time   [description]
+	 * @param {Layout} layout [description]
+	 */
 	function TimeDef(id, time, layout) {
 	  var
 	    lo = layout.options,
@@ -4101,7 +4165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @class
-	 * @param layout {musje.Layout}
+	 * @param layout {Layout}
 	 */
 	function SvgLayout(layout) {
 	  this._layout = layout;
@@ -4116,7 +4180,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(SvgLayout.prototype,
-	/** @lends musje.Layout.Svg# */
+	/** @lends SvgLayout# */
 	{
 	  /**
 	   * Width of the svg.
@@ -4164,7 +4228,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Body
 	 * @class
-	 * @param {musje.Layout} layout
+	 * @param {Layout} layout
 	 */
 	function BodyLayout(layout) {
 	  this._layout = layout;
@@ -4179,7 +4243,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(BodyLayout.prototype,
-	/** @lends musje.Layout.Body.prototype */
+	/** @lends BodyLayout# */
 	{
 	  /**
 	   * Width of the body.
@@ -4232,7 +4296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * Header layout.
 	 * @class
-	 * @param {musje.Layout} layout
+	 * @param {Layout} layout
 	 */
 	function HeaderLayout(layout) {
 	  this._layout = layout;
@@ -4241,7 +4305,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(HeaderLayout.prototype,
-	/** @lends musje.Layout.Header# */
+	/** @lends HeaderLayout# */
 	{
 	  /**
 	   * Width of the header.
@@ -4296,9 +4360,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	util.defineProperties(ContentLayout.prototype,
-	/** @lends musje.Layout.Content# */
+	/** @lends ContentLayout# */
 	{
-
 	  y: {
 	    get: function () {
 	      return this._y;
@@ -4461,38 +4524,48 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @class
 	 * @param {number} index
-	 * @param {musje.Layout} layout
+	 * @param {Layout} layout
 	 */
 	function SystemLayout(layout, index) {
 
-	  /**
-	   * Index of the system in systems.
-	   * @type {number}
-	   * @protected
-	   */
 	  this._index = index;
-
-	  /** @member */
-	  this.layout = layout;
+	  this._layout = layout;
 
 	  /** @member */
 	  this.el = layout.content.el.g().addClass('mus-system');
-	  /** @member */
-	  this.measures = [];
 	}
 
 	util.defineProperties(SystemLayout.prototype,
-	/** @lends musje.Layout.System# */
+	/** @lends SystemLayout# */
 	{
-	  prev: {
+	  /**
+	   * Measures in a system.
+	   * @type {Array.<TimewiseMeasure>}
+	   * @readonly
+	   */
+	  measures: {
 	    get: function () {
-	      return this.layout.content.systems[this._index - 1];
+	      return this._measures || (this._measures = []);
 	    }
 	  },
 
+	  /**
+	   * Previous system.
+	   * @type {SystemLayout}
+	   */
+	  prev: {
+	    get: function () {
+	      return this._layout.content.systems[this._index - 1];
+	    }
+	  },
+
+	  /**
+	   * Next system.
+	   * @type {SystemLayout}
+	   */
 	  next: {
 	    get: function () {
-	      return this.layout.content.systems[this._index + 1];
+	      return this._layout.content.systems[this._index + 1];
 	    }
 	  },
 
@@ -4508,7 +4581,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  width: {
 	    get: function () {
-	      return this.layout.content.width;
+	      return this._layout.content.width;
 	    }
 	  },
 
@@ -4524,7 +4597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  content: {
 	    get: function () {
-	      return this.layout.content;
+	      return this._layout.content;
 	    }
 	  },
 
@@ -4572,7 +4645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    var prev = this.prev;
-	    this.y = prev ? prev.y + prev.height + this.layout.options.systemSep : 0;
+	    this.y = prev ? prev.y + prev.height + this._layout.options.systemSep : 0;
 	    this.height = minHeight;
 	  },
 
@@ -4635,9 +4708,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * TimewiseMeasure Layout mixin.
 	 * @mixin
 	 */
-	var TimewiseMeasureLayoutMixin =
-	/** @lends TimewiseMeasureLayoutMixin# */
-	{
+	var TimewiseMeasureLayoutMixin = {
+
 	  /**
 	   * Minimun width of the measure.
 	   * @type {number}
@@ -4656,7 +4728,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Reference to the parent system of this measure.
 	   * - (Getter)
 	   * - (Setter) The measure el will be created, and the height of the measure will be set.
-	   * @type {musje.Layout.System}
+	   * @type {SystemLayout}
 	   */
 	  system: {
 	    get: function () {
@@ -4667,9 +4739,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      /**
 	       * Measure SVG group element.
-	       * @memberof musje.LayoutTimewiseMeasure#
+	       * @memberof TimewiseMeasureLayoutMixin
 	       * @alias el
-	       * @type {Element}
+	       * @type {Snap.Element}
 	       * @readonly
 	       */
 	      this.el = system.el.g().addClass('mus-measure');
@@ -4793,7 +4865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Right bar of the measure in system.
-	   * @type {musje.Bar}
+	   * @type {Bar}
 	   * @readonly
 	   */
 	  barRightInSystem: {
@@ -4811,9 +4883,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      /**
 	       * Cell SVG group element.
-	       * @memberof musje.LayoutCell#
+	       * @memberof CellLayout#
 	       * @alias el
-	       * @type {Element}
+	       * @type {Snap.Element}
 	       * @readonly
 	       */
 	      cell.el = measure.el.g().addClass('mus-cell');
@@ -4826,7 +4898,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Draw box of the cell.
-	   * @return {Element} The box SVG rect element.
+	   * @return {Snap.Element} The box SVG rect element.
 	   */
 	  drawBox: function () {
 	    this._boxEl = this.el.rect(0, 0, this.width, this.height)
@@ -4858,9 +4930,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/**
 	 * @mixin
 	 */
-	var CellLayoutMixin =
-	/** @lends  musje.LayoutCell# */
-	{
+	var CellLayoutMixin = {
 
 	  /**
 	   * Width
@@ -5039,9 +5109,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Layout mixin for the music data
 	 * @mixin
 	 */
-	var MusicDataLayoutMixin =
-	/** @lends musje.LayoutMusicData# */
-	{
+	var MusicDataLayoutMixin = {
+
 	  /**
 	   * The x position of the music data in the cell.
 	   * @type {number}
@@ -5386,12 +5455,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var timeouts = [];
 
+	/**
+	 * Player mixin.
+	 * @mixin
+	 */
 	var PlayerMixin = {
 
 	  /**
 	   * Start playing the song.
-	   * @member
-	   * @function
 	   */
 	  play: function() {
 	    var
@@ -5416,8 +5487,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  /**
 	   * Stop playing the song.
-	   * @member
-	   * @function
 	   */
 	  stop: function () {
 	    timeouts.forEach(function (timeout) {

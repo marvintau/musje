@@ -5,28 +5,33 @@ var util = require('../util');
 /**
  * Slur
  * @class
- * @param parent {musje.Note|musje.Chord}
+ * @param parent {Note|Chord}
  */
 function Slur(parent) {
-
-  /**
-   * Parent
-   * @type {musje.Note|musje.Chord}
-   * @readonly
-   */
-  this.parent = parent;
+  this._parent = parent;
 }
 
 util.defineProperties(Slur.prototype,
-/** @lends musje.Slur# */
+/** @lends Slur# */
 {
+  /**
+   * Parent music data.
+   * @type {Note|Chord}
+   * @readonly
+   */
+  parent: {
+    get: function () {
+      return this._parent;
+    }
+  },
+
   begin: '',
 
   end: '',
 
   /**
    * Previous slurred parent.
-   * @type {musje.Note|musje.Chord}
+   * @type {Note|Chord}
    * @readonly
    */
   prevParent: {
@@ -45,7 +50,7 @@ util.defineProperties(Slur.prototype,
 
   /**
    * Next Slurred parent.
-   * @type {musje.Note|musje.Chord}
+   * @type {Note|Chord}
    * @readonly
    */
   nextParent: {

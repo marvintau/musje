@@ -49,7 +49,7 @@ util.defineProperties(Layout.prototype,
 /** @lends Layout# */
 {
   /**
-   * @param  {musje.Score} score
+   * @param  {Score} score
    */
   flow: function (score) {
     this._init(score);
@@ -57,7 +57,7 @@ util.defineProperties(Layout.prototype,
   },
 
   /**
-   * @param  {musje.Score} score
+   * @param  {Score} score
    * @protected
    */
   _init: function (score) {

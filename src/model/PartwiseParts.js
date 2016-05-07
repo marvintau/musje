@@ -20,6 +20,7 @@ function PartwiseParts(score) {
 
 /** @lends PartwiseParts# */
 var properties = {
+
   /**
    * Reference to the parent score.
    * @readonly

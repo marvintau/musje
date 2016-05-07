@@ -8,15 +8,15 @@ var Duration = require('./Duration');
 /**
  * @class
  * @param {Object} chord
- * @mixes musje.MusicData
- * @mixes musje.LayoutMusicData
+ * @mixes MusicDataMixin
+ * @mixes MusicDataLayoutMixin
  */
 function Chord(chord) {
   util.extend(this, chord);
 }
 
 util.defineProperties(Chord.prototype,
-/** @lends musje.Chord# */
+/** @lends Chord# */
 {
   /**
    * Type of chord.
@@ -28,7 +28,7 @@ util.defineProperties(Chord.prototype,
 
   /**
    * Pitches in the chord.
-   * @type {Array.<musje.Pitch>}
+   * @type {Array.<Pitch>}
    */
   pitches: {
     get: function () {
@@ -43,7 +43,7 @@ util.defineProperties(Chord.prototype,
 
   /**
    * Duration of the chord.
-   * @type {musje.Duration}
+   * @type {Duration}
    */
   duration: {
     get: function () {

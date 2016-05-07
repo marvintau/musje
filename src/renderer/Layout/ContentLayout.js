@@ -15,9 +15,8 @@ function ContentLayout(layout) {
 }
 
 util.defineProperties(ContentLayout.prototype,
-/** @lends musje.Layout.Content# */
+/** @lends ContentLayout# */
 {
-
   y: {
     get: function () {
       return this._y;

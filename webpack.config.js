@@ -14,7 +14,8 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.jison$/, loader: './jison-loader' }
+      { test: /\.jison$/, loader: './parser/jison-loader' }
     ]
-  }
+  },
+  plugins: []
 };

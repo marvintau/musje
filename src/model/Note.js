@@ -10,20 +10,11 @@ var Slur = require('./Slur');
 /**
  * @class
  * @param {Object} note
- * @mixes musje.MusicData
- * @mixes musje.LayoutMusicData
+ * @mixes MusicDataMixin
+ * @mixes MusicDataLayoutMixin
  */
 function Note(note) {
   util.extend(this, note);
-
-  /**
-   * Reference to the parent parent.
-   * @memberof musje.Pitch#
-   * @alias parent
-   * @type {musje.MusicData}
-   * @readonly
-   */
-  this.pitch.parent = this;
 }
 
 util.defineProperties(Note.prototype,
@@ -43,10 +34,10 @@ util.defineProperties(Note.prototype,
    */
   pitch: {
     get: function () {
-      return this._pitch || (this._pitch = new Pitch());
+      return this._pitch || (this._pitch = new Pitch(this));
     },
     set: function (pitch) {
-      this._pitch = new Pitch(pitch);
+      this._pitch = new Pitch(this, pitch);
     }
   },
 

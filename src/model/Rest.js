@@ -7,15 +7,15 @@ var Duration = require('./Duration');
 /**
  * @class
  * @param {rest} rest
- * @mixes musje.MusicData
- * @mixes musje.LayoutMusicData
+ * @mixes MusicDataMixin
+ * @mixes MusicDataLayoutMixin
  */
 function Rest(rest) {
   util.extend(this, rest);
 }
 
 util.defineProperties(Rest.prototype,
-/** @lends musje.Rest# */
+/** @lends Rest# */
 {
   /**
    * Type of rest.
@@ -27,7 +27,7 @@ util.defineProperties(Rest.prototype,
 
   /**
    * Duration of the rest.
-   * @type {musje.Duration}
+   * @type {Duration}
    */
   duration: {
     get: function () {

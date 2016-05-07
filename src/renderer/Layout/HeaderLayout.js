@@ -5,7 +5,7 @@ var util = require('../../util');
 /**
  * Header layout.
  * @class
- * @param {musje.Layout} layout
+ * @param {Layout} layout
  */
 function HeaderLayout(layout) {
   this._layout = layout;
@@ -14,7 +14,7 @@ function HeaderLayout(layout) {
 }
 
 util.defineProperties(HeaderLayout.prototype,
-/** @lends musje.Layout.Header# */
+/** @lends HeaderLayout# */
 {
   /**
    * Width of the header.

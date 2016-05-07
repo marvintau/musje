@@ -3,8 +3,12 @@
 var Snap = require('Snap');
 var svgPaths = require('../svgPaths');
 
-// @constructor AccidentalDef
-// SVG definition for accidental
+/**
+ * SVG definition for accidental.
+ * @param {string} id         [description]
+ * @param {string} accidental [description]
+ * @param {Layout} layout     [description]
+ */
 function AccidentalDef(id, accidental, layout) {
   var
     lo = layout.options,

@@ -12,7 +12,7 @@ function Voice(voice) {
 }
 
 util.defineProperties(Voice.prototype,
-/** @lends musje.Voice# */
+/** @lends Voice# */
 {
   /**
    * Convert the voice to musje source code string.

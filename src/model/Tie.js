@@ -5,21 +5,26 @@ var util = require('../util');
 /**
  * Tie of the note.
  * @class
- * @param parent {musje.Note|musje.Chord}
+ * @param parent {Note|Chord}
  */
 function Tie(parent) {
-
-  /**
-   * Parent
-   * @type {musje.Note|musje.Chord}
-   * @readonly
-   */
-  this.parent = parent;
+  this._parent = parent;
 }
 
 util.defineProperties(Tie.prototype,
 /** @lends musje.Tie# */
 {
+  /**
+   * Parent note or chord.
+   * @type {Note|Chord}
+   * @readonly
+   */
+  parent: {
+    get: function () {
+      return this._parent;
+    }
+  },
+
   value: '',
 
   /**
@@ -42,7 +47,7 @@ util.defineProperties(Tie.prototype,
 
   /**
    * The previous durable music data in part, if it is a tie begin.
-   * @type {musje.Durable|undefined}
+   * @type {Durable|undefined}
    * @readonly
    */
   prevParent: {
@@ -54,7 +59,7 @@ util.defineProperties(Tie.prototype,
 
   /**
    * The next durable music data in part.
-   * @type {musje.Durable|undefined}
+   * @type {Durable|undefined}
    * @readonly
    */
   nextParent: {

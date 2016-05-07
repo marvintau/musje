@@ -21,15 +21,28 @@ function octaveString(octave) {
 
 /**
  * @class
+ * @param parent {Note|Chord}
  * @param pitch {Object}
  */
-function Pitch(pitch) {
+function Pitch(parent, pitch) {
+  this._parent = parent;
   util.extend(this, pitch);
 }
 
 util.defineProperties(Pitch.prototype,
-/** @lends musje.Pitch.prototype */
+/** @lends Pitch.prototype */
 {
+  /**
+   * Reference to the parent parent.
+   * @type {Note|Chord}
+   * @readonly
+   */
+  parent: {
+    get: function () {
+      return this._parent;
+    }
+  },
+
   /**
    * Step is a value of `1`, `2`, `3`, `4`, `5`, `6`, or `7`.
    * @type {number}
@@ -75,7 +88,7 @@ util.defineProperties(Pitch.prototype,
 
   /**
    * Pitch linked that will affect the alter in this pitch.
-   * @type {musje.Pitch|undefined}
+   * @type {Pitch|undefined}
    * @readonly
    */
   alterLink: {

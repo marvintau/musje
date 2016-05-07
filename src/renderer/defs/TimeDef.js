@@ -2,8 +2,13 @@
 
 var Snap = require('Snap');
 
-// @constructor TimeDef
-// SVG definition for Time signature.
+/**
+ * SVG definition for time signature.
+ * @class
+ * @param {string} id     [description]
+ * @param {Time} time   [description]
+ * @param {Layout} layout [description]
+ */
 function TimeDef(id, time, layout) {
   var
     lo = layout.options,

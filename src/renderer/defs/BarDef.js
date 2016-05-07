@@ -1,7 +1,12 @@
 'use strict';
 
-// @constructor BarDef
-// SVG definition for barline.
+/**
+ * SVG definition for barline.
+ * @class
+ * @param {string} id     [description]
+ * @param {Bar} bar    [description]
+ * @param {Layout} layout [description]
+ */
 function BarDef(id, bar, layout) {
   var
     lo = layout.options,

@@ -6,9 +6,7 @@ var Bar = require('../../model/Bar');
 /**
  * @mixin
  */
-var CellLayoutMixin =
-/** @lends  musje.LayoutCell# */
-{
+var CellLayoutMixin = {
 
   /**
    * Width

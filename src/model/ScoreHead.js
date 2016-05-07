@@ -12,7 +12,7 @@ function ScoreHead(head) {
 }
 
 util.defineProperties(ScoreHead.prototype,
-/** @lends musje.ScoreHead# */
+/** @lends ScoreHead# */
 {
   /**
    * Title of the score.
@@ -50,6 +50,11 @@ util.defineProperties(ScoreHead.prototype,
    */
   lyricist: undefined,
 
+  /**
+   * Check if the score head is empty.
+   * @type {boolean}
+   * @readonly
+   */
   isEmpty: {
     get: function () {
       return !this.title && !this.subtitle && !this.subsubtitle &&

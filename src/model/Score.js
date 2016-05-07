@@ -7,7 +7,8 @@ var TimewiseMeasures = require('./TimewiseMeasures');
 
 /**
  * @class
- * @param {Object} score - plain score object {@link musje.PlainScore}.
+ * @param {Object} score - plain score object.
+ * @mixes PlayerMixin
  */
 function Score(score) {
   util.extend(this, score);

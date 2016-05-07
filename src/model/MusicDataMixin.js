@@ -4,13 +4,11 @@
  * Music data mixin
  * @mixin
  */
-var MusicDataMixin =
-/** @lends musje.MusicData# */
-{
+var MusicDataMixin = {
 
   /**
    * The ascendant system of the music data.
-   * @type {musje.Layout.System}
+   * @type {SystemLayout}
    * @readonly
    */
   system: {
@@ -21,7 +19,7 @@ var MusicDataMixin =
 
   /**
    * Previous music data.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   prev: {
@@ -32,7 +30,7 @@ var MusicDataMixin =
 
   /**
    * Next music data.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   next: {
@@ -43,7 +41,7 @@ var MusicDataMixin =
 
   /**
    * Previous music data in part, across measure.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   prevInPart: {
@@ -61,7 +59,7 @@ var MusicDataMixin =
 
   /**
    * Next music data in part, across measure.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   nextInPart: {
@@ -79,7 +77,7 @@ var MusicDataMixin =
 
   /**
    * Previous music data which has a duration.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   prevDurable: {
@@ -94,7 +92,7 @@ var MusicDataMixin =
 
   /**
    * Next music data which has a duration.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   nextDurable: {
@@ -109,7 +107,7 @@ var MusicDataMixin =
 
   /**
    * Previous music data which has a duration in part, across measure.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   prevDurableInPart: {
@@ -124,7 +122,7 @@ var MusicDataMixin =
 
   /**
    * Next music data which has a duration in part, across measure.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   nextDurableInPart: {

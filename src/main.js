@@ -4,7 +4,7 @@ var parser = require('./parser/parser.jison');
 var Score = require('./model/Score');
 var Renderer = require('./renderer/Renderer/Renderer');
 var util = require('./util');
-var PlayerMixin = require('./PlayerMixin');
+var PlayerMixin = require('./player/PlayerMixin');
 
 /**
  * Render the score in jianpu (numbered musical notation).

@@ -17,38 +17,48 @@ function getPairs(measures) {
 /**
  * @class
  * @param {number} index
- * @param {musje.Layout} layout
+ * @param {Layout} layout
  */
 function SystemLayout(layout, index) {
 
-  /**
-   * Index of the system in systems.
-   * @type {number}
-   * @protected
-   */
   this._index = index;
-
-  /** @member */
-  this.layout = layout;
+  this._layout = layout;
 
   /** @member */
   this.el = layout.content.el.g().addClass('mus-system');
-  /** @member */
-  this.measures = [];
 }
 
 util.defineProperties(SystemLayout.prototype,
-/** @lends musje.Layout.System# */
+/** @lends SystemLayout# */
 {
-  prev: {
+  /**
+   * Measures in a system.
+   * @type {Array.<TimewiseMeasure>}
+   * @readonly
+   */
+  measures: {
     get: function () {
-      return this.layout.content.systems[this._index - 1];
+      return this._measures || (this._measures = []);
     }
   },
 
+  /**
+   * Previous system.
+   * @type {SystemLayout}
+   */
+  prev: {
+    get: function () {
+      return this._layout.content.systems[this._index - 1];
+    }
+  },
+
+  /**
+   * Next system.
+   * @type {SystemLayout}
+   */
   next: {
     get: function () {
-      return this.layout.content.systems[this._index + 1];
+      return this._layout.content.systems[this._index + 1];
     }
   },
 
@@ -64,7 +74,7 @@ util.defineProperties(SystemLayout.prototype,
 
   width: {
     get: function () {
-      return this.layout.content.width;
+      return this._layout.content.width;
     }
   },
 
@@ -80,7 +90,7 @@ util.defineProperties(SystemLayout.prototype,
 
   content: {
     get: function () {
-      return this.layout.content;
+      return this._layout.content;
     }
   },
 
@@ -128,7 +138,7 @@ util.defineProperties(SystemLayout.prototype,
     });
 
     var prev = this.prev;
-    this.y = prev ? prev.y + prev.height + this.layout.options.systemSep : 0;
+    this.y = prev ? prev.y + prev.height + this._layout.options.systemSep : 0;
     this.height = minHeight;
   },
 

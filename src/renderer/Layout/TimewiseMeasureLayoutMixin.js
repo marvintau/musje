@@ -6,9 +6,8 @@ var Snap = require('Snap');
  * TimewiseMeasure Layout mixin.
  * @mixin
  */
-var TimewiseMeasureLayoutMixin =
-/** @lends TimewiseMeasureLayoutMixin# */
-{
+var TimewiseMeasureLayoutMixin = {
+
   /**
    * Minimun width of the measure.
    * @type {number}
@@ -27,7 +26,7 @@ var TimewiseMeasureLayoutMixin =
    * Reference to the parent system of this measure.
    * - (Getter)
    * - (Setter) The measure el will be created, and the height of the measure will be set.
-   * @type {musje.Layout.System}
+   * @type {SystemLayout}
    */
   system: {
     get: function () {
@@ -38,9 +37,9 @@ var TimewiseMeasureLayoutMixin =
 
       /**
        * Measure SVG group element.
-       * @memberof musje.LayoutTimewiseMeasure#
+       * @memberof TimewiseMeasureLayoutMixin
        * @alias el
-       * @type {Element}
+       * @type {Snap.Element}
        * @readonly
        */
       this.el = system.el.g().addClass('mus-measure');
@@ -164,7 +163,7 @@ var TimewiseMeasureLayoutMixin =
 
   /**
    * Right bar of the measure in system.
-   * @type {musje.Bar}
+   * @type {Bar}
    * @readonly
    */
   barRightInSystem: {
@@ -182,9 +181,9 @@ var TimewiseMeasureLayoutMixin =
 
       /**
        * Cell SVG group element.
-       * @memberof musje.LayoutCell#
+       * @memberof CellLayout#
        * @alias el
-       * @type {Element}
+       * @type {Snap.Element}
        * @readonly
        */
       cell.el = measure.el.g().addClass('mus-cell');
@@ -197,7 +196,7 @@ var TimewiseMeasureLayoutMixin =
 
   /**
    * Draw box of the cell.
-   * @return {Element} The box SVG rect element.
+   * @return {Snap.Element} The box SVG rect element.
    */
   drawBox: function () {
     this._boxEl = this.el.rect(0, 0, this.width, this.height)

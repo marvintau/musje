@@ -34,7 +34,7 @@ util.defineProperties(TimewiseMeasure.prototype,
 
   /**
    * Parts in timewise measure.
-   * @type {Array.<Cells>}
+   * @type {Array.<Cell>}
    */
   parts: {
     get: function () {

@@ -17,15 +17,15 @@ var BAR_TO_STRING = {
  * - 'repeat-begin' - `|:`
  * - 'repeat-end' - `:|`
  * - 'repeat-both' - `:|:`
- * @mixes musje.MusicData
- * @mixes musje.LayoutMusicData
+ * @mixes MusicDataMixin
+ * @mixes MusicDataLayoutMixin
  */
 function Bar(bar) {
   this.value = bar;
 }
 
 util.defineProperties(Bar.prototype,
-/** @lends musje.Bar.prototype */
+/** @lends Bar# */
 {
   /**
    * Type of bar.
@@ -37,8 +37,7 @@ util.defineProperties(Bar.prototype,
 
   /**
    * Value of the bar, which is the same as the bar parameter in the constructor.
-   * @member {string} - The bar value
-   * @alias musje.Bar.prototype.value
+   * @type {string}
    * @default
    */
   value: 'single',
@@ -51,6 +50,10 @@ util.defineProperties(Bar.prototype,
     return BAR_TO_STRING[this.value];
   },
 
+  /**
+   * [toJSON description]
+   * @return {Object} { bar: value }
+   */
   toJSON: function () {
     return { bar: this.value };
   }

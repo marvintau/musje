@@ -58,33 +58,13 @@ function getBeamGroups(cell, groupDur) {
  * @param cell {Object}
  * @param mIndex {number} - Measure index of this cell.
  * @param pIndex {number} - Part index of this cell.
- * @mixes musje.LayoutCell
+ * @mixes CellLayout
  */
 function Cell(cell, mIndex, pIndex, score) {
-
-  /**
-   * Measure index of this cell.
-   * @member {number}
-   * @protected
-   */
   this._mIndex = mIndex;
-
-  /**
-   * Part index of this cell.
-   * @member {number}
-   * @protected
-   */
   this._pIndex = pIndex;
-
-  /**
-   * Reference to the root score instance.
-   * @member {musje.Score}
-   * @readonly
-   */
-  this.score = score;
-
+  this._score = score;
   util.extend(this, cell);
-
   this.makeBeams(1);
 }
 
@@ -92,8 +72,19 @@ util.defineProperties(Cell.prototype,
 /** @lends musje.Cell# */
 {
   /**
+   * Reference to the root score instance.
+   * @type {Score}
+   * @readonly
+   */
+  score: {
+    get: function () {
+      return this._score;
+    }
+  },
+
+  /**
    * Music data
-   * @type {Array.<musje.MusicData>}
+   * @type {Array.<MusicDataMixin>}
    */
   data: {
     get: function () {
@@ -110,7 +101,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * Reference to the parent measures.
-   * @type {musje.TimewiseMeasures}
+   * @type {TimewiseMeasures}
    * @readonly
    */
   measures: {
@@ -121,7 +112,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * Reference to the parent measure.
-   * @type {musje.TimewiseMeasure}
+   * @type {TimewiseMeasure}
    * @readonly
    */
   measure: {
@@ -132,7 +123,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * Reference to the parent parts.
-   * @type {musje.PartwiseParts}
+   * @type {PartwiseParts}
    * @readonly
    */
   parts: {
@@ -143,7 +134,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * Reference to the parent part.
-   * @type {musje.PartwisePart}
+   * @type {PartwisePart}
    * @readonly
    */
   part: {
@@ -154,7 +145,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * Previous cell in the part.
-   * @type {musje.Cell|undefined}
+   * @type {Cell|undefined}
    * @readonly
    */
   prev: {
@@ -165,7 +156,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * Next cell in the part.
-   * @type {musje.Cell|undefined}
+   * @type {Cell|undefined}
    * @readonly
    */
   next: {
@@ -176,7 +167,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * The first music data in the cell.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   firstData: {
@@ -187,7 +178,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * The last music data in the cell.
-   * @type {musje.MusicData|undefined}
+   * @type {MusicDataMixin|undefined}
    * @readonly
    */
   lastData: {
@@ -198,7 +189,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * The left bar of this cell.
-   * @type {musje.Bar|undefined}
+   * @type {Bar|undefined}
    * @readonly
    */
   barLeft: {
@@ -219,7 +210,7 @@ util.defineProperties(Cell.prototype,
 
   /**
    * The right bar of this cell.
-   * @type {musje.Bar|undefined}
+   * @type {Bar|undefined}
    * @readonly
    */
   barRight: {
@@ -242,9 +233,9 @@ util.defineProperties(Cell.prototype,
 
     /**
      * Reference to the parent cell
-     * @memberof musje.MusicData#
+     * @memberof MusicDataMixin
      * @alias cell
-     * @type {musje.Cell}
+     * @type {Cell}
      * @readonly
      */
     instance.cell = this;
@@ -301,11 +292,11 @@ util.defineProperties(Cell.prototype,
 
             /**
              * Beams of the note.
-             * - Produced by the {@link musje.Cell#makeBeams} method.
-             * - The above method is call in {@link musje.Score#prepareCells}.
-             * @memberof musje.Note#
+             * - Produced by the {@link Cell#makeBeams} method.
+             * - The above method is call in {@link Score#prepareCells}.
+             * @memberof Note#
              * @alias beams
-             * @type {Array.<musje.Beam>}
+             * @type {Array.<Beam>}
              */
             data.beams = data.beams || [];
 

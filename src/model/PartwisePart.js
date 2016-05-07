@@ -15,7 +15,7 @@ function PartwisePart(index, parts) {
 }
 
 util.defineProperties(PartwisePart.prototype,
-/** @lends musje.PartwisePart# */
+/** @lends PartwisePart# */
 {
   // head: { $ref: '#/objects/PartHead' },
 
@@ -32,7 +32,7 @@ util.defineProperties(PartwisePart.prototype,
 
   /**
    * Measure in a partwise part is cells.
-   * @type {Array.<musje.Cell>}
+   * @type {Array.<Cell>}
    */
   measures: {
     get: function () {
@@ -62,7 +62,6 @@ util.defineProperties(PartwisePart.prototype,
 
   /**
    * Custom toJSON method.
-   * @method
    * @return {Object}
    */
   toJSON: util.makeToJSON({

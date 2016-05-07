@@ -7,15 +7,15 @@ var MusicDataMixin = require('./MusicDataMixin');
  * Time signature.
  * @class
  * @param time {Object}
- * @mixes musje.MusicData
- * @mixes musje.LayoutMusicData
+ * @mixes MusicDataMixin
+ * @mixes MusicDataLayoutMixin
  */
 function Time(time) {
   util.extend(this, time);
 }
 
 util.defineProperties(Time.prototype,
-/** @lends musje.Time# */
+/** @lends Time# */
 {
   /**
    * Type of time.
