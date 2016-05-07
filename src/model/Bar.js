@@ -21,7 +21,7 @@ var BAR_TO_STRING = {
  * @mixes MusicDataLayoutMixin
  */
 function Bar(bar) {
-  this.value = bar;
+  this._value = bar;
 }
 
 util.defineProperties(Bar.prototype,
@@ -31,16 +31,26 @@ util.defineProperties(Bar.prototype,
    * Type of bar.
    * @type {string}
    * @constant
+   * @readonly
    * @default
    */
-  $type: 'Bar',
+  $type: {
+    get: function () {
+      return 'bar';
+    }
+  },
 
   /**
    * Value of the bar, which is the same as the bar parameter in the constructor.
    * @type {string}
-   * @default
+   * @default single
+   * @readonly
    */
-  value: 'single',
+  value: {
+    get: function () {
+      return this._value || (this._value = 'single');
+    }
+  },
 
   /**
    * Convert bar to string.

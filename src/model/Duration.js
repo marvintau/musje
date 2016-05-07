@@ -29,7 +29,7 @@ util.defineProperties(Duration.prototype,
    * @constant
    * @default
    */
-  $type: 'Duration',
+  $type: 'duration',
 
   /**
    * Beat type

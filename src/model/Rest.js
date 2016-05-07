@@ -23,7 +23,7 @@ util.defineProperties(Rest.prototype,
    * @constant
    * @default
    */
-  $type: 'Rest',
+  $type: 'rest',
 
   /**
    * Duration of the rest.

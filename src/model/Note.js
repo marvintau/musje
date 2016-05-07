@@ -26,7 +26,7 @@ util.defineProperties(Note.prototype,
    * @constant
    * @default
    */
-  $type: 'Note',
+  $type: 'note',
 
   /**
    * Pitch of the note.

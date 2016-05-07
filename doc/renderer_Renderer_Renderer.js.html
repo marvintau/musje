@@ -45,15 +45,15 @@ function renderNote(note, cell, lo) {
 function renderCell(cell, lo) {
   cell.data.forEach(function (data) {
     switch (data.$type) {
-    case 'Rest':
+    case 'rest':
       renderNote(data, cell, lo);
       break;
-    case 'Note':
+    case 'note':
       renderNote(data, cell, lo);
       renderCurve('tie', data);
       renderCurve('slur', data);
       break;
-    case 'Time':
+    case 'time':
       data.el = cell.el.use(data.def.el).attr({
         x: data.x, y: data.y
       });

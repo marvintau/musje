@@ -7,6 +7,7 @@ var browserSync = require('browser-sync').create();
 var jsdoc = require('gulp-jsdoc3');
 var clean = require('gulp-clean');
 var webpack = require('webpack');
+var mocha = require('gulp-mocha');
 
 
 gulp.task('default', ['watch-demo']);
@@ -16,14 +17,65 @@ gulp.task('build', ['build-musje', 'build-doc']);
 gulp.task('build-musje', function () {
   runSequence('webpack:build-musje', 'webpack:build-musje.min');
 });
+gulp.task('watch-demo', ['demo:watch']);
 
 gulp.task('build-doc', function () {
   runSequence('jsdoc:clean', 'jsdoc:build');
 });
-
 gulp.task('watch-doc', ['jsdoc:watch']);
 
-gulp.task('watch-demo', ['webpack:watch-musje-dev'], function() {
+gulp.task('test', ['mocha']);
+gulp.task('watch-test', ['mocha:watch']);
+
+
+var webpackConfig = require('./webpack.config.js');
+
+gulp.task('webpack:build-musje', function(callback) {
+  webpack(webpackConfig, function (err, stats) {
+    if (err) { throw new gutil.PluginError('webpack:build-musje', err); }
+    gutil.log('[webpack:build-musje]', stats.toString({ colors: true }));
+    callback();
+  });
+});
+
+gulp.task('webpack:build-musje.min', function(callback) {
+  var config = Object.create(webpackConfig);
+  config.output.filename = 'musje.min.js';
+  config.plugins.push(
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin()
+  );
+  webpack(config, function (err, stats) {
+    if (err) { throw new gutil.PluginError('webpack:build-musje.min', err); }
+    gutil.log('[webpack:build-musje.min]', stats.toString({ colors: true }));
+    callback();
+  });
+});
+
+var devConfig = Object.create(webpackConfig);
+devConfig.devtool = 'inline-source-map';
+devConfig.debug = true;
+var devCompiler = webpack(devConfig);
+
+gulp.task('webpack:build-musje-dev', function(callback) {
+  devCompiler.run(function(err, stats) {
+    if(err) {
+      throw new gutil.PluginError('webpack:build-musje-dev', err);
+    }
+    gutil.log('[webpack:build-musje-dev]', stats.toString({
+      colors: true
+    }));
+    callback();
+  });
+});
+
+gulp.task('webpack:watch-musje-dev', ['webpack:build-musje-dev'], function() {
+  gulp.watch([
+    './src/**/*', '!./src/**/__tests__/*.js'
+  ], ['webpack:build-musje-dev']);
+});
+
+gulp.task('demo:watch', ['webpack:watch-musje-dev'], function() {
   browserSync.init({
     server: { baseDir: './' },
     startPath: '/demo/',
@@ -65,49 +117,16 @@ gulp.task('jsdoc:watch', ['jsdoc:build'], function() {
 });
 
 
-var webpackConfig = require('./webpack.config.js');
-
-gulp.task('webpack:build-musje', function(callback) {
-  webpack(webpackConfig, function (err, stats) {
-    if (err) { throw new gutil.PluginError('webpack:build-musje', err); }
-    gutil.log('[webpack:build-musje]', stats.toString({ colors: true }));
-    callback();
-  });
+gulp.task('mocha', function() {
+  return gulp.src('src/**/__tests__/*.js', { read: false })
+    .pipe(mocha({
+      // reporter: 'list',
+      require: ['./src/__tests__/helper'],
+      inlineDiffs: true
+    }))
+    .on('error', gutil.log);
 });
 
-gulp.task('webpack:build-musje.min', function(callback) {
-  var config = Object.create(webpackConfig);
-  config.output.filename = 'musje.min.js';
-  config.plugins.push(
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
-  );
-  webpack(config, function (err, stats) {
-    if (err) { throw new gutil.PluginError('webpack:build-musje.min', err); }
-    gutil.log('[webpack:build-musje.min]', stats.toString({ colors: true }));
-    callback();
-  });
-});
-
-var devConfig = Object.create(webpackConfig);
-devConfig.devtool = 'cheap-eval-source-map';
-devConfig.debug = true;
-var devCompiler = webpack(devConfig);
-
-gulp.task('webpack:build-musje-dev', function(callback) {
-  devCompiler.run(function(err, stats) {
-    if(err) {
-      throw new gutil.PluginError('webpack:build-musje-dev', err);
-    }
-    gutil.log('[webpack:build-musje-dev]', stats.toString({
-      colors: true
-    }));
-    callback();
-  });
-});
-
-gulp.task('webpack:watch-musje-dev', ['webpack:build-musje-dev'], function() {
-  gulp.watch([
-    './src/**/*', '!./src/**/__tests__/*.js'
-  ], ['webpack:build-musje-dev']);
+gulp.task('mocha:watch', ['mocha'], function() {
+  gulp.watch('src/**/__tests__/*.js', ['mocha']);
 });

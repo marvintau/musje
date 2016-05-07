@@ -96,12 +96,12 @@ var PlayerMixin = {
     measures.forEach(function (cell) {
       cell.data.forEach(function (data) {
         switch (data.$type) {
-        case 'Note':
+        case 'note':
           // playNote(time, dur, freq);
           timeouts.push(midiPlayNote(data, time));
           time += data.duration.second;
           break;
-        case 'Rest':
+        case 'rest':
           time += data.duration.second;
           break;
         }

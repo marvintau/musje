@@ -23,7 +23,7 @@ util.defineProperties(Time.prototype,
    * @constant
    * @default
    */
-  $type: 'Time',
+  $type: 'time',
 
   /**
    * How many beats per measure.

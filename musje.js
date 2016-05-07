@@ -1486,7 +1486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  cell.data.forEach(function (musicData) {
-	    if (musicData.$type !== 'Note' && musicData.$type !== 'Rest') {
+	    if (musicData.$type !== 'note' && musicData.$type !== 'rest') {
 	      return;
 	    }
 	    var
@@ -1658,7 +1658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function () {
 	      var firstData = this.firstData;
 
-	      if (firstData && firstData.$type === 'Bar') {
+	      if (firstData && firstData.$type === 'bar') {
 	        return firstData;
 	      }
 
@@ -1679,7 +1679,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    get: function () {
 	      var lastData = this.lastData;
 
-	      if (lastData && lastData.$type === 'Bar') {
+	      if (lastData && lastData.$type === 'bar') {
 	        return lastData;
 	      }
 	    }
@@ -1895,7 +1895,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @constant
 	   * @default
 	   */
-	  $type: 'Time',
+	  $type: 'time',
 
 	  /**
 	   * How many beats per measure.
@@ -2103,7 +2103,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @mixes MusicDataLayoutMixin
 	 */
 	function Bar(bar) {
-	  this.value = bar;
+	  this._value = bar;
 	}
 
 	util.defineProperties(Bar.prototype,
@@ -2113,16 +2113,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Type of bar.
 	   * @type {string}
 	   * @constant
+	   * @readonly
 	   * @default
 	   */
-	  $type: 'Bar',
+	  $type: {
+	    get: function () {
+	      return 'bar';
+	    }
+	  },
 
 	  /**
 	   * Value of the bar, which is the same as the bar parameter in the constructor.
 	   * @type {string}
-	   * @default
+	   * @default single
+	   * @readonly
 	   */
-	  value: 'single',
+	  value: {
+	    get: function () {
+	      return this._value || (this._value = 'single');
+	    }
+	  },
 
 	  /**
 	   * Convert bar to string.
@@ -2178,7 +2188,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @constant
 	   * @default
 	   */
-	  $type: 'Note',
+	  $type: 'note',
 
 	  /**
 	   * Pitch of the note.
@@ -2369,7 +2379,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var prevData = this.parent.prev;
 
 	      while(prevData) {
-	        if (prevData.$type === 'Note' &&
+	        if (prevData.$type === 'note' &&
 	            prevData.pitch.step === this.step && prevData.pitch.accidental) {
 	          return prevData.pitch;
 	        }
@@ -2453,7 +2463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @constant
 	   * @default
 	   */
-	  $type: 'Duration',
+	  $type: 'duration',
 
 	  /**
 	   * Beat type
@@ -2801,7 +2811,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @constant
 	   * @default
 	   */
-	  $type: 'Rest',
+	  $type: 'rest',
 
 	  /**
 	   * Duration of the rest.
@@ -2873,7 +2883,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @constant
 	   * @default
 	   */
-	  $type: 'Chord',
+	  $type: 'chord',
 
 	  /**
 	   * Pitches in the chord.
@@ -3120,15 +3130,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	function renderCell(cell, lo) {
 	  cell.data.forEach(function (data) {
 	    switch (data.$type) {
-	    case 'Rest':
+	    case 'rest':
 	      renderNote(data, cell, lo);
 	      break;
-	    case 'Note':
+	    case 'note':
 	      renderNote(data, cell, lo);
 	      renderCurve('tie', data);
 	      renderCurve('slur', data);
 	      break;
-	    case 'Time':
+	    case 'time':
 	      data.el = cell.el.use(data.def.el).attr({
 	        x: data.x, y: data.y
 	      });
@@ -3457,7 +3467,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   */
 	  get: function (musicData) {
 	    var id = musicData.defId;
-	    return this[id] || (this[id] = this._make(id, musicData));
+	    return this[id] || (this[id] = makeDef(id, musicData, this));
 	  },
 
 	  getAccidental: function (accidental) {
@@ -3466,64 +3476,50 @@ return /******/ (function(modules) { // webpackBootstrap
 	          (this[id] = new AccidentalDef(id, accidental, this._layout));
 	  },
 
-	  _make: function (id, musicData) {
-	    var maker = '_make' + musicData.$type;
-	    return this[maker](id, musicData) || { width: 0, height: 0 };
-	  },
-
-	  _makeBar: function (id, bar) {
-	    return new BarDef(id, bar, this._layout);
-	  },
-
-	  _makeTime: function (id, time) {
-	    return new TimeDef(id, time, this._layout);
-	  },
-
-	  _makeDuration: function (id, duration) {
-	    return new DurationDef(id, duration, this._layout);
-	  },
-
 	  _getPitch: function (id, pitch, underbar) {
 	    return this[id] ||
 	          (this[id] = new PitchDef(id, pitch, underbar, this));
-	  },
-
-	  /**
-	   * Make note.
-	   * @param id {string}  Def id.
-	   * @param note {musje.Note} Note
-	   * @return {Object}
-	   */
-	  _makeNote: function (id, note) {
-	    var
-	      underbar = note.duration.underbar,
-	      pitchId = note.pitch.defId + underbar,
-	      pitchDef = this._getPitch(pitchId, note.pitch, underbar),
-	      durationDef = this.get(note.duration);
-
-	    return {
-	      pitchDef: pitchDef,
-	      durationDef: durationDef,
-	      height: pitchDef.height,
-	      width: pitchDef.width + durationDef.width *
-	                              (underbar ? pitchDef.scale.x : 1)
-	    };
-	  },
-
-	  /**
-	   * Make rest is a trick to use a note with pitch.step = 0.
-	   * @protected
-	   * @param  {string} id   [description]
-	   * @param  {string} rest [description]
-	   * @return {Object}      [description]
-	   */
-	  _makeRest: function(id, rest) {
-	    return this._makeNote(id, new Note({
-	      pitch: { step: 0 },
-	      duration: rest.duration
-	    }));
 	  }
 	});
+
+
+	function makeDef(id, musicData, defs) {
+	  switch (musicData.$type) {
+	  case 'bar':
+	    return new BarDef(id, musicData, defs._layout);
+	  case 'time':
+	    return new TimeDef(id, musicData, defs._layout);
+	  case 'note':
+	    return makeNoteDef(musicData, defs);
+	  case 'rest':
+	    return makeRestDef(musicData, defs);
+	  case 'duration':
+	    return new DurationDef(id, musicData, defs._layout);
+	  default:
+	    return { width: 0, height: 0 };
+	  }
+	}
+
+	function makeNoteDef(note, defs) {
+	  var underbar = note.duration.underbar;
+	  var pitchId = note.pitch.defId + underbar;
+	  var pitchDef = defs._getPitch(pitchId, note.pitch, underbar);
+	  var durationDef = defs.get(note.duration);
+	  return {
+	    pitchDef: pitchDef,
+	    durationDef: durationDef,
+	    height: pitchDef.height,
+	    width: pitchDef.width + durationDef.width *
+	                            (underbar ? pitchDef.scale.x : 1)
+	  };
+	}
+
+	function makeRestDef(rest, defs) {
+	  return makeNoteDef(new Note({
+	    pitch: { step: 0 },
+	    duration: rest.duration
+	  }), defs);
+	}
 
 	module.exports = Defs;
 
@@ -5472,12 +5468,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    measures.forEach(function (cell) {
 	      cell.data.forEach(function (data) {
 	        switch (data.$type) {
-	        case 'Note':
+	        case 'note':
 	          // playNote(time, dur, freq);
 	          timeouts.push(midiPlayNote(data, time));
 	          time += data.duration.second;
 	          break;
-	        case 'Rest':
+	        case 'rest':
 	          time += data.duration.second;
 	          break;
 	        }

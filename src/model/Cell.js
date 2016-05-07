@@ -24,7 +24,7 @@ function getBeamGroups(cell, groupDur) {
   }
 
   cell.data.forEach(function (musicData) {
-    if (musicData.$type !== 'Note' && musicData.$type !== 'Rest') {
+    if (musicData.$type !== 'note' && musicData.$type !== 'rest') {
       return;
     }
     var
@@ -196,7 +196,7 @@ util.defineProperties(Cell.prototype,
     get: function () {
       var firstData = this.firstData;
 
-      if (firstData && firstData.$type === 'Bar') {
+      if (firstData && firstData.$type === 'bar') {
         return firstData;
       }
 
@@ -217,7 +217,7 @@ util.defineProperties(Cell.prototype,
     get: function () {
       var lastData = this.lastData;
 
-      if (lastData && lastData.$type === 'Bar') {
+      if (lastData && lastData.$type === 'bar') {
         return lastData;
       }
     }

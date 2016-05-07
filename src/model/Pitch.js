@@ -96,7 +96,7 @@ util.defineProperties(Pitch.prototype,
       var prevData = this.parent.prev;
 
       while(prevData) {
-        if (prevData.$type === 'Note' &&
+        if (prevData.$type === 'note' &&
             prevData.pitch.step === this.step && prevData.pitch.accidental) {
           return prevData.pitch;
         }

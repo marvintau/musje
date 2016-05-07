@@ -40,7 +40,7 @@ util.defineProperties(Defs.prototype,
    */
   get: function (musicData) {
     var id = musicData.defId;
-    return this[id] || (this[id] = this._make(id, musicData));
+    return this[id] || (this[id] = makeDef(id, musicData, this));
   },
 
   getAccidental: function (accidental) {
@@ -49,63 +49,49 @@ util.defineProperties(Defs.prototype,
           (this[id] = new AccidentalDef(id, accidental, this._layout));
   },
 
-  _make: function (id, musicData) {
-    var maker = '_make' + musicData.$type;
-    return this[maker](id, musicData) || { width: 0, height: 0 };
-  },
-
-  _makeBar: function (id, bar) {
-    return new BarDef(id, bar, this._layout);
-  },
-
-  _makeTime: function (id, time) {
-    return new TimeDef(id, time, this._layout);
-  },
-
-  _makeDuration: function (id, duration) {
-    return new DurationDef(id, duration, this._layout);
-  },
-
   _getPitch: function (id, pitch, underbar) {
     return this[id] ||
           (this[id] = new PitchDef(id, pitch, underbar, this));
-  },
-
-  /**
-   * Make note.
-   * @param id {string}  Def id.
-   * @param note {musje.Note} Note
-   * @return {Object}
-   */
-  _makeNote: function (id, note) {
-    var
-      underbar = note.duration.underbar,
-      pitchId = note.pitch.defId + underbar,
-      pitchDef = this._getPitch(pitchId, note.pitch, underbar),
-      durationDef = this.get(note.duration);
-
-    return {
-      pitchDef: pitchDef,
-      durationDef: durationDef,
-      height: pitchDef.height,
-      width: pitchDef.width + durationDef.width *
-                              (underbar ? pitchDef.scale.x : 1)
-    };
-  },
-
-  /**
-   * Make rest is a trick to use a note with pitch.step = 0.
-   * @protected
-   * @param  {string} id   [description]
-   * @param  {string} rest [description]
-   * @return {Object}      [description]
-   */
-  _makeRest: function(id, rest) {
-    return this._makeNote(id, new Note({
-      pitch: { step: 0 },
-      duration: rest.duration
-    }));
   }
 });
+
+
+function makeDef(id, musicData, defs) {
+  switch (musicData.$type) {
+  case 'bar':
+    return new BarDef(id, musicData, defs._layout);
+  case 'time':
+    return new TimeDef(id, musicData, defs._layout);
+  case 'note':
+    return makeNoteDef(musicData, defs);
+  case 'rest':
+    return makeRestDef(musicData, defs);
+  case 'duration':
+    return new DurationDef(id, musicData, defs._layout);
+  default:
+    return { width: 0, height: 0 };
+  }
+}
+
+function makeNoteDef(note, defs) {
+  var underbar = note.duration.underbar;
+  var pitchId = note.pitch.defId + underbar;
+  var pitchDef = defs._getPitch(pitchId, note.pitch, underbar);
+  var durationDef = defs.get(note.duration);
+  return {
+    pitchDef: pitchDef,
+    durationDef: durationDef,
+    height: pitchDef.height,
+    width: pitchDef.width + durationDef.width *
+                            (underbar ? pitchDef.scale.x : 1)
+  };
+}
+
+function makeRestDef(rest, defs) {
+  return makeNoteDef(new Note({
+    pitch: { step: 0 },
+    duration: rest.duration
+  }), defs);
+}
 
 module.exports = Defs;
