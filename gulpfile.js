@@ -40,7 +40,7 @@ gulp.task('webpack:build-musje', function(callback) {
 
 gulp.task('webpack:build-musje.min', function(callback) {
   var config = Object.create(webpackConfig);
-  config.output.filename = 'musje.min.js';
+  config.output.filename = config.output.filename.replace(/js$/, 'min.js');
   config.plugins.push(
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin()

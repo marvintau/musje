@@ -4,7 +4,7 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: __dirname,
-    filename: 'musje.js',
+    filename: './lib/musje.js',
     libraryTarget: 'umd',
     library: 'musje'
   },
