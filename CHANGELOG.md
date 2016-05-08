@@ -15,6 +15,7 @@
 ## Broken changes
 
 - The distribution is moved from `musje/musje.js` `musje/musje.css` to `musje/lib/musje.js` `musje/lib/musje.css`.
+- Only `parse()` and `Score` are exposed to the `musje` namespace, others are hidden in this new version.
 
 ### Features
 
