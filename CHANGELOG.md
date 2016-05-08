@@ -1,5 +1,26 @@
 # Musje Change Log
 
+## 0.4.0 (2016-05-08)
+
+- The module system is changed to commonjs.
+- Gulp with webpack bundling is used in the build tasks.
+- For developing, it suggests to reinstall the node modules
+
+  ```
+  rm -r node_modules
+  npm install
+  ```
+- Test tasks are added, and some minor refactoring is done.
+
+## Broken changes
+
+- The distribution is moved from `musje/musje.js` `musje/musje.css` to `musje/lib/musje.js` `musje/lib/musje.css`.
+
+### Features
+
+- Umd (commonjs, amd and global) is supported.
+- Minified version of the lib is added in `musje/lib/musje.min.js`.
+
 ## 0.3.1 (2016-04-09)
 
 ### Bug fixes

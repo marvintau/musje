@@ -71,6 +71,11 @@ npm install
 
 ### Build
 
+Build both the musje library and documentation.
+```
+gulp build
+```
+
 Build the musje library.
 ```
 gulp build-musje
@@ -79,11 +84,6 @@ gulp build-musje
 Build the musje documentation.
 ```
 gulp build-doc
-```
-
-Build both the musje library and documentation.
-```
-gulp build
 ```
 
 Or watch the documentation build during development.
@@ -103,6 +103,24 @@ or
 ```
 gulp watch-demo
 ```
+
+### Test
+
+Run either of the following for testing.
+
+```
+gulp test
+```
+or
+```
+npm test
+```
+
+Watch the test.
+```
+gulp watch-test
+```
+
 
 
 [npm-url]: https://npmjs.org/package/musje
