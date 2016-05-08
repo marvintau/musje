@@ -1,4 +1,4 @@
-# musje [![NPM version][npm-image]][npm-url] [![Dependency Status][depstat-image]][depstat-url]
+# musje [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][depstat-image]][depstat-url]
 
 Musje - 123 jianpu music processor.
 
@@ -122,9 +122,17 @@ gulp watch-test
 ```
 
 
+## License
+
+[MIT License](https://github.com/jianpu/musje/blob/master/LICENSE)
+
+
 
 [npm-url]: https://npmjs.org/package/musje
 [npm-image]: https://badge.fury.io/js/musje.png
+
+[travis-url]: http://travis-ci.org/malcomwu/musje
+[travis-image]: https://secure.travis-ci.org/malcomwu/musje.png?branch=master
 
 [depstat-url]: https://david-dm.org/jianpu/musje
 [depstat-image]: https://david-dm.org/jianpu/musje.png
