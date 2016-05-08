@@ -43,7 +43,7 @@
 
 
     <section>
-        <article><h1 id="musje-npm-version-npm-image-npm-url-dependency-status-depstat-image-depstat-url-">musje <a href="https://npmjs.org/package/musje"><img src="https://badge.fury.io/js/musje.png" alt="NPM version"></a> <a href="https://david-dm.org/jianpu/musje"><img src="https://david-dm.org/jianpu/musje.png" alt="Dependency Status"></a></h1>
+        <article><h1 id="musje-npm-version-npm-image-npm-url-build-status-travis-image-travis-url-dependency-status-depstat-image-depstat-url-">musje <a href="https://npmjs.org/package/musje"><img src="https://badge.fury.io/js/musje.png" alt="NPM version"></a> <a href="http://travis-ci.org/jianpu/musje"><img src="https://secure.travis-ci.org/jianpu/musje.png?branch=master" alt="Build Status"></a> <a href="https://david-dm.org/jianpu/musje"><img src="https://david-dm.org/jianpu/musje.png" alt="Dependency Status"></a></h1>
 <p>Musje - 123 jianpu music processor.</p>
 <p>Musje consists of</p>
 <ul>
@@ -86,14 +86,19 @@ var score = musje.score(obj or jsonString);</code></pre><h2 id="documentation">D
 <p>Install node.js first, and install <code>gulp</code> globally</p>
 <pre class="prettyprint source"><code>npm install -g gulp</code></pre><p>Clone this repo, and in the project folder run</p>
 <pre class="prettyprint source"><code>npm install</code></pre><h3 id="build">Build</h3>
-<p>Build the musje library.</p>
+<p>Build both the musje library and documentation.</p>
+<pre class="prettyprint source"><code>gulp build</code></pre><p>Build the musje library.</p>
 <pre class="prettyprint source"><code>gulp build-musje</code></pre><p>Build the musje documentation.</p>
-<pre class="prettyprint source"><code>gulp build-doc</code></pre><p>Build both the musje library and documentation.</p>
-<pre class="prettyprint source"><code>gulp build</code></pre><p>Or watch the documentation build during development.</p>
+<pre class="prettyprint source"><code>gulp build-doc</code></pre><p>Or watch the documentation build during development.</p>
 <pre class="prettyprint source"><code>gulp watch-doc</code></pre><h3 id="demo">Demo</h3>
 <p>Serve and watch demo of the musje library with live-reload, useful for the developing process.</p>
 <pre class="prettyprint source"><code>gulp</code></pre><p>or</p>
-<pre class="prettyprint source"><code>gulp watch-demo</code></pre></article>
+<pre class="prettyprint source"><code>gulp watch-demo</code></pre><h3 id="test">Test</h3>
+<p>Run either of the following for testing.</p>
+<pre class="prettyprint source"><code>gulp test</code></pre><p>or</p>
+<pre class="prettyprint source"><code>npm test</code></pre><p>Watch the test.</p>
+<pre class="prettyprint source"><code>gulp watch-test</code></pre><h2 id="license">License</h2>
+<p><a href="https://github.com/jianpu/musje/blob/master/LICENSE">MIT License</a></p></article>
     </section>
 
 

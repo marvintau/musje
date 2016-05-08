@@ -75,18 +75,26 @@ gulp.task('webpack:watch-musje-dev', ['webpack:build-musje-dev'], function() {
   ], ['webpack:build-musje-dev']);
 });
 
+
 gulp.task('demo:watch', ['webpack:watch-musje-dev'], function() {
   browserSync.init({
     server: { baseDir: './' },
     startPath: '/demo/',
   });
-  gulp.watch('./musje.css', function () {
-    gulp.src('./musje.css').pipe(browserSync.stream());
+  gulp.watch('./lib/musje.css', function () {
+    gulp.src('./lib/musje.css').pipe(browserSync.stream());
+  });
+  gulp.watch('./addon/codemirror/musje-codemirror.css', function () {
+    gulp.src('./addon/codemirror/musje-codemirror.css')
+      .pipe(browserSync.stream());
   });
   gulp.watch('./demo/main.css', function () {
     gulp.src('./demo/main.css').pipe(browserSync.stream());
   });
-  gulp.watch(['./demo/*.html', './demo/main.js', './musje.js'])
+  gulp.watch([
+    './demo/*.html', './demo/main.js',
+    './lib/musje.js', './addon/codemirror/musje-codemirror.js'
+  ])
     .on('change', browserSync.reload);
 });
 

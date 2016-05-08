@@ -25,7 +25,7 @@
 
   function now() { return new Date().getTime(); }
 
-  var demo = angular.module('musjeDemo', []);
+  var demo = angular.module('musjeDemo', ['ui.codemirror']);
 
   demo.controller('MusjeDemoCtrl', function ($scope, $http, $document) {
     $scope.playDisabled = true;
@@ -48,6 +48,15 @@
       $scope.selectedSong = "客家本色"; // "望春風";
       $scope.loadSong();
     });
+
+    // The ui-codemirror option
+    $scope.cmOption = {
+      mode: 'musje',
+      theme: 'musje',
+      lineNumbers: true,
+      lineWrapping: true,
+      indentWithTabs: true
+    };
 
     $document.ready(function () {
       MIDI.loadPlugin({
