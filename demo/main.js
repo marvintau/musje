@@ -1,6 +1,6 @@
-/* global musje, angular, tv4, MIDI */
+/* global musje, angular, MIDI */
 
-(function (musje, angular, tv4, MIDI) {
+(function (musje, angular, MIDI) {
   'use strict';
 
   var fonts = [
@@ -28,9 +28,6 @@
   var demo = angular.module('musjeDemo', []);
 
   demo.controller('MusjeDemoCtrl', function ($scope, $http, $document) {
-    // var JSONSchema = musje.makeJSONSchema(musje.model);
-    // $scope.schema = JSON.stringify(JSONSchema, null, 2);
-
     $scope.playDisabled = true;
     $scope.pauseDisabled = true;
     // $scope.stopDisabled = true;
@@ -48,7 +45,7 @@
 
     $http.get(samplePath + 'song-list.txt').success(function (data) {
       $scope.songList = data.trim().split('\n');
-      $scope.selectedSong = "客家本色"// "望春風";
+      $scope.selectedSong = "客家本色"; // "望春風";
       $scope.loadSong();
     });
 
@@ -70,9 +67,6 @@
         $scope.parseTime = now() - t0;
         $document[0].title =  (score.head.title || 'Untitled') + ' - Musje';
         $scope.totalMeasures = score.measures.length;
-        // $scope.result = JSON.stringify(score, null, "  ");
-        // $scope.converted = '' + score;
-
         $scope.error = false;
       } catch (err) {
         $scope.totalMeasures = 'N/A';
@@ -127,4 +121,4 @@
     };
   });
 
-}(musje, angular, tv4, MIDI));
+}(musje, angular, MIDI));

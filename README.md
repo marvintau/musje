@@ -94,7 +94,7 @@ gulp watch-doc
 
 ### Demo
 
-Useful for viewing the resulting jianpu score with live-reload.
+Serve and watch demo of the musje library with live-reload, useful for the developing process.
 
 ```
 gulp

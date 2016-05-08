@@ -2,12 +2,11 @@
 .gitattributes
 .gitignore
 .jshintrc
-.tmp/
 node_modules/
-/gulpfile.js
 /demo/
 /doc/
 /ignore/
 /src/
-gulpfile.js
-musje.css
+/gulpfile.js
+/jsdoc.config.json
+/webpack.config.js
