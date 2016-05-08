@@ -131,8 +131,8 @@ gulp watch-test
 [npm-url]: https://npmjs.org/package/musje
 [npm-image]: https://badge.fury.io/js/musje.png
 
-[travis-url]: http://travis-ci.org/malcomwu/musje
-[travis-image]: https://secure.travis-ci.org/malcomwu/musje.png?branch=master
+[travis-url]: http://travis-ci.org/jianpu/musje
+[travis-image]: https://secure.travis-ci.org/jianpu/musje.png?branch=master
 
 [depstat-url]: https://david-dm.org/jianpu/musje
 [depstat-image]: https://david-dm.org/jianpu/musje.png
