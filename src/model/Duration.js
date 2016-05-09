@@ -5,12 +5,11 @@ var TYPE_TO_STRING = {
   1: ' - - - ', 2: ' - ', 4: '', 8: '_', 16: '=', 32: '=_',
   64: '==', 128: '==_', 256: '===', 512: '===_', 1024: '===='
 };
-// Convert from duration type to number of underbars.
 var TYPE_TO_UNDERBAR = {
-  1: 0, 2: 0, 4: 0, 8: 1, 16: 2, 32: 3,
+   1: 0,   2: 0,   4: 0,   8: 1,   16: 2, 32: 3,
   64: 4, 128: 5, 256: 6, 512: 7, 1024: 8
 };
-var DOT_TO_STRING = { 0: '', 1: '.', 2: '..' };
+var DOT_TO_STRING = ['', '.', '..'];
 
 /**
  * @class
@@ -69,7 +68,7 @@ util.defineProperties(Duration.prototype,
   },
 
   /**
-   * `(Getter)` Underbar
+   * `(Getter)` Number of underbars in the beam.
    * @type {number}
    * @readonly
    */
@@ -86,6 +85,10 @@ util.defineProperties(Duration.prototype,
     return TYPE_TO_STRING[this.type] + DOT_TO_STRING[this.dot];
   },
 
+  /**
+   * [toJSON description]
+   * @return {Object}
+   */
   toJSON: util.makeToJSON({
     type: 4,
     dot: 0

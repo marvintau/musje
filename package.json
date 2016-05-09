@@ -28,7 +28,6 @@
   "devDependencies": {
     "browser-sync": "^2.12.5",
     "chai": "^3.5.0",
-    "chai-deep-match": "^1.0.2",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-jsdoc3": "^0.2.1",
