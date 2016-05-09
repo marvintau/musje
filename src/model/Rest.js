@@ -19,11 +19,10 @@ util.defineProperties(Rest.prototype,
 {
   /**
    * Type of rest.
-   * @type {string}
    * @constant
-   * @default
+   * @default rest
    */
-  $type: 'rest',
+  $type: { constant: 'rest' },
 
   /**
    * Duration of the rest.

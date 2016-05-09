@@ -29,16 +29,11 @@ util.defineProperties(Bar.prototype,
 {
   /**
    * Type of bar.
-   * @type {string}
    * @constant
    * @readonly
-   * @default
+   * @default bar
    */
-  $type: {
-    get: function () {
-      return 'bar';
-    }
-  },
+  $type: { constant: 'bar' },
 
   /**
    * Value of the bar, which is the same as the bar parameter in the constructor.

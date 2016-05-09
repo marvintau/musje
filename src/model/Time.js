@@ -19,11 +19,10 @@ util.defineProperties(Time.prototype,
 {
   /**
    * Type of time.
-   * @type {string}
    * @constant
-   * @default
+   * @default time
    */
-  $type: 'time',
+  $type: { constant: 'time' },
 
   /**
    * How many beats per measure.

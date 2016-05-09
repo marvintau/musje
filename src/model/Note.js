@@ -18,15 +18,14 @@ function Note(note) {
 }
 
 util.defineProperties(Note.prototype,
-/** @lends musje.Note.prototype */
+/** @lends Note# */
 {
   /**
    * Type of note.
-   * @type {string}
    * @constant
-   * @default
+   * @default note
    */
-  $type: 'note',
+  $type: { constant: 'note' },
 
   /**
    * Pitch of the note.
@@ -75,7 +74,7 @@ util.defineProperties(Note.prototype,
 
       /**
        * Value of the tie.
-       * @memberof musje.Tie#
+       * @memberof Tie#
        * @alias value
        * @type {boolean}
        */
@@ -85,7 +84,7 @@ util.defineProperties(Note.prototype,
 
   /**
    * Slur
-   * @type {musje.Slur}
+   * @type {Slur}
    */
   slur: {
     get: function () {

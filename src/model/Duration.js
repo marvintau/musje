@@ -25,11 +25,10 @@ util.defineProperties(Duration.prototype,
 {
   /**
    * Type of duration.
-   * @type {string}
    * @constant
-   * @default
+   * @default duration
    */
-  $type: 'duration',
+  $type: { constant: 'duration' },
 
   /**
    * Beat type

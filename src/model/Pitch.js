@@ -30,7 +30,7 @@ function Pitch(parent, pitch) {
 }
 
 util.defineProperties(Pitch.prototype,
-/** @lends Pitch.prototype */
+/** @lends Pitch# */
 {
   /**
    * Reference to the parent parent.

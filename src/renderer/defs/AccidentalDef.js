@@ -5,6 +5,7 @@ var svgPaths = require('../svgPaths');
 
 /**
  * SVG definition for accidental.
+ * @class
  * @param {string} id         [description]
  * @param {string} accidental [description]
  * @param {Layout} layout     [description]

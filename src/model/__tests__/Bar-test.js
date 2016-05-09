@@ -8,6 +8,7 @@ describe('Bar', function () {
 
   it('#$type', function () {
     expect(bar.$type).to.equal('bar');
+    expect(function () { bar.$type = 1; }).to.throw(TypeError);
   });
 
   it('#value', function () {

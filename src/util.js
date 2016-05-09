@@ -1,18 +1,21 @@
 'use strict';
 
-var defineProperty = Object.defineProperty;
+/**
+ * Utility functions
+ * @namespace
+ */
 var util = {};
 
+var IS_OBJECT = { 'funtion': true, 'object': true };
 function isObject(obj) {
-  var type = typeof obj;
-  return type === 'function' || type === 'object' && !!obj;
+  return IS_OBJECT[typeof obj] && !!obj;
 }
 
 /**
- * Utility method, for each object key.
+ * For each object key and value.
  * @function util.objEach
  * @param {Object} obj - The object to be iterated.
- * @param {musje~objEachCallback} callback - The callback for each iteration.
+ * @param {util~objEachCallback} callback - The callback for each iteration.
  */
 var objEach =
 util.objEach = function (obj, callback) {
@@ -24,8 +27,8 @@ util.objEach = function (obj, callback) {
 };
 
 /**
- * A callback that will be called for each iteration in {@link musje.objEach}.
- * @callback musje~objEachCallback
+ * Callback that will be called for each iteration in {@link util.objEach}.
+ * @callback util~objEachCallback
  * @param {*} value - Value of the current property.
  * @param {string} key - Key of the current property.
  */
@@ -55,6 +58,11 @@ util.near = function (a, b) {
 };
 
 
+function isAccessorProperty(value) {
+  return isObject(value) &&
+        (typeof value.get === 'function' || typeof value.set === 'function');
+}
+
 /**
  * Define ES5 getter/setter properties
  * @param {Object} obj - The object to be defined.
@@ -74,19 +82,13 @@ util.near = function (a, b) {
  */
 util.defineProperties = function (obj, props) {
   objEach(props, function (value, prop) {
-    var
-      type = typeof value,
-      descriptor;
-
-    // Accessor property.
-    if (type === 'object' && (typeof value.get === 'function' ||
-                              typeof value.set === 'function')) {
+    var descriptor;
+    if (isAccessorProperty(value)) {
       descriptor = value;
-
-    // Function
-    } else if (type === 'function' || prop === '$type') {
+    } else if (typeof value === 'function') {
       descriptor = { value: value };
-
+    } else if (isObject(value) && value.constant) {
+      descriptor = { value: value.constant };
     } else {
       descriptor = {
         value: value,
@@ -94,8 +96,7 @@ util.defineProperties = function (obj, props) {
         enumerable: true
       };
     }
-
-    defineProperty(obj, prop, descriptor);
+    Object.defineProperty(obj, prop, descriptor);
   });
 };
 

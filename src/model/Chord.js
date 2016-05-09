@@ -20,11 +20,10 @@ util.defineProperties(Chord.prototype,
 {
   /**
    * Type of chord.
-   * @type {string}
    * @constant
-   * @default
+   * @default chord
    */
-  $type: 'chord',
+  $type: { constant: 'chord' },
 
   /**
    * Pitches in the chord.

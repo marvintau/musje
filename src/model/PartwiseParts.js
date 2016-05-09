@@ -23,6 +23,7 @@ var properties = {
 
   /**
    * Reference to the parent score.
+   * @type {Score}
    * @readonly
    */
   score: {
@@ -45,6 +46,7 @@ var properties = {
   /**
    * Append a partwise part.
    * @param {Object} part - Plain partwise part object.
+   * @override
    */
   append: function (part) {
     var index = this.length;

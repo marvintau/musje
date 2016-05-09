@@ -19,6 +19,10 @@ describe('Score', function () {
     expect(score.measures).to.be.instanceof(Array);
   });
 
+  it('#walkCell');
+
+  it('#walkMusicData');
+
   it('#toString()');
 
   it('#toJSON()');

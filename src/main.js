@@ -37,5 +37,11 @@ module.exports = {
    * Score constructor.
    * @see {@link Score}
    */
-  Score: Score
+  Score: Score,
+
+  /**
+   * Utility functions.
+   * @see {@link util}
+   */
+  util: util
 };

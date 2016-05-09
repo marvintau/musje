@@ -61,26 +61,6 @@ util.defineProperties(Score.prototype,
   },
 
   /**
-   * Convert score to string.
-   * @return {string} Musje source code.
-   */
-  toString: function () {
-    return this.head + this.parts.map(function (part) {
-      return part.toString();
-    }).join('\n\n');
-  },
-
-  /**
-   * Custom toJSON method.
-   * @method
-   * @return {Object}
-   */
-  toJSON: util.makeToJSON({
-    head: undefined,
-    parts: undefined
-  }),
-
-  /**
    * A cell is identically a measure in a part or a part in a measure.
    * @param {Function}
    */
@@ -102,7 +82,27 @@ util.defineProperties(Score.prototype,
         callback(data, d, m, p);
       });
     });
-  }
+  },
+
+  /**
+   * Convert score to string.
+   * @return {string} Musje source code.
+   */
+  toString: function () {
+    return this.head + this.parts.map(function (part) {
+      return part.toString();
+    }).join('\n\n');
+  },
+
+  /**
+   * Custom toJSON method.
+   * @method
+   * @return {Object}
+   */
+  toJSON: util.makeToJSON({
+    head: undefined,
+    parts: undefined
+  })
 });
 
 module.exports = Score;
