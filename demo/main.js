@@ -5,7 +5,8 @@
 
   var fonts = [
     { type: 'serif', name: 'Georgia, serif' },
-    { type: 'serif', name: '"Palatino Linotype", "Book Antiqua", Palatino, serif' },
+    { type: 'serif',
+      name: '"Palatino Linotype", "Book Antiqua", Palatino, serif' },
     { type: 'serif', name: '"Times New Roman", Times, serif' },
     { type: 'sans-serif', name: 'Arial, Helvetica, sans-serif' },
     { type: 'sans-serif', name: '"Arial Black", Gadget, sans-serif' },
@@ -13,15 +14,17 @@
     { type: 'sans-serif', name: '"Comic Sans MS", cursive, sans-serif' },
     { type: 'sans-serif', name: 'Century Gothic, sans-serif' },
     { type: 'sans-serif', name: 'Impact, Charcoal, sans-serif' },
-    { type: 'sans-serif', name: '"Lucida Sans Unicode", "Lucida Grande", sans-serif' },
+    { type: 'sans-serif',
+      name: '"Lucida Sans Unicode", "Lucida Grande", sans-serif' },
     { type: 'sans-serif', name: 'Tahoma, Geneva, sans-serif' },
     { type: 'sans-serif', name: '"Trebuchet MS", Helvetica, sans-serif' },
     { type: 'sans-serif', name: 'Verdana, Geneva, sans-serif' },
-    { type: 'sans-serif', name: 'Copperplate, "Copperplate Gothic Light", sans-serif' },
+    { type: 'sans-serif',
+      name: 'Copperplate, "Copperplate Gothic Light", sans-serif' },
     { type: 'monospace', name: '"Courier New", Courier, monospace' },
     { type: 'monospace', name: '"Lucida Console", Monaco, monospace' }
-  ],
-  samplePath = 'http://jianpu.github.io/musje-score-samples/';
+  ];
+  var samplePath = 'http://jianpu.github.io/musje-score-samples/';
 
   function now() { return new Date().getTime(); }
 

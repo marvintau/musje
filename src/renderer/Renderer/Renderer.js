@@ -7,33 +7,6 @@ var renderBar = require('./renderBar');
 var renderDuration = require('./renderDuration');
 var renderCurve = require('./renderCurve');
 
-function renderNote(note, cell, lo) {
-  note.el = cell.el.g().transform(Snap.matrix()
-                              .translate(note.x, note.y));
-  note.el.use(note.def.pitchDef.el);
-  renderDuration(note, lo);
-}
-
-function renderCell(cell, lo) {
-  cell.data.forEach(function (data) {
-    switch (data.$type) {
-    case 'rest':
-      renderNote(data, cell, lo);
-      break;
-    case 'note':
-      renderNote(data, cell, lo);
-      renderCurve('tie', data);
-      renderCurve('slur', data);
-      break;
-    case 'time':
-      data.el = cell.el.use(data.def.el).attr({
-        x: data.x, y: data.y
-      });
-      break;
-    }
-  });
-}
-
 /**
  * [Renderer description]
  * @class
@@ -51,17 +24,15 @@ util.defineProperties(Renderer.prototype,
   render: function (score) {
     this._score = score;
     this.layout.flow(score);
-
     this.renderHeader();
     this.renderContent();
   },
 
   renderHeader: function () {
-    var
-      lo = this._lo,
-      header = this.layout.header,
-      el = header.el,
-      width = header.width;
+    var lo = this._lo;
+    var header = this.layout.header;
+    var el = header.el;
+    var width = header.width;
 
     el.text(width / 2, lo.titleFontSize, this._score.head.title)
       .attr({
@@ -94,5 +65,31 @@ util.defineProperties(Renderer.prototype,
     });
   }
 });
+
+function renderNote(note, cell, lo) {
+  note.el = cell.el.g().transform(Snap.matrix().translate(note.x, note.y));
+  note.el.use(note.def.pitchDef.el);
+  renderDuration(note, lo);
+}
+
+function renderCell(cell, lo) {
+  cell.data.forEach(function (data) {
+    switch (data.$type) {
+    case 'rest':
+      renderNote(data, cell, lo);
+      break;
+    case 'note':
+      renderNote(data, cell, lo);
+      renderCurve('tie', data);
+      renderCurve('slur', data);
+      break;
+    case 'time':
+      data.el = cell.el.use(data.def.el).attr({
+        x: data.x, y: data.y
+      });
+      break;
+    }
+  });
+}
 
 module.exports = Renderer;

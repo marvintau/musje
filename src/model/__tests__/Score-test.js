@@ -12,11 +12,11 @@ describe('Score', function () {
   });
 
   it('#parts {PartwiseParts(Array)}', function () {
-    expect(score.parts).to.be.instanceof(Array);
+    expect(score.parts).is.an('array');
   });
 
   it('#measures {TimewiseMeasures(Array)}', function () {
-    expect(score.measures).to.be.instanceof(Array);
+    expect(score.measures).is.an('array');
   });
 
   it('#walkCell');

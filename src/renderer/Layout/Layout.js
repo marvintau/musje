@@ -52,28 +52,20 @@ util.defineProperties(Layout.prototype,
    * @param  {Score} score
    */
   flow: function (score) {
-    this._init(score);
+    init(this, score);
     this.content.flow(score.measures);
-  },
-
-  /**
-   * @param  {Score} score
-   * @protected
-   */
-  _init: function (score) {
-    var
-      layout = this,
-      measures = score.measures;
-
-    measures.forEach(function (measure, m) {
-      measure = measures[m];
-      measure.layout = layout;
-      measure.parts.forEach(function (cell) {
-        cell.layout = layout;
-        cell.flow();
-      });
-    });
   }
 });
 
+function init(that, score) {
+  var measures = score.measures;
+  measures.forEach(function (measure, m) {
+    measure = measures[m];
+    measure.layout = that;
+    measure.parts.forEach(function (cell) {
+      cell.layout = that;
+      cell.flow();
+    });
+  });
+}
 module.exports = Layout;

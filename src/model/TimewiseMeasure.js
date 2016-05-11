@@ -8,12 +8,6 @@ var util = require('../util');
  * @mixes TimewiseMeasureLayoutMixin
  */
 function TimewiseMeasure(index, measures) {
-
-  /**
-   * Index of this measure in the timewise score measures.
-   * @member {number}
-   * @protected
-   */
   // this._index = index;
   this._measures = measures;
 }
@@ -21,7 +15,6 @@ function TimewiseMeasure(index, measures) {
 util.defineProperties(TimewiseMeasure.prototype,
 /** @lends TimewiseMeasure# */
 {
-
   /**
    * Reference to the parent measures instance.
    * @member {TimewiseMeasures}

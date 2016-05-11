@@ -11,15 +11,14 @@ var svgPaths = require('../svgPaths');
  * @param {Layout} layout     [description]
  */
 function AccidentalDef(id, accidental, layout) {
-  var
-    lo = layout.options,
-    el = this.el = layout.svg.el.g().attr('id', id),
-    accKey = accidental.replace(/bb/, 'b'), // double flat to be synthesized
-    pathData = svgPaths[accKey],
-    ratio = svgPaths.ACCIDENTAL_RATIOS[accKey],
-    shift = svgPaths.ACCIDENTAL_SHIFTS[accKey],
-    path = el.path(pathData),
-    bb = el.getBBox();
+  var lo = layout.options;
+  var el = this.el = layout.svg.el.g().attr('id', id);
+  var accKey = accidental.replace(/bb/, 'b'); // double flat to be synthesized
+  var pathData = svgPaths[accKey];
+  var ratio = svgPaths.ACCIDENTAL_RATIOS[accKey];
+  var shift = svgPaths.ACCIDENTAL_SHIFTS[accKey];
+  var path = el.path(pathData);
+  var bb = el.getBBox();
 
   path.transform(Snap.matrix()
     .translate(0.1 * lo.accidentalShift, -lo.accidentalShift)

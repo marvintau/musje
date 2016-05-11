@@ -10,18 +10,22 @@ var util = require('../../util');
 function SvgLayout(layout) {
   this._layout = layout;
   var lo = layout.options;
-
-  this.el = Snap(layout.svg).attr({
-      fontFamily: lo.fontFamily
-    }).addClass('musje');
+  this._el = Snap(layout.svg)
+    .attr({ fontFamily: lo.fontFamily })
+    .addClass('musje');
   this.el.clear();
-
   this.width = lo.width;
 }
 
 util.defineProperties(SvgLayout.prototype,
 /** @lends SvgLayout# */
 {
+  el: {
+    get: function () {
+      return this._el;
+    }
+  },
+
   /**
    * Width of the svg.
    * @type {number}

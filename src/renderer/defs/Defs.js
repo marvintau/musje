@@ -88,10 +88,10 @@ function makeNoteDef(note, defs) {
 }
 
 function makeRestDef(rest, defs) {
-  return makeNoteDef(new Note({
-    pitch: { step: 0 },
-    duration: rest.duration
-  }), defs);
+  var restNote = new Note({
+    pitch: { step: 0 }, duration: rest.duration
+  });
+  return makeNoteDef(restNote, defs);
 }
 
 module.exports = Defs;

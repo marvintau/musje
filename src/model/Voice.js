@@ -15,6 +15,13 @@ util.defineProperties(Voice.prototype,
 /** @lends Voice# */
 {
   /**
+   * Type of voice.
+   * @constant
+   * @default voice
+   */
+  $type: { constant: 'voice' },
+
+  /**
    * Convert the voice to musje source code string.
    * @return {string} Converted musje source code string.
    */

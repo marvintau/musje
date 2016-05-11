@@ -10,11 +10,9 @@ var util = require('../../util');
  */
 function BodyLayout(layout) {
   this._layout = layout;
-  var
-    svg = layout.svg,
-    lo = layout.options;
-
-  this.el = svg.el.g()
+  var svg = layout.svg;
+  var lo = layout.options;
+  this._el = svg.el.g()
       .transform(Snap.matrix().translate(lo.marginLeft, lo.marginTop))
       .addClass('mus-body');
   this.width = lo.width - lo.marginLeft - lo.marginRight;
@@ -23,6 +21,12 @@ function BodyLayout(layout) {
 util.defineProperties(BodyLayout.prototype,
 /** @lends BodyLayout# */
 {
+  el: {
+    get: function () {
+      return this._el;
+    }
+  },
+
   /**
    * Width of the body.
    * - (Getter) Get the body width.

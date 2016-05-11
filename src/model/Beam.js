@@ -63,7 +63,6 @@ util.defineProperties(Beam.prototype,
   endDurable: {
     get: function () {
       var nextData = this.parent.next;
-
       while (nextData && nextData.beams[this.level].value !== 'end') {
         nextData = nextData.next;
       }

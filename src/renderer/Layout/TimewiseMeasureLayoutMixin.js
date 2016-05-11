@@ -9,6 +9,17 @@ var Snap = require('Snap');
 var TimewiseMeasureLayoutMixin = {
 
   /**
+   * Measure SVG group element.
+   * @type {Snap.Element}
+   * @readonly
+   */
+  el: {
+    get: function () {
+      return this._el;
+    }
+  },
+
+  /**
    * Minimun width of the measure.
    * @type {number}
    */
@@ -34,15 +45,7 @@ var TimewiseMeasureLayoutMixin = {
     },
     set: function (system) {
       this._s = system;
-
-      /**
-       * Measure SVG group element.
-       * @memberof TimewiseMeasureLayoutMixin
-       * @alias el
-       * @type {Snap.Element}
-       * @readonly
-       */
-      this.el = system.el.g().addClass('mus-measure');
+      this._el = system.el.g().addClass('mus-measure');
     }
   },
 
@@ -200,8 +203,7 @@ var TimewiseMeasureLayoutMixin = {
    */
   drawBox: function () {
     this._boxEl = this.el.rect(0, 0, this.width, this.height)
-                              .attr({ stroke: 'green', fill: 'none' });
-    return this._boxEl;
+                            .attr({ stroke: 'green', fill: 'none' });
   },
 
   /**

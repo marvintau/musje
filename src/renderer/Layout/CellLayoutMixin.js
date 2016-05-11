@@ -11,7 +11,7 @@ var CellLayoutMixin = {
   /**
    * Width
    * - (Getter) Get the cell width.
-   * - (Setter) Set the cell width, and this will cause the cell to reflow (`this._reflow()` will be called).
+   * - (Setter) Set the cell width, and this will cause the cell to reflow.
    * @type {number}
    */
   width: {
@@ -20,7 +20,7 @@ var CellLayoutMixin = {
     },
     set: function (w) {
       this._w = w;
-      this._reflow();
+      reflow(this);
     }
   },
 
@@ -121,25 +121,13 @@ var CellLayoutMixin = {
   },
 
   /**
-   * Reflow the cell.
-   * @protected
-   */
-  _reflow: function () {
-    var cell = this;
-    this.data.forEach(function (data) {
-      data.x *= cell.width / cell.minWidth;
-    });
-  },
-
-  /**
    * Flow the cell.
    */
   flow: function () {
-    var
-      defs = this.layout.defs,
-      lo = this.layout.options,
-      x = 0,
-      minHeight;
+    var defs = this.layout.defs;
+    var lo = this.layout.options;
+    var x = 0;
+    var minHeight;
 
     this.data.forEach(function (data) {
       var def = data.def = defs.get(data);
@@ -171,5 +159,12 @@ var CellLayoutMixin = {
     this._boxEl = undefined;
   }
 };
+
+// Reflow the cell.
+function reflow(that) {
+  that.data.forEach(function (data) {
+    data.x *= that.width / that.minWidth;
+  });
+}
 
 module.exports = CellLayoutMixin;

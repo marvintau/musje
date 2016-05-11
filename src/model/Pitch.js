@@ -7,7 +7,7 @@ var util = require('../util');
 
 var A4_FREQUENCY = 440;
 var A4_MIDI_NUMBER = 69;
-var STEP_TO_MIDI_NUMBER = [null, 0, 2, 4, 5, 7, 9, 11];
+var STEP_TO_MIDI_NUMBER = [undefined, 0, 2, 4, 5, 7, 9, 11];
 var ACCIDENTAL_TO_ALTER = { '#' : 1, '##': 2, n: 0, b : -1, bb: -2 };
 
 function chars(ch, num) {

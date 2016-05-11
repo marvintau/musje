@@ -10,19 +10,18 @@ var Snap = require('Snap');
  * @param {Layout} layout [description]
  */
 function TimeDef(id, time, layout) {
-  var
-    lo = layout.options,
-    timeFontSize = lo.timeFontSize,
-    lineExtend = timeFontSize * 0.1,
-    el = this.el = layout.svg.el.g()
-      .attr({
-        id: id,
-        fontSize: timeFontSize,
-        fontWeight: lo.timeFontWeight,
-        textAnchor: 'middle'
-      }),
-    lineY = -0.85 * timeFontSize,
-    bb;
+  var lo = layout.options;
+  var timeFontSize = lo.timeFontSize;
+  var lineExtend = timeFontSize * 0.1;
+  var el = this.el = layout.svg.el.g()
+    .attr({
+      id: id,
+      fontSize: timeFontSize,
+      fontWeight: lo.timeFontWeight,
+      textAnchor: 'middle'
+    });
+  var lineY = -0.85 * timeFontSize;
+  var bb;
 
   el.text(0, -1 * timeFontSize, time.beats);
   el.text(0, 0, time.beatType);   // baseline y = 0

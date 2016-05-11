@@ -17,20 +17,23 @@ util.defineProperties(ScoreHead.prototype,
   /**
    * Title of the score.
    * @type {string}
+   * @default ''
    */
-  title: undefined,
+  title: '',
 
   /**
    * Subtitle of the score.
    * @type {string}
+   * @default ''
    */
-  subtitle: undefined,
+  subtitle: '',
 
   /**
    * Subsubtitle of the score.
    * @type {string}
+   * @default ''
    */
-  subsubtitle: undefined,
+  subsubtitle: '',
 
   /**
    * Composer of the score.

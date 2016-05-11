@@ -3,7 +3,6 @@
 var util = require('../util');
 var PartwisePart = require('./PartwisePart');
 
-
 /**
  * Construct partwise score parts.
  * @class

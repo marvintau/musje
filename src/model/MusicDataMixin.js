@@ -7,6 +7,16 @@
 var MusicDataMixin = {
 
   /**
+   * Reference to the parent cell.
+   * @type {Cell}
+   */
+  cell: {
+    get: function () {
+      return this._cell;
+    }
+  },
+
+  /**
    * The ascendant system of the music data.
    * @type {SystemLayout}
    * @readonly
@@ -134,7 +144,6 @@ var MusicDataMixin = {
       return next;
     }
   }
-
 };
 
 module.exports = MusicDataMixin;

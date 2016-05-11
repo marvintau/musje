@@ -2,15 +2,9 @@
 
 var Snap = require('Snap');
 
-function renderUnderbar(note1, note2, y, lo) {
-  note1.el.line(0, y, note2.x - note1.x + note2.width, y)
-         .attr('stroke-width', lo.typeStrokeWidth);
-}
-
 function renderDuration(note, lo) {
   var durationDef = note.def.durationDef;
   var pitchDef = note.def.pitchDef;
-
   var underbar = note.duration.underbar;
   var y = 0;
 
@@ -48,6 +42,11 @@ function renderDuration(note, lo) {
       }
     }
   }
+}
+
+function renderUnderbar(note1, note2, y, lo) {
+  note1.el.line(0, y, note2.x - note1.x + note2.width, y)
+         .attr('stroke-width', lo.typeStrokeWidth);
 }
 
 module.exports = renderDuration;

@@ -1,7 +1,5 @@
 'use strict';
 
-var util = require('../../util');
-
 /**
  * SVG definition for duration.
  * @class
@@ -17,89 +15,83 @@ function DurationDef(id, duration, layout) {
   // id = d10, d11, d12, d20, d21, d20, d41, d40
   switch (duration.type) {
   case 1:   // whole note
-    this._makeEl();
-    this._makeType1(id, duration.dot);
+    makeEl(this);
+    makeType1(this, id, duration.dot);
     break;
   case 2:   // half note
-    this._makeEl();
-    this._makeType2(id, duration.dot);
+    makeEl(this);
+    makeType2(this, id, duration.dot);
     break;
   default:  // other note types type quarter note def
     if (duration.dot === 0) {
       this.width = 0 ;
     } else {
-      this._makeEl();
-      this._makeType4(id, duration.dot);
+      makeEl(this);
+      makeType4(this, id, duration.dot);
     }
   }
 }
 
-util.defineProperties(DurationDef.prototype, {
+function makeType1(that, id, dot) {
+  var lo = that._layout.options;
+  var x = lo.typebarOffset;
 
-  _makeEl: function () {
-    this.el = this._layout.svg.el.g()
-                .attr('id', this._id)
-                .toDefs();
-  },
+  addLine(that, x);
+  x += lo.typebarLength + lo.typebarSep;
+  addLine(that, x);
+  x += lo.typebarLength + lo.typebarSep;
+  addLine(that, x);
+  x += lo.typebarLength;
 
-  // Add dot for type 1 (whole) or type 2 (half) note.
-  _addDot: function (x, dot, type) {
-    var lo = this._layout.options;
+  that.width = addDot(that, x, dot, 1);
+}
 
-    if (dot > 0) {
-      x += lo.dotOffset * (type === 1 ? 1.2 : 1);
-      this.el.circle(x, 0, lo.dotRadius);
-    }
-    if (dot > 1) {
-      x += lo.dotSep * (type === 1 ? 1.2 : 1);
-      this.el.circle(x, 0, lo.dotRadius);
-    }
-    return x + lo.typebarExt;
-  },
+function makeType2(that, id, dot) {
+  var lo = that._layout.options;
+  var x = lo.typebarOffset;
 
-  _makeType1: function (id, dot) {
-    var
-      lo = this._layout.options,
-      x = lo.typebarOffset;
+  addLine(that, lo.typebarOffset);
+  x += lo.typebarLength;
+  that.width = addDot(that, x, dot, 2);
+}
 
-    this._addLine(x);
-    x += lo.typebarLength + lo.typebarSep;
-    this._addLine(x);
-    x += lo.typebarLength + lo.typebarSep;
-    this._addLine(x);
-    x += lo.typebarLength;
+function makeType4(that, id, dot) {
+  var lo = that._layout.options;
+  var x = lo.t4DotOffset;
+  that.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
 
-    this.width = this._addDot(x, dot, 1);
-  },
-
-  _addLine: function (x) {
-    var lo = this._layout.options;
-    this.el.rect(x, -lo.typeStrokeWidth,
-                 lo.typebarLength, lo.typeStrokeWidth);
-  },
-
-  _makeType2: function (id, dot) {
-    var
-      lo = this._layout.options,
-      x = lo.typebarOffset;
-
-    this._addLine(lo.typebarOffset);
-    x += lo.typebarLength;
-    this.width = this._addDot(x, dot, 2);
-  },
-
-  _makeType4: function (id, dot) {
-    var
-      lo = this._layout.options,
-      x = lo.t4DotOffset;
-
-    this.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
-    if (dot > 1) {
-      x += lo.t4DotSep;
-      this.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
-    }
-    this.width = x + lo.t4DotExt;
+  if (dot > 1) {
+    x += lo.t4DotSep;
+    that.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
   }
-});
+  that.width = x + lo.t4DotExt;
+}
+
+function makeEl(that) {
+  that.el = that._layout.svg.el.g()
+              .attr('id', that._id)
+              .toDefs();
+}
+
+function addLine(that, x) {
+  var lo = that._layout.options;
+  that.el.rect(x, -lo.typeStrokeWidth,
+               lo.typebarLength, lo.typeStrokeWidth);
+}
+
+// Add dot for type 1 (whole) or type 2 (half) note.
+function addDot(that, x, dot, type) {
+  var lo = that._layout.options;
+
+  if (dot > 0) {
+    x += lo.dotOffset * (type === 1 ? 1.2 : 1);
+    that.el.circle(x, 0, lo.dotRadius);
+  }
+  if (dot > 1) {
+    x += lo.dotSep * (type === 1 ? 1.2 : 1);
+    that.el.circle(x, 0, lo.dotRadius);
+  }
+  return x + lo.typebarExt;
+}
 
 module.exports = DurationDef;
