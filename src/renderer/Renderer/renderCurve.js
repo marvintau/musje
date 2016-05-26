@@ -1,6 +1,6 @@
 'use strict';
 
-var Snap = require('Snap');
+var Snap = require('snapsvg');
 
 function renderCurve(type, note) {
   var next, prev, prevHasError, nextHasError;

@@ -28,39 +28,12 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var Snap = require('Snap');
+var Snap = require('snapsvg');
 var util = require('../../util');
 var Layout = require('../Layout/Layout');
 var renderBar = require('./renderBar');
 var renderDuration = require('./renderDuration');
 var renderCurve = require('./renderCurve');
-
-function renderNote(note, cell, lo) {
-  note.el = cell.el.g().transform(Snap.matrix()
-                              .translate(note.x, note.y));
-  note.el.use(note.def.pitchDef.el);
-  renderDuration(note, lo);
-}
-
-function renderCell(cell, lo) {
-  cell.data.forEach(function (data) {
-    switch (data.$type) {
-    case 'rest':
-      renderNote(data, cell, lo);
-      break;
-    case 'note':
-      renderNote(data, cell, lo);
-      renderCurve('tie', data);
-      renderCurve('slur', data);
-      break;
-    case 'time':
-      data.el = cell.el.use(data.def.el).attr({
-        x: data.x, y: data.y
-      });
-      break;
-    }
-  });
-}
 
 /**
  * [Renderer description]
@@ -79,17 +52,15 @@ util.defineProperties(Renderer.prototype,
   render: function (score) {
     this._score = score;
     this.layout.flow(score);
-
     this.renderHeader();
     this.renderContent();
   },
 
   renderHeader: function () {
-    var
-      lo = this._lo,
-      header = this.layout.header,
-      el = header.el,
-      width = header.width;
+    var lo = this._lo;
+    var header = this.layout.header;
+    var el = header.el;
+    var width = header.width;
 
     el.text(width / 2, lo.titleFontSize, this._score.head.title)
       .attr({
@@ -123,6 +94,32 @@ util.defineProperties(Renderer.prototype,
   }
 });
 
+function renderNote(note, cell, lo) {
+  note.el = cell.el.g().transform(Snap.matrix().translate(note.x, note.y));
+  note.el.use(note.def.pitchDef.el);
+  renderDuration(note, lo);
+}
+
+function renderCell(cell, lo) {
+  cell.data.forEach(function (data) {
+    switch (data.$type) {
+    case 'rest':
+      renderNote(data, cell, lo);
+      break;
+    case 'note':
+      renderNote(data, cell, lo);
+      renderCurve('tie', data);
+      renderCurve('slur', data);
+      break;
+    case 'time':
+      data.el = cell.el.use(data.def.el).attr({
+        x: data.x, y: data.y
+      });
+      break;
+    }
+  });
+}
+
 module.exports = Renderer;
 </code></pre>
         </article>
@@ -134,7 +131,7 @@ module.exports = Renderer;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AccidentalDef">AccidentalDef</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="AccidentalDef.html">AccidentalDef</a></li><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Namespaces</h3><ul><li><a href="util.html">util</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeBeams">makeBeams</a></li><li><a href="global.html#makeSystems">makeSystems</a></li></ul>
 </nav>
 
 <br class="clear">

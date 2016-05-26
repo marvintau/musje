@@ -33,12 +33,11 @@ var TYPE_TO_STRING = {
   1: ' - - - ', 2: ' - ', 4: '', 8: '_', 16: '=', 32: '=_',
   64: '==', 128: '==_', 256: '===', 512: '===_', 1024: '===='
 };
-// Convert from duration type to number of underbars.
 var TYPE_TO_UNDERBAR = {
-  1: 0, 2: 0, 4: 0, 8: 1, 16: 2, 32: 3,
+   1: 0,   2: 0,   4: 0,   8: 1,   16: 2, 32: 3,
   64: 4, 128: 5, 256: 6, 512: 7, 1024: 8
 };
-var DOT_TO_STRING = { 0: '', 1: '.', 2: '..' };
+var DOT_TO_STRING = ['', '.', '..'];
 
 /**
  * @class
@@ -53,11 +52,10 @@ util.defineProperties(Duration.prototype,
 {
   /**
    * Type of duration.
-   * @type {string}
    * @constant
-   * @default
+   * @default duration
    */
-  $type: 'duration',
+  $type: { constant: 'duration' },
 
   /**
    * Beat type
@@ -98,7 +96,7 @@ util.defineProperties(Duration.prototype,
   },
 
   /**
-   * `(Getter)` Underbar
+   * `(Getter)` Number of underbars in the beam.
    * @type {number}
    * @readonly
    */
@@ -115,6 +113,10 @@ util.defineProperties(Duration.prototype,
     return TYPE_TO_STRING[this.type] + DOT_TO_STRING[this.dot];
   },
 
+  /**
+   * [toJSON description]
+   * @return {Object}
+   */
   toJSON: util.makeToJSON({
     type: 4,
     dot: 0
@@ -132,7 +134,7 @@ module.exports = Duration;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AccidentalDef">AccidentalDef</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="AccidentalDef.html">AccidentalDef</a></li><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Namespaces</h3><ul><li><a href="util.html">util</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeBeams">makeBeams</a></li><li><a href="global.html#makeSystems">makeSystems</a></li></ul>
 </nav>
 
 <br class="clear">

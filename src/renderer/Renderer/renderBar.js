@@ -1,6 +1,6 @@
 'use strict';
 
-var Snap = require('Snap');
+var Snap = require('snapsvg');
 
 // @param m {number} Measure index in measures.
 // @param len {number} Length of measures.

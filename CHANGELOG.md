@@ -1,5 +1,19 @@
 # Musje Change Log
 
+## 0.4.1 (2016-05-26)
+
+- Use Travis CI build test.
+- More tests are added with some refactoring.
+
+### Features
+
+- A CodeMirror mode (simple mode) with stylesheet is provided.
+
+### Broken changes
+
+- External `require('Snap')` is changed to be `require('snapsvg')`.
+
+
 ## 0.4.0 (2016-05-08)
 
 - The module system is changed to commonjs.
@@ -12,15 +26,16 @@
   ```
 - Test tasks are added, and some minor refactoring is done.
 
+### Features
+
+- Umd (commonjs, amd and global) is supported.
+- Minified version of the lib is added in `musje/lib/musje.min.js`.
+
 ## Broken changes
 
 - The distribution is moved from `musje/musje.js` `musje/musje.css` to `musje/lib/musje.js` `musje/lib/musje.css`.
 - Only `parse()` and `Score` are exposed to the `musje` namespace, others are hidden in this new version.
 
-### Features
-
-- Umd (commonjs, amd and global) is supported.
-- Minified version of the lib is added in `musje/lib/musje.min.js`.
 
 ## 0.3.1 (2016-04-09)
 
@@ -38,11 +53,6 @@
 - The libs in demo is now included (not from CDN anymore).
 - Add this change log file.
 
-### Broken changes
-
-- The JSON schema support is dropped due to the written model (may be written again if required - low priority).
-- The model is slightly changed in tie and slur.
-
 ### Features
 
 - Ties can be rendered.
@@ -50,6 +60,11 @@
 - Slur rendering implemented.
 - The last system is filled and each system measures length are balanced
   during the process.
+
+### Broken changes
+
+- The JSON schema support is dropped due to the written model (may be written again if required - low priority).
+- The model is slightly changed in tie and slur.
 
 
 ## 0.2.0 (2015-08-19)

@@ -1,17 +1,26 @@
 'use strict';
 
+var path = require('path');
+
 module.exports = {
   entry: './src/main.js',
   output: {
-    path: __dirname,
-    filename: './lib/musje.js',
+    path: path.join(__dirname, 'lib'),
+    filename: 'musje.js',
     libraryTarget: 'umd',
     library: 'musje'
   },
-  externals: {
-    Snap: 'Snap',
-    MIDI: 'MIDI'
-  },
+  externals: [
+    'MIDI',
+    {
+      snapsvg: {
+        root: 'Snap',
+        commonjs2: 'snapsvg',
+        commonjs: 'snapsvg',
+        amd: 'snapsvg'
+      }
+    }
+  ],
   module: {
     loaders: [
       { test: /\.jison$/, loader: './parser/jison-loader' }

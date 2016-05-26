@@ -1,6 +1,6 @@
 'use strict';
 
-var Snap = require('Snap');
+var Snap = require('snapsvg');
 var util = require('../../util');
 var Layout = require('../Layout/Layout');
 var renderBar = require('./renderBar');

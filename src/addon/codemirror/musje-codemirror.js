@@ -1,5 +1,7 @@
 /* Codemirror mode for musje 123 notation */
 
+var CodeMirror = require('codemirror');
+
 CodeMirror.defineSimpleMode('musje', {
   start: [
     { regex: /<<[\u0020-\uffff]*>>.*/, token: 'head' },

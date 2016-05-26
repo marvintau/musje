@@ -28,8 +28,6 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var util = require('../../util');
-
 /**
  * SVG definition for duration.
  * @class
@@ -45,90 +43,84 @@ function DurationDef(id, duration, layout) {
   // id = d10, d11, d12, d20, d21, d20, d41, d40
   switch (duration.type) {
   case 1:   // whole note
-    this._makeEl();
-    this._makeType1(id, duration.dot);
+    makeEl(this);
+    makeType1(this, id, duration.dot);
     break;
   case 2:   // half note
-    this._makeEl();
-    this._makeType2(id, duration.dot);
+    makeEl(this);
+    makeType2(this, id, duration.dot);
     break;
   default:  // other note types type quarter note def
     if (duration.dot === 0) {
       this.width = 0 ;
     } else {
-      this._makeEl();
-      this._makeType4(id, duration.dot);
+      makeEl(this);
+      makeType4(this, id, duration.dot);
     }
   }
 }
 
-util.defineProperties(DurationDef.prototype, {
+function makeType1(that, id, dot) {
+  var lo = that._layout.options;
+  var x = lo.typebarOffset;
 
-  _makeEl: function () {
-    this.el = this._layout.svg.el.g()
-                .attr('id', this._id)
-                .toDefs();
-  },
+  addLine(that, x);
+  x += lo.typebarLength + lo.typebarSep;
+  addLine(that, x);
+  x += lo.typebarLength + lo.typebarSep;
+  addLine(that, x);
+  x += lo.typebarLength;
 
-  // Add dot for type 1 (whole) or type 2 (half) note.
-  _addDot: function (x, dot, type) {
-    var lo = this._layout.options;
+  that.width = addDot(that, x, dot, 1);
+}
 
-    if (dot > 0) {
-      x += lo.dotOffset * (type === 1 ? 1.2 : 1);
-      this.el.circle(x, 0, lo.dotRadius);
-    }
-    if (dot > 1) {
-      x += lo.dotSep * (type === 1 ? 1.2 : 1);
-      this.el.circle(x, 0, lo.dotRadius);
-    }
-    return x + lo.typebarExt;
-  },
+function makeType2(that, id, dot) {
+  var lo = that._layout.options;
+  var x = lo.typebarOffset;
 
-  _makeType1: function (id, dot) {
-    var
-      lo = this._layout.options,
-      x = lo.typebarOffset;
+  addLine(that, lo.typebarOffset);
+  x += lo.typebarLength;
+  that.width = addDot(that, x, dot, 2);
+}
 
-    this._addLine(x);
-    x += lo.typebarLength + lo.typebarSep;
-    this._addLine(x);
-    x += lo.typebarLength + lo.typebarSep;
-    this._addLine(x);
-    x += lo.typebarLength;
+function makeType4(that, id, dot) {
+  var lo = that._layout.options;
+  var x = lo.t4DotOffset;
+  that.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
 
-    this.width = this._addDot(x, dot, 1);
-  },
-
-  _addLine: function (x) {
-    var lo = this._layout.options;
-    this.el.rect(x, -lo.typeStrokeWidth,
-                 lo.typebarLength, lo.typeStrokeWidth);
-  },
-
-  _makeType2: function (id, dot) {
-    var
-      lo = this._layout.options,
-      x = lo.typebarOffset;
-
-    this._addLine(lo.typebarOffset);
-    x += lo.typebarLength;
-    this.width = this._addDot(x, dot, 2);
-  },
-
-  _makeType4: function (id, dot) {
-    var
-      lo = this._layout.options,
-      x = lo.t4DotOffset;
-
-    this.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
-    if (dot > 1) {
-      x += lo.t4DotSep;
-      this.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
-    }
-    this.width = x + lo.t4DotExt;
+  if (dot > 1) {
+    x += lo.t4DotSep;
+    that.el.circle(x, -lo.t4DotBaselineShift, lo.dotRadius);
   }
-});
+  that.width = x + lo.t4DotExt;
+}
+
+function makeEl(that) {
+  that.el = that._layout.svg.el.g()
+              .attr('id', that._id)
+              .toDefs();
+}
+
+function addLine(that, x) {
+  var lo = that._layout.options;
+  that.el.rect(x, -lo.typeStrokeWidth,
+               lo.typebarLength, lo.typeStrokeWidth);
+}
+
+// Add dot for type 1 (whole) or type 2 (half) note.
+function addDot(that, x, dot, type) {
+  var lo = that._layout.options;
+
+  if (dot > 0) {
+    x += lo.dotOffset * (type === 1 ? 1.2 : 1);
+    that.el.circle(x, 0, lo.dotRadius);
+  }
+  if (dot > 1) {
+    x += lo.dotSep * (type === 1 ? 1.2 : 1);
+    that.el.circle(x, 0, lo.dotRadius);
+  }
+  return x + lo.typebarExt;
+}
 
 module.exports = DurationDef;
 </code></pre>
@@ -141,7 +133,7 @@ module.exports = DurationDef;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AccidentalDef">AccidentalDef</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="AccidentalDef.html">AccidentalDef</a></li><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Namespaces</h3><ul><li><a href="util.html">util</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeBeams">makeBeams</a></li><li><a href="global.html#makeSystems">makeSystems</a></li></ul>
 </nav>
 
 <br class="clear">

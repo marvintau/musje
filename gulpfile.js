@@ -12,11 +12,15 @@ var mocha = require('gulp-mocha');
 
 gulp.task('default', ['watch-demo']);
 
-gulp.task('build', ['build-musje', 'build-doc']);
+gulp.task('build', [
+  'build-musje', 'build-doc', 'build-musje-codemirror'
+]);
 
 gulp.task('build-musje', function () {
   runSequence('webpack:build-musje', 'webpack:build-musje.min');
 });
+gulp.task('build-musje-codemirror', ['webpack:build-musje-codemirror']);
+
 gulp.task('watch-demo', ['demo:watch']);
 
 gulp.task('build-doc', function () {
@@ -34,6 +38,15 @@ gulp.task('webpack:build-musje', function(callback) {
   webpack(webpackConfig, function (err, stats) {
     if (err) { throw new gutil.PluginError('webpack:build-musje', err); }
     gutil.log('[webpack:build-musje]', stats.toString({ colors: true }));
+    callback();
+  });
+});
+
+gulp.task('webpack:build-musje-codemirror', function(callback) {
+  var webpackConfig = require('./src/addon/codemirror/webpack.config.js');
+  webpack(webpackConfig, function (err, stats) {
+    if (err) { throw new gutil.PluginError('webpack:build-musje-codemirror', err); }
+    gutil.log('[webpack:build-musje-codemirror]', stats.toString({ colors: true }));
     callback();
   });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-var Snap = require('Snap');
+var Snap = require('snapsvg');
 var svgPaths = require('../svgPaths');
 
 /**

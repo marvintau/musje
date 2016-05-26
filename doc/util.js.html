@@ -28,19 +28,22 @@
         <article>
             <pre class="prettyprint source linenums"><code>'use strict';
 
-var defineProperty = Object.defineProperty;
+/**
+ * Utility functions
+ * @namespace
+ */
 var util = {};
 
+var IS_OBJECT = { 'funtion': true, 'object': true };
 function isObject(obj) {
-  var type = typeof obj;
-  return type === 'function' || type === 'object' &amp;&amp; !!obj;
+  return IS_OBJECT[typeof obj] &amp;&amp; !!obj;
 }
 
 /**
- * Utility method, for each object key.
+ * For each object key and value.
  * @function util.objEach
  * @param {Object} obj - The object to be iterated.
- * @param {musje~objEachCallback} callback - The callback for each iteration.
+ * @param {util~objEachCallback} callback - The callback for each iteration.
  */
 var objEach =
 util.objEach = function (obj, callback) {
@@ -52,8 +55,8 @@ util.objEach = function (obj, callback) {
 };
 
 /**
- * A callback that will be called for each iteration in {@link musje.objEach}.
- * @callback musje~objEachCallback
+ * Callback that will be called for each iteration in {@link util.objEach}.
+ * @callback util~objEachCallback
  * @param {*} value - Value of the current property.
  * @param {string} key - Key of the current property.
  */
@@ -83,6 +86,11 @@ util.near = function (a, b) {
 };
 
 
+function isAccessorProperty(value) {
+  return isObject(value) &amp;&amp;
+        (typeof value.get === 'function' || typeof value.set === 'function');
+}
+
 /**
  * Define ES5 getter/setter properties
  * @param {Object} obj - The object to be defined.
@@ -102,19 +110,13 @@ util.near = function (a, b) {
  */
 util.defineProperties = function (obj, props) {
   objEach(props, function (value, prop) {
-    var
-      type = typeof value,
-      descriptor;
-
-    // Accessor property.
-    if (type === 'object' &amp;&amp; (typeof value.get === 'function' ||
-                              typeof value.set === 'function')) {
+    var descriptor;
+    if (isAccessorProperty(value)) {
       descriptor = value;
-
-    // Function
-    } else if (type === 'function' || prop === '$type') {
+    } else if (typeof value === 'function') {
       descriptor = { value: value };
-
+    } else if (isObject(value) &amp;&amp; value.constant) {
+      descriptor = { value: value.constant };
     } else {
       descriptor = {
         value: value,
@@ -122,8 +124,7 @@ util.defineProperties = function (obj, props) {
         enumerable: true
       };
     }
-
-    defineProperty(obj, prop, descriptor);
+    Object.defineProperty(obj, prop, descriptor);
   });
 };
 
@@ -161,7 +162,7 @@ module.exports = util;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AccidentalDef">AccidentalDef</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="AccidentalDef.html">AccidentalDef</a></li><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Namespaces</h3><ul><li><a href="util.html">util</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeBeams">makeBeams</a></li><li><a href="global.html#makeSystems">makeSystems</a></li></ul>
 </nav>
 
 <br class="clear">

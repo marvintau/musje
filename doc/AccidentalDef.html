@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: renderer/Layout/SvgLayout.js</title>
+    <title>JSDoc: Class: AccidentalDef</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,78 +17,224 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: renderer/Layout/SvgLayout.js</h1>
+    <h1 class="page-title">Class: AccidentalDef</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>'use strict';
+        <h2>AccidentalDef</h2>
+        
+    
+</header>
 
-var Snap = require('snapsvg');
-var util = require('../../util');
+<article>
+    <div class="container-overview">
+    
+        
 
-/**
- * @class
- * @param layout {Layout}
- */
-function SvgLayout(layout) {
-  this._layout = layout;
-  var lo = layout.options;
-  this._el = Snap(layout.svg)
-    .attr({ fontFamily: lo.fontFamily })
-    .addClass('musje');
-  this.el.clear();
-  this.width = lo.width;
-}
+    
 
-util.defineProperties(SvgLayout.prototype,
-/** @lends SvgLayout# */
-{
-  el: {
-    get: function () {
-      return this._el;
-    }
-  },
+    <h4 class="name" id="AccidentalDef"><span class="type-signature"></span>new AccidentalDef<span class="signature">(id, accidental, layout)</span><span class="type-signature"></span></h4>
 
-  /**
-   * Width of the svg.
-   * @type {number}
-   */
-  width: {
-    get: function () {
-      return this._w;
-    },
-    set: function (w) {
-      this._w = w;
-      this.el.attr('width', w);
-      var body = this._layout.body;
-      if (body) { body.width = w; }
-    }
-  },
+    
 
-  /**
-   * Height of the svg.
-   * @type {number}
-   */
-  height: {
-    get: function () {
-      return this._h;
-    },
-    set: function (h) {
-      this._h = h;
-      this.el.attr('height', h);
-    }
-  }
-});
 
-module.exports = SvgLayout;
-</code></pre>
-        </article>
-    </section>
+
+<div class="description">
+    <p>SVG definition for accidental.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>[description]</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>accidental</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>[description]</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>layout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Layout.html">Layout</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>[description]</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="renderer_defs_AccidentalDef.js.html">renderer/defs/AccidentalDef.js</a>, <a href="renderer_defs_AccidentalDef.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

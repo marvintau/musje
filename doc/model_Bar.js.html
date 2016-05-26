@@ -57,16 +57,11 @@ util.defineProperties(Bar.prototype,
 {
   /**
    * Type of bar.
-   * @type {string}
    * @constant
    * @readonly
-   * @default
+   * @default bar
    */
-  $type: {
-    get: function () {
-      return 'bar';
-    }
-  },
+  $type: { constant: 'bar' },
 
   /**
    * Value of the bar, which is the same as the bar parameter in the constructor.
@@ -110,7 +105,7 @@ module.exports = Bar;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#AccidentalDef">AccidentalDef</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-musje.html">musje</a></li></ul><h3>Classes</h3><ul><li><a href="AccidentalDef.html">AccidentalDef</a></li><li><a href="Bar.html">Bar</a></li><li><a href="BarDef.html">BarDef</a></li><li><a href="Beam.html">Beam</a></li><li><a href="BodyLayout.html">BodyLayout</a></li><li><a href="Cell.html">Cell</a></li><li><a href="Chord.html">Chord</a></li><li><a href="ContentLayout.html">ContentLayout</a></li><li><a href="Defs.html">Defs</a></li><li><a href="Duration.html">Duration</a></li><li><a href="DurationDef.html">DurationDef</a></li><li><a href="HeaderLayout.html">HeaderLayout</a></li><li><a href="Layout.html">Layout</a></li><li><a href="Note.html">Note</a></li><li><a href="PartwisePart.html">PartwisePart</a></li><li><a href="PartwiseParts.html">PartwiseParts</a></li><li><a href="Pitch.html">Pitch</a></li><li><a href="PitchDef.html">PitchDef</a></li><li><a href="Renderer.html">Renderer</a></li><li><a href="Rest.html">Rest</a></li><li><a href="Score.html">Score</a></li><li><a href="ScoreHead.html">ScoreHead</a></li><li><a href="Slur.html">Slur</a></li><li><a href="SvgLayout.html">SvgLayout</a></li><li><a href="SystemLayout.html">SystemLayout</a></li><li><a href="Tie.html">Tie</a></li><li><a href="Time.html">Time</a></li><li><a href="TimeDef.html">TimeDef</a></li><li><a href="TimewiseMeasure.html">TimewiseMeasure</a></li><li><a href="TimewiseMeasures.html">TimewiseMeasures</a></li><li><a href="Voice.html">Voice</a></li></ul><h3>Namespaces</h3><ul><li><a href="util.html">util</a></li></ul><h3>Mixins</h3><ul><li><a href="CellLayoutMixin.html">CellLayoutMixin</a></li><li><a href="MusicDataLayoutMixin.html">MusicDataLayoutMixin</a></li><li><a href="MusicDataMixin.html">MusicDataMixin</a></li><li><a href="PlayerMixin.html">PlayerMixin</a></li><li><a href="TimewiseMeasureLayoutMixin.html">TimewiseMeasureLayoutMixin</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeBeams">makeBeams</a></li><li><a href="global.html#makeSystems">makeSystems</a></li></ul>
 </nav>
 
 <br class="clear">
