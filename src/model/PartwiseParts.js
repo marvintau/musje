@@ -1,65 +1,40 @@
-'use strict';
+import PartwisePart from './PartwisePart'
 
-var util = require('../util');
-var PartwisePart = require('./PartwisePart');
-
-/**
- * Construct partwise score parts.
- * @class
- * @classdesc Partwise score parts.
- * @param score {Score}
- * @augments {Array}
- */
-function PartwiseParts(score) {
-  var parts = [];
-  parts._score = score;
-  util.defineProperties(parts, properties);
-  return parts;
-}
-
-/** @lends PartwiseParts# */
-var properties = {
+class PartwiseParts extends Array {
+  constructor(score) {
+    super()
+    this._score = score
+  }
 
   /**
    * Reference to the parent score.
    * @type {Score}
    * @readonly
    */
-  score: {
-    get: function () {
-      return this._score;
-    }
-  },
+  get score() { return this._score }
 
   /**
    * Add parts.
    * @param {Object}
    */
-  addParts: function (parts) {
-    var that = this;
-    parts.forEach(function (part) {
-      that.append(part);
-    });
-  },
+  addParts(parts) { parts.forEach(part => { this.append(part) }) }
 
   /**
    * Append a partwise part.
    * @param {Object} part - Plain partwise part object.
    * @override
    */
-  append: function (part) {
-    var index = this.length;
-    var musjePart = new PartwisePart(index, this);
-    this.push(musjePart);
-    musjePart.measures = part.measures;
-  },
+  append(part) {
+    const index = this.length
+    const musjePart = new PartwisePart(index, this)
+    this.push(musjePart)
+    musjePart.measures = part.measures
+  }
 
   /**
    * Remove all parts.
    */
-  removeAll: function () {
-    this.length = 0;
-  }
-};
+  removeAll() { this.length = 0 }
+}
 
-module.exports = PartwiseParts;
+export default PartwiseParts

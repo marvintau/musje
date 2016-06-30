@@ -1,7 +1,4 @@
-'use strict';
-
-var util = require('../util');
-var TimewiseMeasure = require('./TimewiseMeasure');
+import TimewiseMeasure from './TimewiseMeasure'
 
 /**
  * Construct timewise score measures.
@@ -10,47 +7,34 @@ var TimewiseMeasure = require('./TimewiseMeasure');
  * @param score {Score}
  * @augments {Array}
  */
-function TimewiseMeasures(score) {
-  var measures = [];
-  measures._score = score;
-  util.defineProperties(measures, properties);
-  return measures;
-}
-
-/** @lends TimewiseMeasures# */
-var properties = {
+class TimewiseMeasures extends Array {
+  constructor(score) {
+    super()
+    this._score = score
+  }
 
   /**
    * Reference to the parent score.
    * @type {Score}
    * @readonly
    */
-  score: {
-    get: function () {
-      return this._score;
-    }
-  },
+  get score() { return this._score }
 
   /**
    * Make timewise score measures from the partwise parts.
    */
-  fromPartwise: function () {
-    var that = this;
-
-    this.removeAll();
-
-    this.score.walkCells(function (cell, m) {
-      that[m] = that[m] || new TimewiseMeasure(m, that);
-      that[m].parts.push(cell);
-    });
-  },
+  fromPartwise() {
+    this.removeAll()
+    this.score.walkCells((cell, m) => {
+      if (m === this.length && !this[m]) this.push(new TimewiseMeasure(m, this))
+      this[m].parts.push(cell)
+    })
+  }
 
   /**
    * Remove all measures.
    */
-  removeAll: function () {
-    this.length = 0;
-  }
-};
+  removeAll() { this.length = 0 }
+}
 
-module.exports = TimewiseMeasures;
+export default TimewiseMeasures

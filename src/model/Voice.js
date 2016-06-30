@@ -1,35 +1,30 @@
-'use strict';
-
-var util = require('../util');
-var MusicDataMixin = require('./MusicDataMixin');
+import { extend } from '../util'
+import MusicData from './MusicData'
 
 /**
  * @class
  * @param {Object} voice
  */
-function Voice(voice) {
-  util.extend(this, voice);
-}
+class Voice extends MusicData {
+  constructor(voice) {
+    super()
+    extend(this, voice)
+  }
 
-util.defineProperties(Voice.prototype,
-/** @lends Voice# */
-{
   /**
    * Type of voice.
    * @constant
    * @default voice
    */
-  $type: { constant: 'voice' },
+  $type = 'voice'
 
   /**
    * Convert the voice to musje source code string.
    * @return {string} Converted musje source code string.
    */
-  toString: function () {
+  toString() {
 
   }
-});
+}
 
-util.defineProperties(Voice.prototype, MusicDataMixin);
-
-module.exports = Voice;
+export default Voice

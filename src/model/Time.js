@@ -1,7 +1,5 @@
-'use strict';
-
-var util = require('../util');
-var MusicDataMixin = require('./MusicDataMixin');
+import { extend, makeToJSON } from '../util'
+import MusicData from './MusicData'
 
 /**
  * Time signature.
@@ -10,48 +8,54 @@ var MusicDataMixin = require('./MusicDataMixin');
  * @mixes MusicDataMixin
  * @mixes MusicDataLayoutMixin
  */
-function Time(time) {
-  util.extend(this, time);
-}
+class Time extends MusicData {
+  constructor(time) {
+    super()
+    extend(this, time)
+  }
 
-util.defineProperties(Time.prototype,
-/** @lends Time# */
-{
   /**
    * Type of time.
    * @constant
    * @default time
    */
-  $type: { constant: 'time' },
+  $type = 'time'
 
   /**
    * How many beats per measure.
    * @type {number}
    * @default
    */
-  beats: 4,
+  beats = 4
 
   /**
    * Beat type
    * @type {number}
    * @default
    */
-  beatType: 4,
+  beatType = 4
+
+  /**
+   * Def id used in the SVG <defs> element.
+   * ```
+   * id := 't' beats '-' beatType
+   * ```
+   * E.g. `t3-4`
+   * @type {string}
+   * @readonly
+   */
+  get defId() { return `t${this.beats}-${this.beatType}` }
 
   /**
    * Convert to musje source code.
    * @return {string} Musje source code.
    */
-  toString: function () {
-    return this.beats + '/' + this.beatType;
-  },
+  toString() { return `${this.beats}/${this.beatType}` }
 
-  toJSON: util.makeToJSON({
+  toJSON = makeToJSON({
     beats: 4,
     beatType: 4
   }, 'time')
-});
+}
 
-util.defineProperties(Time.prototype, MusicDataMixin);
-
-module.exports = Time;
+export default Time

@@ -1,7 +1,4 @@
-'use strict';
-
-var svgPaths = {
-
+const svgPaths = {
   // https://upload.wikimedia.org/wikipedia/commons/a/a6/Sharp.svg
   '#': 'M6.102,7.457V2.753L8.102,2.201V6.881L6.102,7.457zM10.04,6.319L8.665,6.713V2.033L10.04,1.649V-0.295L8.665,0.089V-4.69277H8.102V0.234L6.102,0.809V-3.84077H5.571V0.986L4.196,1.371V3.319L5.571,2.935V7.606L4.196,7.989V9.929L5.571,9.545V14.299L6.102,14.29977V9.375L8.102,8.825V13.45077H8.665V8.651L10.04,8.266V6.319z',
 
@@ -16,6 +13,6 @@ var svgPaths = {
 
   ACCIDENTAL_RATIOS: { '#': 0.043, 'n': 0.023, '##': 0.062, b: 0.057 },
   ACCIDENTAL_SHIFTS: { '#': 1, 'n': 2, '##': -4, b: 0 }
-};
+}
 
-module.exports = svgPaths;
+export default svgPaths

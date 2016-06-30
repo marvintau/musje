@@ -1,215 +1,292 @@
-'use strict';
+import { matrix } from 'snapsvg'
 
-var util = require('../util');
-var near = util.near;
-var Beam = require('./Beam');
-var Classes = {
-  time:  require('./Time'),
-  bar:   require('./Bar'),
-  note:  require('./Note'),
-  rest:  require('./Rest'),
-  chord: require('./Chord'),
-  voice: require('./Voice')
-};
+import time from './Time'
+import bar  from './Bar'
+import note from './Note'
+import rest from './Rest'
+import chord from './Chord'
+import voice from './Voice'
+import Beam from './Beam'
+
+import { extend, near, makeToJSON } from '../util'
+const Classes = { time, bar, note, rest, chord, voice }
+const Bar = bar
 
 /**
- * Construct a cell.
  * Cell is either a measure in a partwise part, or
  * a part in a timewise measure.
- * @class
  * @param cell {Object}
  * @param mIndex {number} - Measure index of this cell.
  * @param pIndex {number} - Part index of this cell.
- * @mixes CellLayout
  */
-function Cell(cell, mIndex, pIndex, score) {
-  this._mIndex = mIndex;
-  this._pIndex = pIndex;
-  this._score = score;
-  util.extend(this, cell);
-  makeBeams(this, 1);
-}
+class Cell {
+  constructor(cell, mIndex, pIndex, score) {
+    this._mIndex = mIndex
+    this._pIndex = pIndex
+    this._score = score
+    extend(this, cell)
+    makeBeams(this, 1)
+  }
 
-util.defineProperties(Cell.prototype,
-/** @lends musje.Cell# */
-{
   /**
    * Reference to the root score instance.
    * @type {Score}
    * @readonly
    */
-  score: {
-    get: function () {
-      return this._score;
-    }
-  },
+  get score() { return this._score }
 
   /**
    * Music data
    * @type {Array.<MusicDataMixin>}
    */
-  data: {
-    get: function () {
-      return this._data || (this._data = []);
-    },
-    set: function (data) {
-      var that = this;
-      that.length = 0;
-      data.forEach(function (datum) {
-        that.append(datum);
-      });
-    }
-  },
+  get data() { return this._data || (this._data = []) }
+  set data(data) {
+    this.length = 0
+    data.forEach((datum) => { this.append(datum) })
+  }
 
   /**
    * Reference to the parent measures.
    * @type {TimewiseMeasures}
    * @readonly
    */
-  measures: {
-    get: function () {
-      return this.score.measures;
-    }
-  },
+  get measures() { return this.score.measures }
 
   /**
    * Reference to the parent measure.
    * @type {TimewiseMeasure}
    * @readonly
    */
-  measure: {
-    get: function () {
-      return this.measures[this._mIndex];
-    }
-  },
+  get measure() { return this.measures[this._mIndex] }
 
   /**
    * Reference to the parent parts.
    * @type {PartwiseParts}
    * @readonly
    */
-  parts: {
-    get: function () {
-      return this.score.parts;
-    }
-  },
+  get parts() { return this.score.parts }
 
   /**
    * Reference to the parent part.
    * @type {PartwisePart}
    * @readonly
    */
-  part: {
-    get: function () {
-      return this.parts[this._pIndex];
-    }
-  },
+  get part() { return this.parts[this._pIndex] }
 
   /**
    * Previous cell in the part.
    * @type {Cell|undefined}
    * @readonly
    */
-  prev: {
-    get: function () {
-      return this.part.measures[this._mIndex - 1];
-    }
-  },
+  get prev() { return this.part.measures[this._mIndex - 1] }
 
   /**
    * Next cell in the part.
    * @type {Cell|undefined}
    * @readonly
    */
-  next: {
-    get: function () {
-      return this.part.measures[this._mIndex + 1];
-    }
-  },
+  get next() { return this.part.measures[this._mIndex + 1] }
 
   /**
    * The first music data in the cell.
    * @type {MusicDataMixin|undefined}
    * @readonly
    */
-  firstData: {
-    get: function () {
-      return this.data[0];
-    }
-  },
+  get firstData() { return this.data[0] }
 
   /**
    * The last music data in the cell.
    * @type {MusicDataMixin|undefined}
    * @readonly
    */
-  lastData: {
-    get: function () {
-      return this.data[this.data.length - 1];
-    }
-  },
+  get lastData() { return this.data[this.data.length - 1] }
 
   /**
    * The left bar of this cell.
    * @type {Bar|undefined}
    * @readonly
    */
-  barLeft: {
-    get: function () {
-      var firstData = this.firstData;
+  get barLeft() {
+    const { firstData } = this
+    if (firstData && firstData.$type === 'bar') return firstData
 
-      if (firstData && firstData.$type === 'bar') {
-        return firstData;
-      }
-
-      // Take from the previous measure.
-      var prevCell = this.prev;
-      if (prevCell) {
-        return prevCell.barRight;
-      }
-    }
-  },
+    // Take from the previous measure.
+    const prevCell = this.prev
+    if (prevCell) return prevCell.barRight
+  }
 
   /**
    * The right bar of this cell.
    * @type {Bar|undefined}
    * @readonly
    */
-  barRight: {
-    get: function () {
-      var lastData = this.lastData;
-      if (lastData && lastData.$type === 'bar') {
-        return lastData;
-      }
-    }
-  },
+  get barRight() {
+    const { lastData } = this
+    if (lastData && lastData.$type === 'bar') return lastData
+  }
 
   /**
    * Append a music data to the cell.
    * @param  {Object} musicData - Music data
    */
-  append: function (musicData) {
-    var type = Object.keys(musicData)[0]; // musicData has only one key
-    var instance = new Classes[type](musicData[type]);
-    instance._cell = this;
-    instance._index = this.data.length;
-    this.data.push(instance);
-  },
+  append(musicData) {
+    const type = Object.keys(musicData)[0] // musicData has only one key
+    const instance = new Classes[type](musicData[type])
+    instance._cell = this
+    instance._index = this.data.length
+    this.data.push(instance)
+  }
+
+
+  /**
+   * Width
+   * - (Getter) Get the cell width.
+   * - (Setter) Set the cell width, and this will cause the cell to reflow.
+   * @type {number}
+   */
+  get width() { return this._w }
+  set width(w) {
+    this._w = w
+    reflow(this)
+  }
+
+  get height() { return this.layout.options.partHeight }
+
+  /**
+   * The x position of the cell in parent timewise measure.
+   * - Set the x value will cause the cell element translate.
+   * @type {number}
+   */
+  get x() { return this._x }
+  set x(x) {
+    this._x = x
+    this.el.transform(matrix().translate(x, this.y2))
+  }
+
+  /**
+   * The y2 position of the cell in parent timewise measure.
+   * - Set the y2 value will cause the cell element translate.
+   * @type {number}
+   */
+  get y2() {
+    const { partHeight, partSep } = this.layout.options
+    const p = this._pIndex
+
+    return p ? (p + 1) * partHeight + p * partSep : partHeight
+  }
+
+  /**
+   * The left bar of this cell.
+   * - barLeft at first measure of a system:
+   * ```
+   * |]  -> |
+   * :|  -> |
+   * :|: -> |:
+   * ```
+   * @type {Bar}
+   * @readonly
+   */
+  get barLeftInSystem() {
+    let bar = this.barLeft
+    if (!bar) return { width: 0, height: 0 }
+
+    // First measure in the system.
+    if (this.measure.inSystemBegin) {
+      if (bar.value === 'end' || bar.value === 'repeat-end') {
+        bar = new Bar('single')
+      } else if (bar.value === 'repeat-both') {
+        bar = new Bar('repeat-begin')
+      }
+    }
+    bar.def = this.layout.defs.get(bar)
+    return bar
+  }
+
+  /**
+   * The right bar of this cell.
+   * - barRight at last measure of a system:
+   * ```
+   *  |: ->  |
+   * :|: -> :|
+   * ```
+   * @type {musje.Bar}
+   * @readonly
+   */
+  get barRightInSystem() {
+    const { system } = this.measure
+    let bar = this.barRight
+
+    if (!bar) return { width: 0, height: 0 }
+
+    // Last measure in the system.
+    if (system && this.measure.inSystemEnd) {
+      if (bar.value === 'repeat-begin') {
+        bar = new Bar('single')
+      } else if (bar.value === 'repeat-both') {
+        bar = new Bar('repeat-end')
+      }
+    }
+    bar.def = this.layout.defs.get(bar)
+    return bar
+  }
+
+  /**
+   * Flow the cell.
+   */
+  flow() {
+    const { defs, options } = this.layout
+    const { musicDataSep } = options
+    let x = 0
+    let minHeight
+
+    this.data.forEach(data => {
+      const def = data.def = defs.get(data)
+      data.x = x
+      data.y = 0
+      x += def.width + musicDataSep
+      minHeight = Math.min(minHeight, def.height)
+    })
+
+    this.minWidth = x
+    this.minHeight = minHeight
+  }
+
+  /**
+   * Draw box of the cell.
+   * @return {Element} The box SVG rect element.
+   */
+  drawBox() {
+    this._boxEl = this.el.rect(0, -this.height, this.width, this.height)
+                         .addClass('bbox')
+    return this._boxEl
+  }
+
+  /**
+   * Clear the box SVG element.
+   */
+  clearBox() {
+    this._boxEl.remove()
+    this._boxEl = undefined
+  }
+
 
   /**
    * Convert cell to string.
    * @return {string} Converted cell in musje source code.
    */
-  toString: function () {
-    return this.data.map(function (musicData) {
-      return musicData.toString();
-    }).join(' ');
-  },
+  toString() {
+    return this.data.map(musicData => musicData.toString()).join(' ')
+  }
 
-  toJSON: util.makeToJSON({
+  toJSON = makeToJSON({
     data: undefined
   })
-});
+}
+
+// Reflow the cell.
+function reflow(that) {
+  that.data.forEach(data => { data.x *= that.width / that.minWidth })
+}
 
 
 /**
@@ -218,19 +295,18 @@ util.defineProperties(Cell.prototype,
  */
 function makeBeams(that, groupDur) {
 
-  getBeamGroups(that, groupDur).forEach(function (group) {
-    var beamLevel = {};   // it starts from 0, while underbar starts from 1
+  getBeamGroups(that, groupDur).forEach(group => {
+    const beamLevel = {}   // it starts from 0, while underbar starts from 1
 
-    function nextHasSameBeamlevel(index, level) {
-      var next = group[index + 1];
-      return next && next.duration.underbar > level;
+    const nextHasSameBeamlevel = (index, level) => {
+      const next = group[index + 1]
+      return next && next.duration.underbar > level
     }
 
-    group.forEach(function(data, i) {
-      var underbar = data.duration.underbar;
-      var level;
+    group.forEach((data, i) => {
+      const { underbar } = data.duration
 
-      for (level = 0; level < underbar; level++) {
+      for (let level = 0; level < underbar; level++) {
         if (nextHasSameBeamlevel(i, level)) {
 
           /**
@@ -241,61 +317,60 @@ function makeBeams(that, groupDur) {
            * @alias beams
            * @type {Array.<Beam>}
            */
-          data.beams = data.beams || [];
+          data.beams = data.beams || []
 
           if (beamLevel[level]) {
-            data.beams[level] = new Beam('continue', level, data);
+            data.beams[level] = new Beam('continue', level, data)
           } else {
             beamLevel[level] = true;
-            data.beams[level] = new Beam('begin', level, data);
+            data.beams[level] = new Beam('begin', level, data)
           }
         } else {
           if (beamLevel[level]) {
             data.beams = data.beams || [];
-            data.beams[level] = new Beam('end', level, data);
+            data.beams[level] = new Beam('end', level, data)
             delete beamLevel[level];
           }
         }
       }
-    });
-  });
+    })
+  })
 }
 
 function getBeamGroups(that, groupDur) {
-  var counter = 0, group = [], groups = [];
+  const groups = []
+  let group = []
+  let counter = 0
 
-  function inGroup() {
-    return counter < groupDur && !near(counter, groupDur);
+  const inGroup = () => counter < groupDur && !near(counter, groupDur)
+  const putGroup = () => {
+    if (group.length > 1) groups.push(group)
+    group = []
   }
-  function putGroup() {
-    if (group.length > 1) { groups.push(group); }
-    group = [];
-  }
 
-  that.data.forEach(function (musicData) {
-    if (musicData.$type !== 'note' && musicData.$type !== 'rest') {
-      return;
-    }
-    var duration = musicData.duration;
-    var dur = duration.quarter;
+  that.data.forEach(musicData => {
+    if (musicData.$type !== 'note' && musicData.$type !== 'rest') return
 
-    counter += dur;
+    const { duration } = musicData
+    const dur = duration.quarter
+
+    counter += dur
 
     if (inGroup()) {
-      if (duration.underbar) { group.push(musicData); }
+      if (duration.underbar) group.push(musicData)
     } else if (near(counter, groupDur)) {
-      group.push(musicData);
-      putGroup();
-      counter = 0;
+      group.push(musicData)
+      putGroup()
+      counter = 0
     } else {
-      putGroup();
-      counter %= groupDur;
+      putGroup()
+      counter %= groupDur
     }
-  });
+  })
 
-  putGroup();
+  putGroup()
 
-  return groups;
+  return groups
 }
 
-module.exports = Cell;
+export default Cell

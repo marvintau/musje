@@ -1,7 +1,5 @@
-'use strict';
-
-var util = require('../util');
-var Cell = require('./Cell');
+import { makeToJSON } from '../util'
+import Cell from './Cell'
 
 /**
  * @class
@@ -9,14 +7,12 @@ var Cell = require('./Cell');
  * @param index {number} - Index of this part in the parts.
  * @param parts {PartwiseParts}
  */
-function PartwisePart(index, parts) {
-  this._index = index;
-  this._parts = parts;
-}
+class PartwisePart {
+  constructor(index, parts) {
+    this._index = index
+    this._parts = parts
+  }
 
-util.defineProperties(PartwisePart.prototype,
-/** @lends PartwisePart# */
-{
   // head: { $ref: '#/objects/PartHead' },
 
   /**
@@ -24,49 +20,35 @@ util.defineProperties(PartwisePart.prototype,
    * @type {PartwiseParts}
    * @readonly
    */
-  parts: {
-    get: function () {
-      return this._parts;
-    }
-  },
+  get parts() { return this._parts }
 
   /**
    * Measure in a partwise part is cells.
    * @type {Array.<Cell>}
    */
-  measures: {
-    get: function () {
-      return this._measures || (this._measures = []);
-    },
-    set: function (measures) {
-      var
-        p = this._index,
-        score = this.parts.score,
-        mea = this._measures = [];
-
-      measures.forEach(function (cell, m) {
-        mea.push(new Cell(cell, m, p, score));
-      });
-    }
-  },
+  get measures() { return this._measures || (this._measures = []) }
+  set measures(measures) {
+    const p = this._index
+    const { score } = this.parts
+    const mea = this._measures = []
+    measures.forEach((cell, m) => { mea.push(new Cell(cell, m, p, score)) })
+  }
 
   /**
    * Convert a partwise part to sting.
    * @return {string} Musje partwise part source code.
    */
-  toString: function () {
-    return this.measures.map(function (cell) {
-      return cell;
-    }).join(' ');
-  },
+  toString() {
+    return this.measures.map(cell => cell).join(' ')
+  }
 
   /**
    * Custom toJSON method.
    * @return {Object}
    */
-  toJSON: util.makeToJSON({
+  toJSON = makeToJSON({
     measures: undefined
   })
-});
+}
 
-module.exports = PartwisePart;
+export default PartwisePart

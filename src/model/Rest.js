@@ -1,8 +1,6 @@
-'use strict';
-
-var util = require('../util');
-var MusicDataMixin = require('./MusicDataMixin');
-var Duration = require('./Duration');
+import { extend, makeToJSON } from '../util'
+import MusicData from './MusicData'
+import Duration from './Duration'
 
 /**
  * @class
@@ -10,55 +8,59 @@ var Duration = require('./Duration');
  * @mixes MusicDataMixin
  * @mixes MusicDataLayoutMixin
  */
-function Rest(rest) {
-  util.extend(this, rest);
-}
+class Rest extends MusicData {
+  constructor(rest) {
+    super()
+    extend(this, rest)
+  }
 
-util.defineProperties(Rest.prototype,
-/** @lends Rest# */
-{
   /**
    * Type of rest.
    * @constant
    * @default rest
    */
-  $type: { constant: 'rest' },
+  $type = 'rest'
+
+  /**
+   * Unique def id of the rest used in the SVG <defs> element.
+   * ```
+   * defId := 'r' type dot
+   * ```
+   * E.g.
+   * ```
+   * Rest     defId
+   * ----------------
+   * 0        r40
+   * 0 -      r20
+   * 0=.      r161
+   * ```
+   * @type {string}
+   * @readonly
+   */
+  get defId() {
+    const { type, dot } = this.duration
+    return `r${type}${dot}`
+  }
 
   /**
    * Duration of the rest.
    * @type {Duration}
    */
-  duration: {
-    get: function () {
-      return this._duration || (this._duration = new Duration());
-    },
-    set: function (duration) {
-      this._duration = new Duration(duration);
-    }
-  },
+  get duration() { return this._duration || (this._duration = new Duration()) }
+  set duration(duration) { this._duration = new Duration(duration) }
 
-  beams: {
-    get: function () {
-      return this._beams || (this._beams = []);
-    },
-    set: function (beams) {
-      this._beams = beams;
-    }
-  },
+  get beams() { return this._beams || (this._beams = []) }
+  set beams(beams) { this._beams = beams }
 
   /**
    * Convert the rest to musje source code string.
    * @return {string} Converted musje source code.
    */
-  toString: function () {
-    return '0' + this.duration;
-  },
+  toString() { return `0${this.duration}` }
 
-  toJSON: util.makeToJSON({
+  toJSON = makeToJSON({
     duration: undefined,
   }, 'rest')
-});
+}
 
-util.defineProperties(Rest.prototype, MusicDataMixin);
-
-module.exports = Rest;
+export default Rest

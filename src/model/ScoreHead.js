@@ -1,87 +1,80 @@
-'use strict';
-
-var util = require('../util');
+import { makeToJSON, extend } from '../util'
 
 /**
  * Construct head of the score.
  * @class
  * @param {Object} head
  */
-function ScoreHead(head) {
-  util.extend(this, head);
-}
+class ScoreHead {
+  constructor(head) {
+    extend(this, head)
+  }
 
-util.defineProperties(ScoreHead.prototype,
-/** @lends ScoreHead# */
-{
   /**
    * Title of the score.
    * @type {string}
    * @default ''
    */
-  title: '',
+  title = ''
 
   /**
    * Subtitle of the score.
    * @type {string}
    * @default ''
    */
-  subtitle: '',
+  subtitle = ''
 
   /**
    * Subsubtitle of the score.
    * @type {string}
    * @default ''
    */
-  subsubtitle: '',
+  subsubtitle = ''
 
   /**
    * Composer of the score.
    * @type {string}
    */
-  composer: undefined,
+  composer = undefined
 
   /**
    * Arranger of the score.
    * @type {string}
    */
-  arranger: undefined,
+  arranger = undefined
 
   /**
    * Lyricist of the score.
    * @type {string}
    */
-  lyricist: undefined,
+  lyricist = undefined
 
   /**
    * Check if the score head is empty.
    * @type {boolean}
    * @readonly
    */
-  isEmpty: {
-    get: function () {
-      return !this.title && !this.subtitle && !this.subsubtitle &&
-             !this.composer && !this.arranger && !this.lyricist;
-    }
-  },
+  get isEmpty() {
+    return !this.title && !this.subtitle && !this.subsubtitle &&
+           !this.composer && !this.arranger && !this.lyricist
+  }
 
   /**
    * Convert score head to string.
    * @return {string} The converted musje head source code.
    */
-  toString: function () {
-    return '' + (this.title ? ('<<' + this.title + '>>') : '') +
-            (this.composer || '') +
-            '\n';
-  },
+  toString() {
+    const title = this.title ? `<<${this.title}>>` : ''
+    return `${title} ${this.composer || ''}\n`
+  }
 
-  toJSON: util.makeToJSON({
+  toJSON = makeToJSON({
     title: undefined,
     subtitle: undefined,
     subsubtitle: undefined,
     composer: undefined,
     lyricist: undefined
   })
-});
+}
 
-module.exports = ScoreHead;
+export default ScoreHead

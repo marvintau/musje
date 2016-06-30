@@ -1,10 +1,8 @@
-'use strict';
-
-var parser = require('./parser/parser.jison');
-var Score = require('./model/Score');
-var Renderer = require('./renderer/Renderer/Renderer');
-var util = require('./util');
-var PlayerMixin = require('./player/PlayerMixin');
+import parser from './parser/parser.jison'
+import Score from './model/Score'
+import Renderer from './renderer/Renderer/Renderer'
+import { defineProperties } from './util'
+import PlayerMixin from './player/PlayerMixin'
 
 /**
  * Render the score in jianpu (numbered musical notation).
@@ -14,34 +12,20 @@ var PlayerMixin = require('./player/PlayerMixin');
  * @param {Object} lo - Layout options.
  */
 Score.prototype.render = function (svg, lo) {
-  new Renderer(svg, lo).render(this);
-};
+  new Renderer(svg, lo).render(this)
+}
 
-util.defineProperties(Score.prototype, PlayerMixin);
+defineProperties(Score.prototype, PlayerMixin)
 
+/**
+ * Parse source musje string to be a Score instance.
+ * @param {string} input - Input of the musje source code.
+ * @return {Score} - A `Score` instance.
+ */
+export const parse = (input) => {
+  return parser.parse(input)
+  // var plainScore = parser.parse(input);
+  // return new Score(plainScore);
+}
 
-/** @module musje */
-module.exports = {
-
-  /**
-   * Parse source musje string to be a Score instance.
-   * @param {string} input - Input of the musje source code.
-   * @return {Score} - A `Score` instance.
-   */
-  parse: function (input) {
-    var plainScore = parser.parse(input);
-    return new Score(plainScore);
-  },
-
-  /**
-   * Score constructor.
-   * @see {@link Score}
-   */
-  Score: Score,
-
-  /**
-   * Utility functions.
-   * @see {@link util}
-   */
-  util: util
-};
+export { Score }

@@ -1,71 +1,49 @@
-'use strict';
-
-var util = require('../../util');
-var layoutOptions = require('./layoutOptions');
-var Defs = require('../defs/Defs');
-var SvgLayout = require('./SvgLayout');
-var BodyLayout = require('./BodyLayout');
-var HeaderLayout = require('./HeaderLayout');
-var ContentLayout = require('./ContentLayout');
-
-var TimewiseMeasure = require('../../model/TimewiseMeasure');
-var TimewiseMeasureLayoutMixin = require('./TimewiseMeasureLayoutMixin');
-var Cell = require('../../model/Cell');
-var CellLayoutMixin = require('./CellLayoutMixin');
-var MusicDataLayoutMixin = require('./MusicDataLayoutMixin');
-[
-  require('../../model/Time'),
-  require('../../model/Bar'),
-  require('../../model/Note'),
-  require('../../model/Rest'),
-  require('../../model/Chord'),
-  require('../../model/Voice')
-].forEach(function (Class) {
-  util.defineProperties(Class.prototype, MusicDataLayoutMixin);
-});
-util.defineProperties(TimewiseMeasure.prototype, TimewiseMeasureLayoutMixin);
-util.defineProperties(Cell.prototype, CellLayoutMixin);
+import layoutOptions from './layoutOptions'
+import Defs from '../defs/Defs'
+import SvgLayout from './SvgLayout'
+import BodyLayout from './BodyLayout'
+import HeaderLayout from './HeaderLayout'
+import ContentLayout from './ContentLayout'
 
 /**
  * @class
  * @param svg {string}
  * @param options {Object} Layout options
  */
-function Layout(svg, options) {
-  this.options = options;
-  this.svg = svg;
+class Layout {
+  constructor(svg, options) {
+    this.options = options
+    this.svg = svg
 
-  this.svg = new SvgLayout(this);
-  this.body = new BodyLayout(this);
-  this.header = new HeaderLayout(this);
-  this.content = new ContentLayout(this);
+    this.svg = new SvgLayout(this)
+    this.body = new BodyLayout(this)
+    this.header = new HeaderLayout(this)
+    this.content = new ContentLayout(this)
 
-  this.defs = new Defs(this);
-}
+    this.defs = new Defs(this)
+  }
 
-Layout.options = layoutOptions;
-
-util.defineProperties(Layout.prototype,
-/** @lends Layout# */
-{
   /**
    * @param  {Score} score
    */
-  flow: function (score) {
-    init(this, score);
-    this.content.flow(score.measures);
+  flow(score) {
+    init(this, score)
+    this.content.flow(score.measures)
   }
-});
+}
+
+Layout.options = layoutOptions
 
 function init(that, score) {
-  var measures = score.measures;
-  measures.forEach(function (measure, m) {
-    measure = measures[m];
-    measure.layout = that;
-    measure.parts.forEach(function (cell) {
-      cell.layout = that;
-      cell.flow();
-    });
-  });
+  const { measures } = score
+  measures.forEach((measure, m) => {
+    measure = measures[m]
+    measure.layout = that
+    measure.parts.forEach(cell => {
+      cell.layout = that
+      cell.flow()
+    })
+  })
 }
-module.exports = Layout;
+
+export default Layout

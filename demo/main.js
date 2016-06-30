@@ -74,19 +74,23 @@
 
     $scope.run = function () {
       var t0 = now();
+      var score;
       try {
-        var score = $scope.score = musje.parse($scope.src);
-        $scope.parseTime = now() - t0;
-        $document[0].title =  (score.head.title || 'Untitled') + ' - Musje';
-        $scope.totalMeasures = score.measures.length;
-        $scope.error = false;
+        score = musje.parse($scope.src);
       } catch (err) {
         $scope.totalMeasures = 'N/A';
         $scope.error = err.message;
       }
-      t0 = now();
-      $scope.render();
-      $scope.renderTime = now() - t0;
+      if (score) {
+        score = $scope.score = new musje.Score(score)
+        $scope.parseTime = now() - t0;
+        $document[0].title =  (score.head.title || 'Untitled') + ' - Musje';
+        $scope.totalMeasures = score.measures.length;
+        $scope.error = false;
+        t0 = now();
+        $scope.render();
+        $scope.renderTime = now() - t0;
+      }
     };
 
     $scope.render = function () {

@@ -1,15 +1,15 @@
-'use strict';
+import MusicData from './MusicData'
 
-var util = require('../util');
-var MusicDataMixin = require('./MusicDataMixin');
-
-var BAR_TO_STRING = {
+const BAR_TO_STRING = {
   single: '|', double: '||', end: '|]',
   'repeat-begin': '|:', 'repeat-end': ':|', 'repeat-both': ':|:'
-};
+}
+const BAR_TO_ID = {
+  single: 'bs', double: 'bd', end: 'be',
+  'repeat-begin': 'brb', 'repeat-end': 'bre', 'repeat-both': 'brbe'
+}
 
 /**
- * @class
  * @param {string} bar - The bar value, which can be either of
  * - 'single' - `|`
  * - 'double' - `||`
@@ -17,23 +17,20 @@ var BAR_TO_STRING = {
  * - 'repeat-begin' - `|:`
  * - 'repeat-end' - `:|`
  * - 'repeat-both' - `:|:`
- * @mixes MusicDataMixin
- * @mixes MusicDataLayoutMixin
  */
-function Bar(bar) {
-  this._value = bar;
-}
+class Bar extends MusicData {
+  constructor(bar) {
+    super()
+    this._value = bar
+  }
 
-util.defineProperties(Bar.prototype,
-/** @lends Bar# */
-{
   /**
    * Type of bar.
    * @constant
    * @readonly
    * @default bar
    */
-  $type: { constant: 'bar' },
+  $type = 'bar'
 
   /**
    * Value of the bar, which is the same as the bar parameter in the constructor.
@@ -41,29 +38,36 @@ util.defineProperties(Bar.prototype,
    * @default single
    * @readonly
    */
-  value: {
-    get: function () {
-      return this._value || (this._value = 'single');
-    }
-  },
+  get value() { return this._value || (this._value = 'single') }
+
+  /**
+   * Def id used in the SVG <defs> element.
+   * ```
+   * defId    Bar value
+   * ----------------------
+   * 'bs'   - single
+   * 'bd'   - double
+   * 'be'   - repeat-end
+   * 'brb'  - repeat-begin
+   * 'bre'  - repeat-end
+   * 'brbe' - repeat-both
+   * ```
+   * @type {string}
+   * @readonly
+   */
+  get defId() { return BAR_TO_ID[this.value] }
 
   /**
    * Convert bar to string.
    * @return {string} Converted string of the barline in musje source code.
    */
-  toString: function () {
-    return BAR_TO_STRING[this.value];
-  },
+  toString() { return BAR_TO_STRING[this.value] }
 
   /**
    * [toJSON description]
    * @return {Object} { bar: value }
    */
-  toJSON: function () {
-    return { bar: this.value };
-  }
-});
+  toJSON() { return { bar: this.value } }
+}
 
-util.defineProperties(Bar.prototype, MusicDataMixin);
-
-module.exports = Bar;
+export default Bar

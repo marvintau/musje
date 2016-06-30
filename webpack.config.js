@@ -1,6 +1,4 @@
-'use strict';
-
-var path = require('path');
+const path = require('path')
 
 module.exports = {
   entry: './src/main.js',
@@ -23,8 +21,9 @@ module.exports = {
   ],
   module: {
     loaders: [
+      { test: /\.js$/, loader: 'babel' },
       { test: /\.jison$/, loader: './parser/jison-loader' }
     ]
   },
   plugins: []
-};
+}

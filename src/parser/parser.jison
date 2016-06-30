@@ -2,29 +2,25 @@
 
 %{
 
-var extend = require('../util').extend;
+const extend = require('../util').extend
 
-function lastItem(arr) { return arr[arr.length - 1]; }
+const lastItem = arr => arr[arr.length - 1]
 
-function onlyProperty(obj) {
-  return obj[Object.keys(obj)[0]];
+const onlyProperty = obj => obj[Object.keys(obj)[0]]
+
+const octave = str => {
+  const len = str.length
+  return str.charAt(0) === ',' ? -len : len
 }
 
-function octave(str) {
-  var len = str.length;
-  return str.charAt(0) === ',' ? -len : len;
-}
+const removeLastEmptyMeasure = score => {
+  const parts = score.parts
+  if (!parts) return
 
-function removeLastEmptyMeasure(score) {
-  var parts = score.parts;
-  if (!parts) { return; }
-
-  parts.forEach(function (part) {
-    var lastMeasure = lastItem(part.measures);
-    if (lastMeasure.data.length === 0) {
-      part.measures.pop();
-    }
-  });
+  parts.forEach(part => {
+    const lastMeasure = lastItem(part.measures)
+    if (lastMeasure.data.length === 0) part.measures.pop()
+  })
 }
 
 %}
@@ -46,18 +42,18 @@ BEATS         {SMALL_INT}\/
 \/\*([\s\S]*?)\*\/      return 'S'
 \/\*[\s\S]*             return 'S'
 
-'<<'                   { this.begin('title'); }
-<title>.*'>>'          { yytext = yytext.substr(0, yyleng - 2).trim();
-                          return 'TITLE'; }
-<title>{S}*{NL}         { this.begin('INITIAL'); }
-<title>.*               { this.begin('INITIAL');
-                          yytext = yytext.trim();
-                          return 'COMPOSER'; }
+'<<'                    { this.begin('title') }
+<title>.*'>>'           { yytext = yytext.substr(0, yyleng - 2).trim()
+                          return 'TITLE' }
+<title>{S}*{NL}         { this.begin('INITIAL') }
+<title>.*               { this.begin('INITIAL')
+                          yytext = yytext.trim()
+                          return 'COMPOSER' }
 
-{BEATS}                 { this.begin('time');
-                          yytext = yytext.substr(0, yyleng - 1);
-                          return 'BEATS'; }
-<time>{SMALL_INT}[^\d]  { this.begin('INITIAL'); return 'BEAT_TYPE'; }
+{BEATS}                 { this.begin('time')
+                          yytext = yytext.substr(0, yyleng - 1)
+                          return 'BEATS' }
+<time>{SMALL_INT}[^\d]  { this.begin('INITIAL'); return 'BEAT_TYPE' }
 
 {ACCIDENTAL}            return 'ACCIDENTAL'
 [1-7]                   return 'STEP'
@@ -138,9 +134,9 @@ score_head
 
 title
   : 'TITLE'
-    { $$ = { title: $1 }; }
+    { $$ = { title: $1 } }
   | 'TITLE' 'COMPOSER'
-    { $$ =  { title: $1, composer: $2 }; }
+    { $$ =  { title: $1, composer: $2 } }
   ;
 
 part_list
@@ -157,14 +153,14 @@ measure_list
   : measure
     { $$ = [$1]; }
   | measure_list bar maybe_space measure
-    { $$ = $1; lastItem($1).data.push({ bar: $2 }); $1.push($4); }
+    { $$ = $1; lastItem($1).data.push({ bar: $2 }); $1.push($4) }
   | measure_list bar maybe_space
-    { $$ = $1; lastItem($1).data.push({ bar: $2 }); $1.push({ data: [] }); }
+    { $$ = $1; lastItem($1).data.push({ bar: $2 }); $1.push({ data: [] }) }
   ;
 
 measure
   : music_data maybe_space            -> { data: [$1] }
-  | measure music_data maybe_space    { $$ = $1; $1.data.push($2); }
+  | measure music_data maybe_space    { $$ = $1; $1.data.push($2) }
   ;
 
 bar
@@ -178,7 +174,7 @@ bar
 
 music_data
   : slurable
-  | slurable TIE          { $$ = $1; onlyProperty($1).tie = '~'; }
+  | slurable TIE          { $$ = $1; onlyProperty($1).tie = '~' }
   | '0' maybe_duration    -> { rest: { duration: $2 } }
   | voice                 -> { voice: $1 }
   | time_signature
@@ -186,30 +182,30 @@ music_data
 
 slurable
   : pitchful maybe_duration
-    { $$ = $1; onlyProperty($1).duration = $2; }
+    { $$ = $1; onlyProperty($1).duration = $2 }
   | '(' pitchful maybe_duration
     {
       $$ = $2;
       extend(onlyProperty($2), {
         duration: $3,
         slur: { begin: 'solid' }
-      });
+      })
     }
   | pitchful maybe_duration ')'
     {
-      $$ = $1;
+      $$ = $1
       extend(onlyProperty($1), {
         duration: $2,
         slur: { end: 'solid' }
-      });
+      })
     }
   | '(' pitchful maybe_duration ')'
     {
-      $$ = $2;
+      $$ = $2
       extend(onlyProperty($2), {
         duration: $3,
         slur: { begin: 'solid', end: 'solid' }
-      });
+      })
     }
   ;
 
@@ -253,7 +249,7 @@ chord
 
 pitch_list
   : pitch                 -> [$1]
-  | pitch_list pitch      { $$ = $1; $1.push($2); }
+  | pitch_list pitch      { $$ = $1; $1.push($2) }
   ;
 
 voice
@@ -262,14 +258,14 @@ voice
 
 voice_list
   : voice_data_list                   -> [$1]
-  | voice_data_list ':' voice_data    { $$ = $1; $1.push($2); }
+  | voice_data_list ':' voice_data    { $$ = $1; $1.push($2) }
   ;
 
 // TODO
 voice_data
   : slurable
   | restslurable_list slurable
-    { $$ = $1; $1.push($2); }
+    { $$ = $1; $1.push($2) }
   ;
 
 time_signature

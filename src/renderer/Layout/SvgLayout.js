@@ -1,60 +1,43 @@
-'use strict';
-
-var Snap = require('snapsvg');
-var util = require('../../util');
+import Snap from 'snapsvg'
 
 /**
  * @class
  * @param layout {Layout}
  */
-function SvgLayout(layout) {
-  this._layout = layout;
-  var lo = layout.options;
-  this._el = Snap(layout.svg)
-    .attr({ fontFamily: lo.fontFamily })
-    .addClass('musje');
-  this.el.clear();
-  this.width = lo.width;
-}
+class SvgLayout {
+  constructor(layout) {
+    this._layout = layout
+    const { fontFamily, width } = layout.options
+    this._el = Snap(layout.svg)
+      .attr({ fontFamily })
+      .addClass('musje')
+    this.el.clear()
+    this.width = width
+  }
 
-util.defineProperties(SvgLayout.prototype,
-/** @lends SvgLayout# */
-{
-  el: {
-    get: function () {
-      return this._el;
-    }
-  },
+  get el() { return this._el }
 
   /**
    * Width of the svg.
    * @type {number}
    */
-  width: {
-    get: function () {
-      return this._w;
-    },
-    set: function (w) {
-      this._w = w;
-      this.el.attr('width', w);
-      var body = this._layout.body;
-      if (body) { body.width = w; }
-    }
-  },
+  get width() { return this._w }
+  set width(w) {
+    this._w = w
+    this.el.attr('width', w)
+    const { body } = this._layout
+    if (body) body.width = w
+  }
 
   /**
    * Height of the svg.
    * @type {number}
    */
-  height: {
-    get: function () {
-      return this._h;
-    },
-    set: function (h) {
-      this._h = h;
-      this.el.attr('height', h);
-    }
+  get height() { return this._h }
+  set height(h) {
+    this._h = h
+    this.el.attr('height', h)
   }
-});
+}
 
-module.exports = SvgLayout;
+export default SvgLayout
