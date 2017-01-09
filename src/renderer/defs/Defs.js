@@ -30,9 +30,9 @@ class Defs {
           (this[id] = new AccidentalDef(id, accidental, this._layout))
   }
 
-  _getPitch(id, pitch, underbar) {
+  _getPitch(id, note) {
     return this[id] ||
-          (this[id] = new PitchDef(id, pitch, underbar, this))
+          (this[id] = new PitchDef(id, note, this))
   }
 }
 
@@ -57,7 +57,7 @@ function makeDef(id, musicData, defs) {
 function makeNoteDef(note, defs) {
   const underbar = note.duration.underbar
   const pitchId = note.pitch.defId + underbar
-  const pitchDef = defs._getPitch(pitchId, note.pitch, underbar)
+  const pitchDef = defs._getPitch(pitchId, note)
   const durationDef = defs.get(note.duration)
   return {
     pitchDef: pitchDef,

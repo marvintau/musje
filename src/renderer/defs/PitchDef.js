@@ -10,25 +10,26 @@ import { extend, near } from '../../util'
  * @param pitch {Pitch}   [description]
  * @param layout {Layout} [description]
  */
-function PitchDef(id, pitch, underbar, defs) {
+function PitchDef(id, note, defs) {
   const layout = this._layout = defs._layout
-  const { accidental, octave } = pitch
+  const { accidental, octave } = note.pitch
   // const scale = getScale(accidental, octave, underbar)
   const el = this.el = layout.svg.el.g().attr({
     id,
     stroke: 'black',
-    strokeWidth: 0.1// - (scale.x + scale.y)
+    strokeWidth: 0.1
   })
   let matrix, sbbox, pbbox
 
   this._defs = defs
   addAccidental(this, accidental)
-  addStep(this, pitch.step)
-  addOctave(this, octave)
+  addStep(this, note.pitch.step)
+  addOctave(this, octave, note.duration.underbar)
 
-  matrix = getMatrix(this, octave, underbar)
+  matrix = getMatrix(this, octave)
   el.transform(matrix)
 
+  // 此处的_sbbox就是加了step的bounding box，是addStep和addOctave创建和修改的
   sbbox = this._sbbox
   sbbox = getBBoxAfterTransform(this.el, sbbox, matrix)
 
@@ -36,7 +37,6 @@ function PitchDef(id, pitch, underbar, defs) {
   el.toDefs()
 
   extend(this, {
-    // scale,
     matrix,
     width: pbbox.width,
     height: -pbbox.y,
@@ -66,7 +66,7 @@ function addStep(that, step) {
     .getBBox()
 }
 
-function addOctave(that, octave) {
+function addOctave(that, octave, underbar) {
   if (!octave) return
 
   const { octaveRadius, octaveOffset, octaveSep } = that._layout.options
@@ -82,10 +82,13 @@ function addOctave(that, octave) {
       )
     }
   } else {
+
+
+
     for (let i = 0; i > octave; i--) {
       octaveEl.circle(
         that._sbbox.cx,
-        that._sbbox.y2 - octaveOffset - octaveSep * i,
+        that._sbbox.y2 - octaveOffset - octaveSep * i - underbar ? underbar * that._layout.options.underbarSep : 0,
         octaveRadius
       )
     }
@@ -95,19 +98,20 @@ function addOctave(that, octave) {
 
 // Transform the pitch to be in a good baseline position and
 // scale it to be more square.
-function getMatrix(that, octave, underbar) {
+function getMatrix(that, octave) {
   const { stepBaselineShift, underbarSep } = that._layout.options
   const pbbox = that.el.getBBox()
-  const dy = (octave >= 0 && underbar === 0 ? -stepBaselineShift : 0) -
-                          underbar * underbarSep
+
+  // 关键：如果octave大于等于0，同时下面也没有线，dy就是-stepBaselineShift, 否则
+  // 就是0，还要加上underBar * underBarSep
+  // const dy = (octave >= 0 && underbar === 0 ? -stepBaselineShift : 0) -
+  //                         underbar * underbarSep
   return Snap.matrix()
-    .translate(-pbbox.x, dy)
-    //缩小音符的比例
-    // .scale(scale.x, scale.y)
-    //把音符抬到更高的位置上，注释后低音就不再提高了（关键是y2）的工作
-    .translate(0, near(pbbox.y2, that._sbbox.y2) ? 0 : -pbbox.y2)
+    // .translate(-pbbox.x, 0)
+    // .translate(0, near(pbbox.y2, that._sbbox.y2) ? 0 : -pbbox.y2)
 }
 
+// 将bounding box平移到合适位置
 function getBBoxAfterTransform(container, bbox, matrix) {
   const rect = container.rect(bbox.x, bbox.y, bbox.width, bbox.height)
   const g = container.g(rect)
