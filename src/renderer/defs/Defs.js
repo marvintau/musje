@@ -63,8 +63,8 @@ function makeNoteDef(note, defs) {
     pitchDef: pitchDef,
     durationDef: durationDef,
     height: pitchDef.height,
-    width: pitchDef.width + durationDef.width *
-                            (underbar ? pitchDef.scale.x : 1)
+    width: pitchDef.width + durationDef.width * 1
+                            // (underbar ? pitchDef.scale.x : 1)
   }
 }
 

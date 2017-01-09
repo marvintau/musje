@@ -13,11 +13,11 @@ import { extend, near } from '../../util'
 function PitchDef(id, pitch, underbar, defs) {
   const layout = this._layout = defs._layout
   const { accidental, octave } = pitch
-  const scale = getScale(accidental, octave, underbar)
+  // const scale = getScale(accidental, octave, underbar)
   const el = this.el = layout.svg.el.g().attr({
     id,
     stroke: 'black',
-    strokeWidth: 2 - (scale.x + scale.y)
+    strokeWidth: 0.1// - (scale.x + scale.y)
   })
   let matrix, sbbox, pbbox
 
@@ -26,7 +26,7 @@ function PitchDef(id, pitch, underbar, defs) {
   addStep(this, pitch.step)
   addOctave(this, octave)
 
-  matrix = getMatrix(this, scale, octave, underbar)
+  matrix = getMatrix(this, octave, underbar)
   el.transform(matrix)
 
   sbbox = this._sbbox
@@ -36,7 +36,7 @@ function PitchDef(id, pitch, underbar, defs) {
   el.toDefs()
 
   extend(this, {
-    scale,
+    // scale,
     matrix,
     width: pbbox.width,
     height: -pbbox.y,
@@ -58,6 +58,7 @@ function addAccidental(that, accidental) {
   that._accidentalX2 = accDef.width
 }
 
+// step在这里就是音阶的数字
 function addStep(that, step) {
   that._sbbox = that.el
     .text(that._accidentalX2, 0, '' + step)
@@ -71,6 +72,7 @@ function addOctave(that, octave) {
   const { octaveRadius, octaveOffset, octaveSep } = that._layout.options
   const octaveEl = that.el.g()
 
+  // 加上八度和音的点
   if (octave > 0) {
     for (let i = 0; i < octave; i++) {
       octaveEl.circle(
@@ -93,14 +95,16 @@ function addOctave(that, octave) {
 
 // Transform the pitch to be in a good baseline position and
 // scale it to be more square.
-function getMatrix(that, scale, octave, underbar) {
+function getMatrix(that, octave, underbar) {
   const { stepBaselineShift, underbarSep } = that._layout.options
   const pbbox = that.el.getBBox()
   const dy = (octave >= 0 && underbar === 0 ? -stepBaselineShift : 0) -
                           underbar * underbarSep
   return Snap.matrix()
     .translate(-pbbox.x, dy)
-    .scale(scale.x, scale.y)
+    //缩小音符的比例
+    // .scale(scale.x, scale.y)
+    //把音符抬到更高的位置上，注释后低音就不再提高了（关键是y2）的工作
     .translate(0, near(pbbox.y2, that._sbbox.y2) ? 0 : -pbbox.y2)
 }
 

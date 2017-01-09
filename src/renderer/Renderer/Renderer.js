@@ -23,8 +23,8 @@ class Renderer {
     const { header } = this.layout
     const { el, width } = header
 
-    el.text(width / 2, lo.titleFontSize, this._score.head.title).attr({
-      fontSize: lo.titleFontSize,
+    el.text(width/2, lo.titleFontSize, this._score.head.title).attr({
+      fontSize: lo.titleFontSize * 2,
       fontWeight: lo.titleFontWeight,
       textAnchor: 'middle'
     })
