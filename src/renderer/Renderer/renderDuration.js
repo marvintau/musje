@@ -3,7 +3,7 @@ import { matrix } from 'snapsvg'
 function renderDuration(note, lo) {
   const { durationDef, pitchDef } = note.def
   const { underbar } = note.duration
-  let y = 0
+  let y = lo.underbarSep * 0.5
 
   // Whole and half notes
   if (note.duration.type < 4) {
@@ -33,14 +33,14 @@ function renderDuration(note, lo) {
             //renders single note
           renderUnderbar(note, note, y, lo)
         }
-        y -= lo.underbarSep
+        y += lo.underbarSep
       }
     }
 
     // Add dots
     if (note.duration.dot) {
       note.el.g().transform(matrix().translate(pitchDef.width, 0))
-        .use(durationDef.el).transform(pitchDef.matrix)
+        .use(durationDef.el)
     }
 
   }

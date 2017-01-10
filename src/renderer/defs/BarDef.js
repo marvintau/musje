@@ -69,6 +69,6 @@ function BarDef(id, bar, layout) {
   this.width = x
 }
 
-function addBarline(that, x, width) { that.el.rect(x, 0, width, 1) }
+function addBarline(that, x, width) { that.el.rect(x, 0, width, 1.2) }
 
 export default BarDef

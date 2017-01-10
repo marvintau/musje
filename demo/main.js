@@ -17,7 +17,7 @@
     { type: 'sans-serif',
       name: '"Lucida Sans Unicode", "Lucida Grande", sans-serif' },
     { type: 'sans-serif', name: 'Tahoma, Geneva, sans-serif' },
-    { type: 'sans-serif', name: '"Trebuchet MS", Helvetica, sans-serif' },
+    { type: 'sans-serif', name: '"Optima", Helvetica, sans-serif' },
     { type: 'sans-serif', name: 'Verdana, Geneva, sans-serif' },
     { type: 'sans-serif',
       name: 'Copperplate, "Copperplate Gothic Light", sans-serif' },
@@ -96,6 +96,7 @@
     $scope.render = function () {
       $scope.score.render('.mus-score', {
         fontFamily: $scope.selectedFont.name,
+        fontWeight : "bold",
         width: $scope.width
       });
     };

@@ -58,6 +58,8 @@ function renderNote(note, cell, lo) {
 }
 
 function renderCell(cell, lo) {
+    console.log(cell.data);
+    
   cell.data.forEach(data => {
     switch (data.$type) {
       case 'rest':

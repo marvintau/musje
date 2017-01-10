@@ -29,22 +29,22 @@ const layoutOptions = {
   partHeight: '120%',
   partSep: '80%',
 
-  measurePaddingLeft: '50%',
-  measurePaddingRight: '50%',
+  measurePaddingLeft: '20%',
+  measurePaddingRight: '20%',
 
   barlineHeight: '120%',
   thinBarlineWidth: '4%',
   thickBarlineWidth: '16%',
-  barlineSep: '18%',
+  barlineSep: '12%',
   barlineDotRadius: '7.5%',
   barlineDotSep: '22%',
 
   accidentalFontSize: '95%',
-  accidentalShift: '10%',
+  accidentalShift: '45%',
 
   octaveRadius: '6.6%',
   octaveOffset: '0%',
-  octaveSep: '23%',
+  octaveSep: '33%',
 
   stepBaselineShift: '12%',  // for step without lower octave and underline
 

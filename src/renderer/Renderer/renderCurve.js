@@ -48,7 +48,7 @@ function renderCompleteCurve(note1, note2, error) {
   const { stepCx: x1, stepTop: y1 } = note1.def.pitchDef
   const { stepCx: x2, stepTop: y2 } = note2.def.pitchDef
   const noteDx = note2.systemX - note1.systemX
-  const el = note1.el.path(getCurvePath(x1, y1, noteDx + x2, y2))
+  const el = note1.el.path(getCurvePath(x1, y1 < y2 ? y1 : y2, noteDx + x2, y1 < y2 ? y1 : y2))
 
   if (error) el.addClass('mus-error')
   return el

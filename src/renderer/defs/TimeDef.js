@@ -23,7 +23,7 @@ function TimeDef(id, time, layout) {
   el.text(0, 0, time.beatType)   // baseline y = 0
   bb = el.getBBox()
   el.line(bb.x - lineExtend, lineY, bb.x2 + lineExtend, lineY)
-  el.transform(Snap.matrix().scale(1, 0.8).translate(lineExtend - bb.x, 0))
+  el.transform(Snap.matrix().translate(lineExtend - bb.x, 0))
 
   bb = el.getBBox()
   el.toDefs()

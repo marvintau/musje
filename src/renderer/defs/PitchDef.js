@@ -17,27 +17,26 @@ function PitchDef(id, note, defs) {
   const el = this.el = layout.svg.el.g().attr({
     id,
     stroke: 'black',
-    strokeWidth: 0.1
+    strokeWidth: 1
   })
-  let matrix, sbbox, pbbox
+  let sbbox, pbbox
 
   this._defs = defs
   addAccidental(this, accidental)
   addStep(this, note.pitch.step)
-  addOctave(this, octave, note.duration.underbar)
+  addOctave(this, octave, note.duration.underbar+0.5)
 
-  matrix = getMatrix(this, octave)
-  el.transform(matrix)
+  // matrix = Snap.matrix()
+  // el.transform(matrix)
 
   // 此处的_sbbox就是加了step的bounding box，是addStep和addOctave创建和修改的
   sbbox = this._sbbox
-  sbbox = getBBoxAfterTransform(this.el, sbbox, matrix)
+  sbbox = getBBoxAfterTransform(this.el, sbbox)
 
   pbbox = el.getBBox()
   el.toDefs()
 
   extend(this, {
-    matrix,
     width: pbbox.width,
     height: -pbbox.y,
     stepCx: sbbox.cx,
@@ -83,8 +82,6 @@ function addOctave(that, octave, underbar) {
     }
   } else {
 
-
-
     for (let i = 0; i > octave; i--) {
       octaveEl.circle(
         that._sbbox.cx,
@@ -96,26 +93,10 @@ function addOctave(that, octave, underbar) {
   that.el.add(octaveEl)
 }
 
-// Transform the pitch to be in a good baseline position and
-// scale it to be more square.
-function getMatrix(that, octave) {
-  const { stepBaselineShift, underbarSep } = that._layout.options
-  const pbbox = that.el.getBBox()
-
-  // 关键：如果octave大于等于0，同时下面也没有线，dy就是-stepBaselineShift, 否则
-  // 就是0，还要加上underBar * underBarSep
-  // const dy = (octave >= 0 && underbar === 0 ? -stepBaselineShift : 0) -
-  //                         underbar * underbarSep
-  return Snap.matrix()
-    // .translate(-pbbox.x, 0)
-    // .translate(0, near(pbbox.y2, that._sbbox.y2) ? 0 : -pbbox.y2)
-}
-
 // 将bounding box平移到合适位置
-function getBBoxAfterTransform(container, bbox, matrix) {
+function getBBoxAfterTransform(container, bbox) {
   const rect = container.rect(bbox.x, bbox.y, bbox.width, bbox.height)
   const g = container.g(rect)
-  rect.transform(matrix)
   bbox = g.getBBox()
   g.remove()
   return bbox

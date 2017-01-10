@@ -20,7 +20,7 @@ function AccidentalDef(id, accidental, layout) {
 
   path.transform(Snap.matrix()
     .translate(0.1 * accidentalShift, -accidentalShift)
-    .scale(ratio * accidentalFontSize)
+    .scale(ratio * accidentalFontSize, -ratio * accidentalFontSize)
     .translate(-bb.x, shift - bb.y2)
   )
 
