@@ -33,7 +33,7 @@ const layoutOptions = {
   measurePaddingRight: '20%',
 
   barlineHeight: '120%',
-  thinBarlineWidth: '4%',
+  thinBarlineWidth: '8%',
   thickBarlineWidth: '16%',
   barlineSep: '12%',
   barlineDotRadius: '7.5%',
@@ -43,7 +43,7 @@ const layoutOptions = {
   accidentalShift: '45%',
 
   octaveRadius: '6.6%',
-  octaveOffset: '0%',
+  octaveOffset: '10%',
   octaveSep: '33%',
 
   stepBaselineShift: '12%',  // for step without lower octave and underline

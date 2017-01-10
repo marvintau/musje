@@ -60,6 +60,7 @@
 <!-- ============================ content =============================-->
 <div class="container-fluid">
 
+<div class="col-md-6">
   <textarea
     ui-codemirror="cmOption"
     ng-model="src" ng-model-options="{ debounce: 500 }"
@@ -71,12 +72,15 @@
     parse time: {{parseTime}} ms,
     render time: {{renderTime}} ms
   </p>
+</div>
+<div class="col-md-6">
   <div resize>
     <svg class="mus-score"></svg>
   </div>
   <pre ng-show="schema">{{schema}}</pre>
   <pre ng-show="converted">{{converted}}</pre>
   <pre ng-show="result">{{result}}</pre>
+  </div>
 </div>
 
 <!-- ============================ scripts ============================= -->

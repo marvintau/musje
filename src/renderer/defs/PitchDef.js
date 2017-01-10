@@ -24,7 +24,7 @@ function PitchDef(id, note, defs) {
   this._defs = defs
   addAccidental(this, accidental)
   addStep(this, note.pitch.step)
-  addOctave(this, octave, note.duration.underbar+0.5)
+  addOctave(this, octave, note.duration.underbar)
 
   // matrix = Snap.matrix()
   // el.transform(matrix)
@@ -82,10 +82,12 @@ function addOctave(that, octave, underbar) {
     }
   } else {
 
+    console.log(octaveOffset);
+
     for (let i = 0; i > octave; i--) {
       octaveEl.circle(
         that._sbbox.cx,
-        that._sbbox.y2 - octaveOffset - octaveSep * i - underbar ? underbar * that._layout.options.underbarSep : 0,
+        that._sbbox.y2 - octaveOffset - octaveSep * i + (underbar ? (underbar + 0.5) * that._layout.options.underbarSep : 0),
         octaveRadius
       )
     }
